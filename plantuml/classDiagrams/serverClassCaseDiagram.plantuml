@@ -1,0 +1,42 @@
+@startuml
+
+scale 2
+
+hide fields
+hide members
+
+package akka_raft.server as server{
+  interface CandidateBehavior{
+    #candidateBehaviour()
+  }
+  interface FollowerBehavior{
+    #followerBehaviour()
+  }
+  interface LeaderBehavior{
+    #leaderBehaviour()
+  }
+  interface ServerActorDiscovery{
+    #clusterDiscoveryBehaviour()
+  }
+  class ServerActor
+}
+
+
+package akka_raft.model as model{
+  class BankStateMachine
+  class CommandLog
+}
+
+ServerActor --|> CandidateBehavior
+ServerActor --|> FollowerBehavior
+ServerActor --|> LeaderBehavior
+
+ServerActor --o ServerActorDiscovery
+
+ServerActor -d-o BankStateMachine
+ServerActor -d-o CommandLog
+
+ server ..> model:<<import>>
+
+
+@enduml
