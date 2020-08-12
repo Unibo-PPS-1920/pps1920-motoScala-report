@@ -17,4 +17,4 @@ deploy:
   skip_cleanup: 'true'
 after_deploy:
    ## - curl -X POST https://api.telegram.org/bot$TELEGRAM_TOKEN/sendMessage -d chat_id=$TELEGRAM_CHAT_ID -d "text=NEW PDF https://github.com/Unibo-PPS-1920/pps1920-motoScala-report/releases/latest/download/main.pdf"
-    - curl -X  POST https://api.telegram.org/bot$TELEGRAM_TOKEN/sendMessage -d chat_id=$TELEGRAM_CHAT_ID -d "text= Commit:'$TRAVIS_COMMIT_MESSAGE' \n Tag:'$TRAVIS_TAG' \n https://github.com/Unibo-PPS-1920/pps1920-motoScala-report/releases/latest/download/main.pdf"
+    - curl -X  POST https://api.telegram.org/bot$TELEGRAM_TOKEN/sendMessage -d chat_id=$TELEGRAM_CHAT_ID -d "text=<b>Commit:$TRAVIS_COMMIT_MESSAGE</b>%0A <b>Tag:$TRAVIS_TAG</b>%0A https://github.com/Unibo-PPS-1920/pps1920-motoScala-report/releases/latest/download/main.pdf"
