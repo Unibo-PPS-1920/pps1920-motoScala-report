@@ -13,5 +13,5 @@ deploy:
   on:
     repo: Unibo-PPS-1920/pps1920-motoScala-report
   skip_cleanup: 'true'
-  after_script:
+after_deploy:
     - curl -X POST https://api.telegram.org/bot$TELEGRAM_TOKEN/sendMessage -d chat_id=$TELEGRAM_CHAT_ID -d "text=new pdf https://github.com/Unibo-PPS-1920/pps1920-motoScala-report/releases/latest/download/main.pdf"
