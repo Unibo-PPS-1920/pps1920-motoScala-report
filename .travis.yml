@@ -1,0 +1,14 @@
+services:
+- docker
+before_install:
+- docker pull mirisbowring/texlive_ctan_full
+script:
+- latexmk -pdf my-main.tex
+deploy:
+  provider: releases
+  api_key:
+    secure: hkTEU9uULcp406F1wgVMpcSDr3BFfUFkr6bhs8Fe5FAGYVO59jNS2IQ7dF7+VfkmPauro7svTMk0hLAWlO9kPnaUiLyRvoLjaDhRZ7bIQ0U7vebRxQ6zvQSVrCvYezdGzQ+t0ZCWivxBGF5hcKWnf/SNH0k2XTMNzkzZOzOrXvtr9lGFIHPfAXwAcpE/S2Ys+/fAZn8Y6Rnfp/uI3WlaCbNXt3eckkGMi52Qb0nBatWK26BsJVLMOzrT1Dylhi+N9rDiFKA3O5ozm+qoNlBL35Hgp5N1W+Rk2toSBm+EXTYJonehh1W2WZCPPrA5bCWgbg5H0KMPFCTUkMfYbTGOjI5jFXn0pgnJzGmWIDSgblssXpGlud2KNkFDK9J4cBHB7qbH7B3SCHFEiV+JztoyS2FRJw6yQkpjKK8TZB2keJ8C40SFrCwxdX9uHLRrNrNARDu8VB77S1oZkszouNazdQskNCwfiTkdBHE9DYhBHN8V7hjnl/exZPv56V7P/KPHP88IAxaTp9K85CR0yrwxdv3KLRI1t1gtApthw16P8cAiy4BBQHPhgEOuJRqgHXoBRuXqRVlrEyYBVerdvYU/cI2srDCgcq+YmFedLNxKpg99RxwBZeuSl7V7x7BexGHfrOa4aH/WdAlDBGLcbFWWi8GTY90P0n5I5WACpL474wA=
+  file: main.pdf
+  on:
+    repo: Unibo-PPS-1920/pps1920-motoScala-report
+  skip_cleanup: 'true'
