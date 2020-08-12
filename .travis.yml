@@ -3,7 +3,7 @@ services:
 before_install:
 - docker pull mirisbowring/texlive_ctan_full:2019
 script:
-- latexmk -pdf my-main.tex
+- latexmk -pdf ain.tex
 deploy:
   provider: releases
   api_key:
