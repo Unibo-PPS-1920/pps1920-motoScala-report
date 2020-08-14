@@ -34,5 +34,5 @@ deploy:
     repo: Unibo-PPS-1920/pps1920-motoScala-report
     all_branches: true
     tags: true
-  cleanup: 'false'
+  skeap_cleanup: 'true'
 after_deploy: 'curl -X  POST https://api.telegram.org/bot$TELEGRAM_TOKEN/sendMessage -d chat_id=$TELEGRAM_CHAT_ID -d "text= Commit: $TRAVIS_COMMIT_MESSAGE %0ATag: $TRAVIS_TAG %0ALink: https://github.com/Unibo-PPS-1920/pps1920-motoScala-report/releases/latest/download/main.pdf"'
