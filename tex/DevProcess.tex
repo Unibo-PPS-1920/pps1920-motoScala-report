@@ -57,5 +57,42 @@ Microsoft Teams è una piattaforma di comunicazione e collaborazione unificata c
 \paragraph{Notion}
 Notion è un'applicazione a tutto tondo che fornisce supporto per quanto riguarda \textbf{gestione di task} e definizione di \textbf{ToDo lists}. È stata molto utile nella fase di \textbf{definizione} e \textbf{decomposizione} del \textbf{Product Backlog}.
 
-\section{Continuous Integration}
-Continuous
+\section{Continuous Integration e Automatizzazione}
+Gli aspetti di \textbf{automatizzazione} di processi ripetitivi sono estremamente importanti al fine di risparmiare tempo e migliorare la gestione di progetto. Al giorno d'oggi sempre più servizi forniscono supporti di continuous integration e gran parte di essi garantiscono all'utente un \textbf{elevato} grado di \textbf{libertà} per quanto riguarda gli aspetti di progetto da automatizzare.
+
+Nel nostro caso approcci di automatizzazione sono stati impiegati per fornire supporto a due ambiti fondamentali:
+\paragraph{Gestione di Progetto}
+Gran parte degli aspetti del project management sono legati al concetto di controllo sulle \textbf{fasi di progetto} (Planning, Scoping ecc). Una delle problematiche fondamentali risiede in un \textbf{accesso fruibile} e \textbf{facilitato} da parte del team allo stato attuale del progetto. Grazie alla CI è stato possibile notificare l'intero team sullo stato attuale del progetto garantendo così maggiore \textbf{consistenza} e \textbf{consapevolezza}.
+
+\subparagraph{Tool utilizzati}
+Gran parte dei tool di gestione utilizzati forniscono \textbf{api} che possono essere interrogate da servizi esterni. Questo è il caso di Trello che fonisce un'ottima integrazione con \textbf{IFTT} e di conseguenza con svariati servizi collegabili a quest'ultimo. Nel nostro caso è stato utilizzato IFTT in accoppiata a \textbf{Telegram} al fine di fonire \textbf{notifiche realtime} sullo stato di progetto.
+
+
+\paragraph{Gestione di Sviluppo}
+La CI esprime il suo massimo potenziale nella \textbf{fase di sviluppo}. In questo caso le funzioni fornite sono state espanse permettendo di integrare il concetto di \textbf{notifica} a fronte di azioni effettuate dai membri del team.
+
+\subparagraph{Tool utilizzati}
+Per quanto riguarda la gestione di sviluppo ci si è affidati ai classici sistemi di CI integrati con il DVCS utilizzato. Nella nostra situazione è stato scelto il sistema \textbf{Travis} poichè garantisce un'ottima integrazione con il DVCS Github e permette inoltre di personalizzare a fondo le \textbf{pipeline di integrazione}. Travis è stato utilizzato come strumento di CI in due casistiche differenti: 
+\begin{itemize}
+	\item{\textbf{Relazione di Progetto:}}
+	Travis è stato associato al repository contente i sorgenti \LaTeX della relazione. La configurazione è stata scritta definendo due \textbf{stages condizionali} e uno \textbf{stage di deploy}:
+	\begin{enumerate}
+	 	\item{\textit{Telegram notification:}}
+	 	Dedicato all'invio di \textbf{notifiche} a fronte di azioni di tipo \textbf{push} (non taggate) da parte degli membri del team.
+	 	\item{\textit{Latex build:}}
+	 	Dedicato alla compilazione del codice \LaTeX mediante un'opportuna immagine \textbf{Docker} di \texttt{TexLive}  
+	 	\item{\textit{Deploy:}}
+	 	Dedicato al \textbf{deploy su Github} del pdf compilato precedentemente da \texttt{Latex build}. È stato infine definito un piccolo script dedicato all'invio di una \textbf{notifica telegram} al team contente il \textbf{link al pdf} rilasciato.
+	 \end{enumerate}
+	 \item{\textbf{Progetto di Sviluppo:}}
+	 \huge TODO
+\end{itemize}
+
+
+
+
+
+
+
+
+
