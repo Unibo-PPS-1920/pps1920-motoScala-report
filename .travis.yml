@@ -1,19 +1,38 @@
-services:
-- docker
-before_install:
-- docker pull adnrv/texlive
-script:
-- docker run --rm -it -v "$(pwd)":/home adnrv/texlive pdflatex main.tex
+os:
+- linux
+dist: xenial
+language: bash
+stages:
+- telegram
+- latex
+jobs:
+  include:
+  - stage: telegram
+    name: Telegram notification
+    if: NOT branch = master AND tag IS NOT present
+    os: linux
+    script:
+    - 'curl -X  POST https://api.telegram.org/bot$TELEGRAM_TOKEN/sendMessage -d chat_id=$TELEGRAM_CHAT_ID
+      -d "text=$(dirname $TRAVIS_REPO_SLUG) pushed to $TRAVIS_BRANCH %0ACommit: $TRAVIS_COMMIT_MESSAGE%0ALink:
+      https://github.com/Unibo-PPS-1920/pps1920-motoScala-report/commits/$TRAVIS_BRANCH"'
+  - stage: latex
+    name: Latex build
+    if: tag IS present
+    os: linux
+    services: docker
+    install: docker pull adnrv/texlive
+    script:
+    - docker run --rm -it -v "$(pwd)":/home adnrv/texlive pdflatex main.tex
 deploy:
   provider: releases
   api_key:
-    secure: hkTEU9uULcp406F1wgVMpcSDr3BFfUFkr6bhs8Fe5FAGYVO59jNS2IQ7dF7+VfkmPauro7svTMk0hLAWlO9kPnaUiLyRvoLjaDhRZ7bIQ0U7vebRxQ6zvQSVrCvYezdGzQ+t0ZCWivxBGF5hcKWnf/SNH0k2XTMNzkzZOzOrXvtr9lGFIHPfAXwAcpE/S2Ys+/fAZn8Y6Rnfp/uI3WlaCbNXt3eckkGMi52Qb0nBatWK26BsJVLMOzrT1Dylhi+N9rDiFKA3O5ozm+qoNlBL35Hgp5N1W+Rk2toSBm+EXTYJonehh1W2WZCPPrA5bCWgbg5H0KMPFCTUkMfYbTGOjI5jFXn0pgnJzGmWIDSgblssXpGlud2KNkFDK9J4cBHB7qbH7B3SCHFEiV+JztoyS2FRJw6yQkpjKK8TZB2keJ8C40SFrCwxdX9uHLRrNrNARDu8VB77S1oZkszouNazdQskNCwfiTkdBHE9DYhBHN8V7hjnl/exZPv56V7P/KPHP88IAxaTp9K85CR0yrwxdv3KLRI1t1gtApthw16P8cAiy4BBQHPhgEOuJRqgHXoBRuXqRVlrEyYBVerdvYU/cI2srDCgcq+YmFedLNxKpg99RxwBZeuSl7V7x7BexGHfrOa4aH/WdAlDBGLcbFWWi8GTY90P0n5I5WACpL474wA=
-  file: 
-    - main.pdf
+    secure: GLJZAQfPhhKtJ8G2iWY6K6LogBR9em61PvrKcOqckw2VjdomePHCMxdfOQWzBL3M2TTgXSx3SyYH7AcBMPKdMw7M+LkuopTFg4pdNDuWZ4LzNgGUg+T6WqEfevx31hc0TO2qM5xJZ3NPQlrh0skubK6awgPp4UqyLQeybmJr5qZbbJH9EDJT0OK+PGBSD83IElw2vhp3zXXMvWGmY3rAo2lze+GPaX1CSUporZqfz9ceouaDgTUu6FkCZc7PfrdMdAN1I18wg4GB0AMBynqKultKX14mPn8avHKuVjtnqYjaccSV1/D+j3Yoll2VzpeVbDytQ2xlNKQlGjFjTgoNz6W8V75v6tR2LixCpNRGQBh0pnmIiHfwcZ+pZksUcCvL4x42hYILVlp0cDLboPgLpPQKHXCoOkz96jaGqxIzEAdbL+F8YMz5M6uFsTjNOn1mGdPGY+0uG1VCpRpWjoZmt9czQNkladaK0sIVNf6ZnginMbY6P9tVMBJakCSHOYGFDAbQHFf4OdMyiuwTw3SBIvOujxQZOVtJenacQHzUVfqlKFAHaqEcFfO5wXR+dHr3RlO/9om5huUMDd0KgVg0EjdJ9n9YKnqge/mLvQNK2vDuzHGOql9kgh2eC19M/h3be5+DlMWkkIAtweMJB0+tk9Z+QzY6Kx4WiVj+cfnqqlI=
+  file: main.pdf
   on:
     repo: Unibo-PPS-1920/pps1920-motoScala-report
     all_branches: true
     tags: true
   skip_cleanup: 'true'
-after_deploy:
-    - curl -X POST https://api.telegram.org/bot$TELEGRAM_TOKEN/sendMessage -d chat_id=$TELEGRAM_CHAT_ID -d "text=NEW PDF https://github.com/Unibo-PPS-1920/pps1920-motoScala-report/releases/latest/download/main.pdf"
+after_deploy: 'curl -X  POST https://api.telegram.org/bot$TELEGRAM_TOKEN/sendMessage
+  -d chat_id=$TELEGRAM_CHAT_ID -d "text= Commit: $TRAVIS_COMMIT_MESSAGE %0ATag: $TRAVIS_TAG
+  %0ALink: https://github.com/Unibo-PPS-1920/pps1920-motoScala-report/releases/latest/download/main.pdf"'
