@@ -76,7 +76,7 @@ In questa fase sono stati individuati i \textbf{requisiti} del sistema, partendo
                         \item \textbf{Spostarsi} all'interno del campo di gioco 2D in base agli \textbf{input} ricevuti da tastiera
                         \item Avere una \textbf{massa} che influisce sull'\textbf{urto} con gli altri elementi in campo
                         \item Potersi \textbf{scontrare} con le altre navicelle generando un urto elastico che spinge entrambi e che \textbf{non} tiene conto della \textbf{velocità} (come nel gioco originale)
-                        \item (opzionale) Avere una \textbf{durata vitale} il quale esaurimento comporta l'\textbf{eliminazione}.
+                        \item (opzionale) Avere una \textbf{durata vitale} che si decrementa ad ogni urto e il quale esaurimento comporta l'\textbf{eliminazione}.
                         
                     \end{itemize}
                 \item \textbf{Navicella nemica}: le navicelle nemiche in campo, controllate dal sistema, dovranno:
@@ -104,7 +104,7 @@ In questa fase sono stati individuati i \textbf{requisiti} del sistema, partendo
                 \item \textbf{Arena di gioco}: è lo \textbf{spazio} su cui si muovono gli elementi del gioco.
                 \begin{itemize}
                     \item Si compone di un piano \textbf{bidimensionale} suddiviso da una \textbf{griglia} che rappresenta le \textit{piastrelle} dell'arena.
-                    \item (opt) L'arena può presentare al suo interno delle \textit{piastrelle} \textbf{mancanti} che non fanno parte del campo di gioco e che comportano quindi l'eliminazione delle navicelle che le attraversano.    
+                    \item (opzionale) L'arena può presentare al suo interno delle \textit{piastrelle} \textbf{mancanti} che non fanno parte del campo di gioco e che comportano quindi l'eliminazione delle navicelle che le attraversano.    
                     \item Ha dei \textbf{bordi} ben definiti che la delimitano dall'area circostante e che se attraversati da una navicella ne comportano l'eliminazione.
                 \end{itemize}
             \end{itemize}
@@ -152,26 +152,27 @@ In questa fase sono stati individuati i \textbf{requisiti} del sistema, partendo
                 \item \textbf{Volume}: l'utente deve poter \textbf{regolare} il volume della musica di sottofondo.
             \end{itemize}
             
-        \subsection{Statistiche}
-            Dovranno essere disponibili delle statistiche, basate sulle \textbf{partite precedenti}.
+        \subsection{Statistiche}    
+            Dovranno essere disponibili delle statistiche, basate sulle \textbf{partite precedenti} in modalità single player.
             Le statistiche dovranno mostrare i \textbf{record} raggiunti dai giocatori; in particolare verranno visualizzate le seguenti informazioni: 
             \begin{itemize}
                 \item \textbf{Posizione} in classifica.
                 \item \textbf{Username} dell'utente che detiene quel record.
                 \item \textbf{Punteggio} totalizzato in quella circostanza.
             \end{itemize}
+            Alla vittoria da parte di un giocatore, nel caso in cui il suo punteggio gli consentisse il piazzamento in classifica, avrà l'opzione di inserire il suo nome utente, al fine di registrare il punteggio in classifica.
 
             
 	\section{Requisiti non Funzionali}
-        Il sistema dovrà rispettare alcuni requisiti non funzionali che ne determineranno la qualità:
+        Il sistema dovrà rispettare alcuni requisiti non funzionali che ne determineranno la \textbf{qualità}:
         \begin{itemize}
-            \item \textbf{Reattività}: l'utente non deve percepire ritardi tra l'invio di un comando e l'esecuzione dello stesso da parte del gioco, il feedback grafico deve essere immediato.
+            \item \textbf{Reattività}: l'utente non deve percepire \textbf{ritardi} tra l'invio di un comando e l'esecuzione dello stesso da parte del gioco, il feedback grafico deve essere immediato.
             
-            \item \textbf{Prestazioni}: devono essere tenute particolarmente in considerazione le performance affinché il gioco risulti fluido.
+            \item \textbf{Prestazioni}: devono essere tenute particolarmente in considerazione le \textbf{performance} affinché il gioco risulti fluido.
             
-            \item \textbf{Scalabilità}: in caso venga gestita la modalità multiplayer, il gioco deve essere scalabile per poter supportare la gestione più client.
+            \item \textbf{Scalabilità}: in caso venga gestita la modalità multiplayer, il gioco deve essere \textbf{scalabile} per poter supportare la gestione più client.
             
-            \item \textbf{Fault tollerance}: la gestione degli errori deve essere adeguatamente implementata affinché le interruzioni involontarie del gioco avvengano solo in casi particolari.
+            \item \textbf{Fault tollerance}: la \textbf{gestione degli errori} deve essere adeguatamente implementata affinché le interruzioni involontarie del gioco avvengano solo in casi particolari.
             
 
         \end{itemize}

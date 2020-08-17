@@ -1,28 +1,29 @@
 % -*- root: ../main.tex -*-
 \chapter{Processo di Sviluppo}
-In questo capitolo verrano analizzati in dettaglio i processi relativi alle \textbf{metodologie di sviluppo} e \textbf{gestione di progetto} utilizzati. Per ogni processo inoltre, verrà fornita una breve descrizione di come esso sia stato \textbf{implementato} (tools, websites, ecc) e \textbf{automattizato} (CI).  
+In questo capitolo verranno analizzati in dettaglio i processi relativi alle \textbf{metodologie di sviluppo} e \textbf{gestione di progetto} utilizzati. Per ogni processo inoltre, verrà fornita una breve descrizione di come esso sia stato \textbf{implementato} (tools, websites, ecc) e \textbf{automatizzato} (CI).  
 \section{Metodologia di Sviluppo}
-Per quanto riguarda la metdologia di sviluppo scelta si è deciso di optare per un approccio moderno di tipo iterativo. Fra i tanti modelli presenti abbiamo scelto di mettere in pratica la metodologia \textbf{Agile} basata su \texttt{Scrum}. Data l'inesperienza nel campo del project managament abbiamo deciso di non scegliere una figura di \textbf{Scrum Master} in modo di avere un maggiore equilibrio decisionale. È stata invece definito il ruolo di \textbf{Product Owner}, svolto da Luca Giulianini, al quale è stato affidato il compito di \textbf{controllo qualità} e \textbf{validazione dei requisiti}.
-
+Per quanto riguarda la metodologia di sviluppo scelta si è deciso di optare per un approccio moderno di tipo iterativo. Fra i tanti modelli presenti abbiamo scelto di mettere in pratica la metodologia \textbf{Agile} basata su \texttt{Scrum}. Data l'inesperienza nel campo del project management abbiamo deciso di non scegliere una figura di \textbf{Scrum Master} in modo da avere un maggiore equilibrio decisionale. È stato invece definito il ruolo di \textbf{Product Owner}, svolto da Luca Giulianini, al quale è stato affidate le mansioni di \textbf{controllo qualità} e \textbf{validazione dei requisiti}.
+%todo forse meglio non dire che siamo inesperti
+%todo check mansioni product owner
 \subsection{Scrum}
 \label{subsec:scrum}
 	\paragraph{Sprint} % (fold)
 	\label{par:sprint}
-	Gli \textbf{Sprint} hanno durata \textbf{settimanale} e, al termine di ognuno di essi, viene effettuata una \textbf{runione} generale di tutto il team al fine di \textbf{valutare i risultati} ottenuti. La riunione funge inoltre da \textit{strumento di confronto e dialogo} per quanto riguarda eventuali problemi emersi durante lo stesso Sprint. Una volta conclusa la riunione viene lasciata la parola al \textbf{Product Owner} il quale riassume brevemente lo stato attuale dello Sprint fornendo una breve \textbf{valutazione} circa la \textbf{qualità} dei \textbf{deliverables} prodotti e la loro aderenza ai \textbf{requisiti} precedentemente analizzati. Nel caso in cui vengano rilevate problematiche a livello qualitativo o di tempistiche, il team procederà a una ridefinizione del \textbf{piano di lavoro} modificando oppurtamente la \textbf{schedula} in modo da permettere un recupero graduale.
+	Gli \textbf{Sprint} hanno durata \textbf{settimanale} e, al termine di ognuno di essi, viene effettuata una \textbf{runione} generale di tutto il team al fine di \textbf{valutare i risultati} ottenuti. La riunione funge inoltre da \textit{strumento di confronto e dialogo} per quanto riguarda eventuali problemi emersi durante lo stesso Sprint. Una volta conclusa la riunione viene lasciata la parola al \textbf{Product Owner} il quale riassume brevemente lo stato attuale dello Sprint fornendo una breve \textbf{valutazione} circa la \textbf{qualità} dei \textbf{deliverables} prodotti e la loro aderenza ai \textbf{requisiti} precedentemente analizzati. Nel caso in cui vengano rilevate problematiche a livello qualitativo o di tempistiche, il team procederà a una ridefinizione del \textbf{piano di lavoro} modificando opportunamente la \textbf{schedula} in modo da permettere un recupero graduale.
 	% paragraph backlog (end)
 	\paragraph{Backlog} % (fold)
 	\label{par:backlog}
-	Lo \textbf{Sprint Backlog} viene stilato dal team di settimana in settiama e alla fine di ogni Sprint, durante la consueta riunione generale, vengono valutati gli eventuali problemi aggiornando opportunamente il \textbf{Product Backlog}. Nel caso in cui uno Sprint venga completato con successo, il team procederà a incontrarsi nuovamente al fine di definire la documentazione relativa alla \textbf{nuova iterazione} e quindi il nuovo Sprint Backlog. Gli \textbf{items} del Product Backlog da introdurre nello Sprint sono \textbf{concordati} dall'intero team di sviluppo. Ogni item per comodità viene scomposto nei suoi \textbf{Sprint Tasks} di base e per ognuno di essi viene attribuito un valore di \textbf{effort} concordato dal team. Infine l'\textbf{assegnazione} dei task ai vari componenti del gruppo viene effettuata seguendo principalmente l'affinità con le \textbf{abilità} dei singoli membri del team.  
+	Lo \textbf{Sprint Backlog} viene stilato dal team di settimana in settimana e alla fine di ogni Sprint, durante la consueta riunione generale, vengono valutati gli eventuali problemi aggiornando opportunamente il \textbf{Product Backlog}. Nel caso in cui uno Sprint venga completato con successo, il team procederà a incontrarsi nuovamente al fine di definire la documentazione relativa alla \textbf{nuova iterazione} e quindi il nuovo Sprint Backlog. Gli \textbf{items} del Product Backlog da introdurre nello Sprint sono \textbf{concordati} dall'intero team di sviluppo. Ogni item per comodità viene scomposto nei suoi \textbf{Sprint Tasks} di base e per ognuno di essi viene attribuito un valore di \textbf{effort} concordato dal team. Infine l'\textbf{assegnazione} dei task ai vari componenti del gruppo viene effettuata seguendo principalmente l'affinità con le \textbf{abilità} dei singoli membri del team.  
 	% paragraph sprint (end)
 
 \section{Gestione di Progetto}
-Come abbiamo visto in \ref{subsec:scrum} la metodologia di sviluppo utilizzata è caratterizzata da una grande componente di \textbf{interazione} fra i membri del gruppo. Dato questo presupposto è fondamentale mettere in campo una serie di \textbf{tecnologie} e \textbf{strumenti} che permettano di semplificare questo processo. Al giorno d'oggi il mercato propone una serie di strumenti estremamente potenti e molti di questi vengono forniti gratuitamente a studenti universitari. Qui di seguito verranno elencati i tool utilizzati e verra fornita una breve descrizione delle loro peculiarità.
+Come abbiamo visto in \ref{subsec:scrum} la metodologia di sviluppo utilizzata è caratterizzata da una grande componente di \textbf{interazione} fra i membri del gruppo. Dato questo presupposto è fondamentale mettere in campo una serie di \textbf{tecnologie} e \textbf{strumenti} che permettano di semplificare questo processo. Al giorno d'oggi il mercato propone una serie di strumenti estremamente potenti e molti di questi vengono forniti gratuitamente a studenti universitari. Qui di seguito verranno elencati i tool utilizzati e verrà fornita una breve descrizione delle loro peculiarità.
 
 \paragraph{Trello} % (fold)
  Trello è un tool web di carattere manageriale basato sullo stile a Kanban. La struttura di una Kanban board è molto semplice: 
  \begin{itemize}
  	\item{\textbf{Colonne:}}
- 	Rappresentano gli \textbf{stadi} di un determinato processo. Nella versione più semplice il processo segue tre semplici fasi: \textit{ToDo, Doing, Done }, mentre in ambito dello sviluppo software questo può introdurre al suo interno le fasi di sviluppo stesse come: \textit{review, backlog, doc, ecc}.
+ 	Rappresentano gli \textbf{stadi} di un determinato processo. Nella versione più snella il processo segue tre semplici fasi: \textit{ToDo, Doing} e \textit{Done}, mentre nell'ambito dello sviluppo software questo può introdurre anche le fasi di sviluppo stesse come: \textit{review, backlog, doc, ecc}.
  	\item{\textbf{Cards:}}
  	Gli \textbf{items} in una Kanban board sono rappresentati da carte. Ogni carta contiene una serie di informazioni relative a un \textbf{task} come: \textit{durata, effort, ecc}.
  	\item{\textbf{Swimlanes:}}
@@ -30,7 +31,7 @@ Come abbiamo visto in \ref{subsec:scrum} la metodologia di sviluppo utilizzata �
  \end{itemize}
 
 \paragraph{Gantt Chart}
-Il Gantt è stato molto utile nella fase di \textbf{assegnamento} dei vari task, esso permette infatti di poter fonire una stima temporale per ogni task permettendo così di avere un controllo totale sulla \textbf{schedula}. Inoltre unire il Gantt a un'approccio Kanban ci ha permesso di calcolare eventuali \textbf{ritardi} relativi ad ogni singolo task.
+Il Gantt è molto utile nella fase di \textbf{assegnamento} dei vari task, esso permette infatti di poter fornire una stima temporale per ogni task permettendo così di avere un controllo totale sulla \textbf{schedula}. Inoltre unire il Gantt a un'approccio Kanban ci ha permesso di calcolare eventuali \textbf{ritardi} relativi ad ogni singolo task.
 
 \paragraph{Github Project Management}
 I \textbf{DVCS} negli ultimi anni sono passati dal-l'essere semplici gestori di codice a veri e propri gestori di progetto. \textbf{Github} è stato uno dei primi a partecipare a questa transizione e ha integrato nel tempo una serie di tool estremamente interessanti.
@@ -38,51 +39,51 @@ I \textbf{DVCS} negli ultimi anni sono passati dal-l'essere semplici gestori di 
 	\item{\textbf{Organizzazioni:}}
 	In Github c'è la possibilità di creare gruppi eterogenei facenti riferimento ad una organizzazione (reale o fittizia). Nel nostro caso è stata creata una organizzazione chiamata \texttt{Unibo-PPS-1920} che va a richiamare un \textbf{gruppo fittizio} dedicato al corso di Paradigmi di Programmazione e Sviluppo.
 	\item{\textbf{Teams:}}
-	Una volta definita una organizzazione è possibile creare all'inter-no di essa una serie di sottogruppi chiamati \textbf{teams}. Ogni team idealmente rappresenta uno \textbf{Scrum Team} costituito all'interno di una organizzazione o azienda con lo scopo di \textbf{portare a termine un progetto}. Il team dunque idealemnte dovrà attraversare tutte le fasi di costruzione, partendo da una prima fase di presentazione dei membri arrivando fino alla definizione delle \textbf{figure chiave} (Scrum Master, Product Owner). Nel nostro caso il team è stato nominato \texttt{CaminatiCeroniGiulianiniKiade} al fine di rispecchiare l'aspetto democratico dello stesso.
+	Una volta definita una organizzazione è possibile creare all'inter-no di essa una serie di sottogruppi chiamati \textbf{teams}. Ogni team idealmente rappresenta uno \textbf{Scrum Team} costituito all'interno di una organizzazione o azienda con lo scopo di \textbf{portare a termine un progetto}. Il team dunque idealmente dovrà attraversare tutte le fasi di costruzione, partendo da una prima fase di presentazione dei membri e arrivando fino alla definizione delle \textbf{figure chiave} (Scrum Master, Product Owner). Nel nostro caso il team è stato nominato \texttt{CaminatiCeroniGiulianiniKiade} al fine di rispecchiare l'aspetto democratico dello stesso.
 	\item{\textbf{Progetto:}}
-	I progetti reali sono generalmente proposti dall'organizzazione (\textit{Senior Management}) e poi successivamente sono assegnati ai vari team. Nel nostro caso abbiamo voluto simulare questa situazione assegnando il progetto al team suddetto. Al fine di mantenere una corretta separazione di contenuti si è deciso di creare due progetti, uno dedicato agli \textbf{aspetti di documentazione} e l'altro dedicato agli \textbf{aspetti} meramente \textbf{implementativi}. I progetti sono sincronizzati tra loro attraverso  Trello e Github Projects.
+	I progetti reali sono generalmente proposti dall'organizzazione (\textit{Senior Management}) e poi successivamente sono assegnati ai vari team. Nel nostro caso abbiamo voluto simulare questa situazione assegnando il progetto al team suddetto. Al fine di mantenere una corretta separazione di contenuti si è deciso di creare due progetti: uno dedicato agli \textbf{aspetti di documentazione} e l'altro dedicato agli \textbf{aspetti} di carattere \textbf{implementativo}. I progetti sono sincronizzati tra loro attraverso Trello e Github Projects.
 	\item{\textbf{Projects:}}
-	I Github Projects sono entità presenti all'interno dell'organiz-zazione e rappresentano una \textbf{interfaccia gestionale} sui vari progetti gestiti dall'organiz-zazione stessa. Nel nostro caso abbiamo definito un unico \textbf{Github Project} nel quale è stata implementata una piccola gestione di progetto a \textbf{livello operativo}. Al progetto infatti, sono delegati i compiti relativi alla gestione delle \textbf{Issues} e delle \textbf{Pull Requests} permettendo agli utenti di avere sotto controllo le \textbf{azioni} principali svolte dal \textbf{DVCS}.
+	I Github Projects sono entità presenti all'interno dell'organiz-zazione e rappresentano una \textbf{interfaccia gestionale} sui vari progetti gestiti dall'organizzazione stessa. Nel nostro caso abbiamo definito un unico \textbf{Github Project} nel quale è stata implementata una piccola gestione di progetto a \textbf{livello operativo}. Al progetto infatti, sono delegati i compiti relativi alla gestione delle \textbf{Issues} e delle \textbf{Pull Requests} permettendo agli utenti di avere sotto controllo le \textbf{azioni} principali svolte dal \textbf{DVCS}.
 \end{itemize}
 
 \paragraph{Telegram}
-Relativamente agli aspetti di \textbf{comunicazione informale} si è optato per uno strumento di messaggistica estremamente versatile, \textbf{telegram}. Grazie a Telegram e ai famosi telegram bots è stato possibile avere aggiornamenti diretti dal DVCS e CI consentendo un maggiore \textbf{controllo} su tutta la fase di \textbf{gestione e sviluppo} del progetto.
+Relativamente agli aspetti di \textbf{comunicazione informale} si è optato per uno strumento di messaggistica estremamente versatile:  \textbf{Telegram}. Grazie a Telegram e ai famosi telegram bots è stato possibile avere aggiornamenti diretti dal DVCS e CI consentendo un maggiore \textbf{controllo} su tutta la fase di \textbf{gestione e sviluppo} del progetto.
 
 \paragraph{Discord}
-Discord è stato utilizzando come strumento di \textbf{comunicazione} \textbf{se-mi-formale} \texttt{VoIP}. Su Discord è stato possibile chiarire dubbi e definire al meglio i task assegnati ai vari membri.
+Discord è stato utilizzato come strumento di \textbf{comunicazione} \textbf{semi-formale} \texttt{VoIP}. Su Discord è stato possibile chiarire dubbi e definire al meglio i task assegnati ai vari membri.
 
 \paragraph{Teams}
 Microsoft Teams è una piattaforma di comunicazione e collaborazione unificata che combina chat di lavoro persistente, teleconferenza, condivisione di contenuti. Come si può notare da questa definizione Teams è uno strumento di \textbf{comunicazione} estremamente \textbf{formale} ed è stato dunque utilizzato come \textbf{host principale} per le \textbf{riunioni Scrum}.
 
 \paragraph{Notion}
-Notion è un'applicazione a tutto tondo che fornisce supporto per quanto riguarda \textbf{gestione di task} e definizione di \textbf{ToDo lists}. È stata molto utile nella fase di \textbf{definizione} e \textbf{decomposizione} del \textbf{Product Backlog}.
+Notion è un'applicazione a tutto tondo che fornisce supporto per quanto riguarda \textbf{gestione di task} e definizione di \textbf{ToDo lists}. È molto utile nella fase di \textbf{definizione} e \textbf{decomposizione} del \textbf{Product Backlog}.
 
 \section{Continuous Integration e Automatizzazione}
 Gli aspetti di \textbf{automatizzazione} di processi ripetitivi sono estremamente importanti al fine di risparmiare tempo e migliorare la gestione di progetto. Al giorno d'oggi sempre più servizi forniscono supporti di continuous integration e gran parte di essi garantiscono all'utente un \textbf{elevato} grado di \textbf{libertà} per quanto riguarda gli aspetti di progetto da automatizzare.
 
 Nel nostro caso approcci di automatizzazione sono stati impiegati per fornire supporto a due ambiti fondamentali:
 \paragraph{Gestione di Progetto}
-Gran parte degli aspetti del project management sono legati al concetto di controllo sulle \textbf{fasi di progetto} (Planning, Scoping ecc). Una delle problematiche fondamentali risiede in un \textbf{accesso fruibile} e \textbf{facilitato} da parte del team allo stato attuale del progetto. Grazie alla CI è stato possibile notificare l'intero team sullo stato attuale del progetto garantendo così maggiore \textbf{consistenza} e \textbf{consapevolezza}.
+Gran parte degli aspetti del project management sono legati al concetto di controllo sulle \textbf{fasi di progetto} (Planning, Scoping ecc). Una delle problematiche fondamentali risiede in un \textbf{accesso fruibile} e \textbf{facilitato} da parte del team allo stato attuale del progetto. Grazie alla CI è possibile notificare l'intero team sullo stato attuale del progetto garantendo così maggiore \textbf{consistenza} e \textbf{consapevolezza}.
 
 \subparagraph{Tool utilizzati}
-Gran parte dei tool di gestione utilizzati forniscono \textbf{api} che possono essere interrogate da servizi esterni. Questo è il caso di Trello che fonisce un'ottima integrazione con \textbf{IFTT} e di conseguenza con svariati servizi collegabili a quest'ultimo. Nel nostro caso è stato utilizzato IFTT in accoppiata a \textbf{Telegram} al fine di fonire \textbf{notifiche realtime} sullo stato di progetto.
+Gran parte dei tool di gestione utilizzati forniscono \textbf{API} che possono essere interrogate da servizi esterni. Questo è il caso di Trello che fonisce un'ottima integrazione con \textbf{IFTTT} e di conseguenza con svariati servizi collegabili a quest'ultimo. Nel nostro caso è stato utilizzato IFTTT in accoppiata a \textbf{Telegram} al fine di fornire \textbf{notifiche real-time} sullo stato di progetto.
 
 
 \paragraph{Gestione di Sviluppo}
 La CI esprime il suo massimo potenziale nella \textbf{fase di sviluppo}. In questo caso le funzioni fornite sono state espanse permettendo di integrare il concetto di \textbf{notifica} a fronte di azioni effettuate dai membri del team.
 
 \subparagraph{Tool utilizzati}
-Per quanto riguarda la gestione di sviluppo ci si è affidati ai classici sistemi di CI integrati con il DVCS utilizzato. Nella nostra situazione è stato scelto il sistema \textbf{Travis} poichè garantisce un'ottima integrazione con il DVCS Github e permette inoltre di personalizzare a fondo le \textbf{pipeline di integrazione}. Travis è stato utilizzato come strumento di CI in due casistiche differenti: 
+Per quanto riguarda la gestione di sviluppo ci si è affidati ai classici sistemi di CI integrati con il DVCS utilizzato. Nella nostra situazione è stato scelto il sistema \textbf{Travis} poiché garantisce un'ottima integrazione con il DVCS Github e permette inoltre di personalizzare a fondo le \textbf{pipeline di integrazione}. Travis è stato utilizzato come strumento di CI in due casistiche differenti: 
 \begin{itemize}
 	\item{\textbf{Relazione di Progetto:}}
-	Travis è stato associato al repository contente i sorgenti \LaTeX della relazione. La configurazione è stata scritta definendo due \textbf{stages condizionali} e uno \textbf{stage di deploy}:
+	Travis è stato associato al repository contenente i sorgenti \LaTeX~della relazione. La configurazione è stata scritta definendo due \textbf{stage condizionali} e uno \textbf{stage di deploy}:
 	\begin{enumerate}
 	 	\item{\textit{Telegram notification:}}
-	 	Dedicato all'invio di \textbf{notifiche} a fronte di azioni di tipo \textbf{push} (non taggate) da parte degli membri del team.
+	 	dedicato all'invio di \textbf{notifiche} a fronte di azioni di tipo \textbf{push} (non taggate) da parte dei membri del team.
 	 	\item{\textit{Latex build:}}
-	 	Dedicato alla compilazione del codice \LaTeX mediante un'opportuna immagine \textbf{Docker} di \texttt{TexLive}  
+	 	dedicato alla compilazione del codice \LaTeX~mediante un'opportuna immagine \textbf{Docker} di \texttt{TexLive}  
 	 	\item{\textit{Deploy:}}
-	 	Dedicato al \textbf{deploy su Github} del pdf compilato precedentemente da \texttt{Latex build}. È stato infine definito un piccolo script dedicato all'invio di una \textbf{notifica telegram} al team contente il \textbf{link al pdf} rilasciato.
+	 	dedicato al \textbf{deploy su Github} del pdf compilato precedentemente da \texttt{Latex build}. È stato infine definito un piccolo script che si occupa dell'invio di una \textbf{notifica Telegram} al team contenente il \textbf{link al pdf} rilasciato.
 	 \end{enumerate}
 	 \item{\textbf{Progetto Principale:}}
 	 \huge TODO
