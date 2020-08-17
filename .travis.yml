@@ -11,7 +11,12 @@ jobs:
       script: echo "ciao"
     - stage: latex
       name: "Latex build"
-      script: echo "buu"
+      if: tag IS present
+      os: linux
+      services: docker
+      install: docker pull adnrv/texlive
+      script:
+      - docker run --rm -it -v "$(pwd)":/home adnrv/texlive pdflatex main.tex
 deploy:
   provider: releases
   skip_cleanup: 'true'
