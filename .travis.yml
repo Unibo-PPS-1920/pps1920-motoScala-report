@@ -11,7 +11,6 @@ jobs:
       script: echo "ciao"
     - stage: latex
       name: "Latex build"
-      if: tag IS present
       os: linux
       services: docker
       install: docker pull adnrv/texlive
