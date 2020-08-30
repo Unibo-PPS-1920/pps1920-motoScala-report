@@ -2,9 +2,10 @@
 
 scale 1
 
-class Entity <<Product Type>> {
+class "Entity"  as EntityClass <<Product Type>> {
     - ID : Int
-    - components : List<Component>
+    - components : Map<ComponentType, 
+    Component>
 }
 
 enum ComponentType {
@@ -15,7 +16,7 @@ enum ComponentType {
     ...
 }
 
-class Component <<Product Type>> {
+class "Component" as ComponentClass <<Product Type>> {
     - type: ComponentType
 }
 
@@ -44,13 +45,13 @@ class EntityManager{
     - notifySystems(event: ManagerEvent)
 }
 
-note right of Entity: Module + Case Class
+note right of EntityClass: Module + Case Class
 
 System -up-|> Observer
-EntityManager o-left- "0..*" Observer
-EntityManager "1" *-down- "0..*" Entity
-System "0..*" o-right- "0..*" Entity
-Entity "1" *-down- "0..*" Component
+EntityManager o-left- "0..*" Observer : "                   "
+EntityManager "1" *-down- "0..*" EntityClass
+System "0..*" o-right- "0..*" EntityClass: "            "
+EntityClass"1" *-down- "0..*" ComponentClass
 System "1..*" *-down- ComponentType
-Component "1" *-left- ComponentType
+ComponentClass "1" *-left- ComponentType: "                                    "
 @enduml
