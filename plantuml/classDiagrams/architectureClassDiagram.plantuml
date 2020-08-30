@@ -1,0 +1,20 @@
+@startuml
+
+scale 3
+hide fields
+hide members
+hide circle
+
+component "ECS" as ECS
+component "Game Engine" as GameEngine
+component View
+component Controller  
+
+
+Controller o-left- GameEngine
+GameEngine o-down- ECS
+Controller o-down- View
+View o-up- Controller
+ECS o-right- View
+
+@enduml
