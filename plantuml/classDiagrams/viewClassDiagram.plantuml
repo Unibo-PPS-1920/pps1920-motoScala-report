@@ -1,0 +1,34 @@
+@startuml viewClassDiagram
+
+scale 1
+
+class ScreenLoader {
+    - cache: Map<Screen, Node>
+    getScreen(screen: Screen): Node
+    loadScreenInCache(screen: Screen): Unit
+}
+
+class ScreenAudioManager{
+    + playAudioClip(clip: AudioClip): Unit
+}
+
+class ViewFacade {
+    - rootNode: Node
+    - fsa: FSA<ScreenEvent, Screen>
+
+    + changeScreen(event: ScreenEvent): Unit
+    + playAudioClip(clip: AudioClip): Unit
+}
+
+class ScreenNode {
+    - facade: ViewFacade
+}
+
+ViewFacade *-right- ScreenLoader
+ScreenLoader "1" *-down- "1..*" ScreenNode
+ScreenNode o-left- ViewFacade
+ScreenNode -left-o ViewFacade
+ViewFacade *-left- ScreenAudioManager
+
+hide ScreenAudioManager field
+@enduml
