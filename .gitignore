@@ -41,6 +41,7 @@ build/
 *.pdf
 !images/**/*.pdf
 !plantuml/**/*.pdf
+!drawio/**/*.pdf
 
 ## Bibliography auxiliary files (bibtex/biblatex/biber):
 *.bbl
