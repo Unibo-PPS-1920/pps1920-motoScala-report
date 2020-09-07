@@ -1,0 +1,47 @@
+@startuml sequenceECS
+
+    participant "Coordinator" as Coordinator
+    participant "SystemManager" as SystemManager
+    participant "ComponentManager" as ComponentManager
+    participant "EntityManager" as EntityManager
+
+    activate Coordinator
+    activate SystemManager
+    activate ComponentManager
+    activate EntityManager
+
+
+    Coordinator -> ComponentManager : registerComponent(c.class)
+
+    Coordinator -> SystemManager : registerSystem(system)
+
+    note right of Coordinator: signature = new List[Component.class]
+
+    Coordinator -> ComponentManager : checkComponent(c.Class)
+    alt found
+      ComponentManager -->Coordinator : Some(c.class)
+      Coordinator -> Coordinator : signature.add(c.class)
+      Coordinator -> SystemManager : setSystemSignature(system, signature)
+    else not Found
+      ComponentManager -->Coordinator : None
+    end
+
+    Coordinator -> EntityManager : createEntity(id)
+    EntityManager -->  Coordinator : entity
+    Coordinator -> ComponentManager : addComponent(id, new Component())
+    Coordinator -> ComponentManager : checkComponent(c.Class)
+
+    alt success 
+      Coordinator -> SystemManager : entitySignatureChange(entity, signature)
+    
+    else fail
+      ComponentManager --> Coordinator : SignatureException()
+    end
+
+    Coordinator -> SystemManager : updateAllSystem()
+    ...After some time...
+    Coordinator -> SystemManager : entityDestroyed(entity)
+    Coordinator -> ComponentManager : entityDestroyed(entity)
+    Coordinator -> EntityManager : entityDestroyed(entity)
+
+@enduml
