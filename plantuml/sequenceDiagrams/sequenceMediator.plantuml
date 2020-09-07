@@ -1,0 +1,42 @@
+@startuml sequenceMediator
+  box "Clients side" #99CCFF
+    participant "CliScreen" as CliScreen
+    participant "CliMediator" as CliMediator
+    participant "CliActor" as CliActor
+	end box
+  box "Server side" #99CCFF
+    participant "ServActor" as ServActor
+    participant "ServMediator" as ServMediator
+    participant "ServEngine" as ServEngine
+    participant "ServScreen" as ServScreen
+	end box
+
+    activate ServEngine
+    activate CliMediator
+    activate CliScreen
+    activate ServScreen
+    activate ServMediator
+
+  CliScreen ->> CliMediator :publishEv(ev(cmdC))
+  CliMediator ->> CliActor :handle(ev(cmdC))
+  activate CliActor
+  CliActor ->> ServActor :send(ev(cmdC))
+  deactivate CliActor
+  activate ServActor
+  ServActor ->> ServMediator :publishEv(ev(cmdC))
+  deactivate ServActor
+  ServScreen ->> ServMediator :publishEv(ev(cmdS))
+  ServMediator ->> ServEngine :handle(ev(cmdS))
+   ServMediator ->> ServEngine :handle(ev(cmdC))
+  ServEngine -->> ServMediator :publishEv(ev(world))
+  ServMediator -->> ServScreen :handle(ev(world))
+  ServMediator -->> ServActor :handle(ev(world))
+  activate ServActor 
+  ServActor -->> CliActor :broad(ev(world))
+  deactivate ServActor
+  activate CliActor
+  CliActor -->> CliMediator :publish(ev(world))
+  deactivate CliActor
+  CliMediator -->> CliScreen :handle(ev(world))
+
+@enduml

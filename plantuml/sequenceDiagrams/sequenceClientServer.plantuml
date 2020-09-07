@@ -1,0 +1,46 @@
+@startuml sequenceClientServer
+    !pragma teoz true
+ 
+    participant "Client" as client
+    participant "Server" as server
+    
+    activate client
+    activate server
+
+    note over server: Server create the lobby
+
+
+
+
+    == Server wait for clients ==
+
+    server ->> lobby ** : <<create lobby>>
+    activate lobby
+
+
+    note over client: Client join lobby
+
+    client->>server: Join
+    server->lobby: AddClient(client)
+    lobby-->server: True
+    server-->>client: JoinAck
+    client->>server: Ready
+    ...After all client join the lobby...
+    server->> lobby : Destory
+    destroy lobby
+    server-->>client: GameStart
+
+   
+    note over server, client
+      Now game starts for all clients
+    end note  
+    == Game starts ==
+    loop Server side
+        server->server: Calculate new world
+        server->>client: GameUpdateState
+      else Client side
+        client-->>server: Commands    
+    end group
+    server->>client: SendGameScores
+    
+    @enduml
