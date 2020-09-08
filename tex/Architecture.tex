@@ -61,9 +61,17 @@ Il pattern \textbf{MVC} rappresenta uno standard per quanto riguarda il \textbf{
 \subsection{Client-Server} 
 Un'architettura di tipo client-server si è resa necessaria per poter gestire la modalità di gioco \textbf{multiplayer}. Il sistema deve infatti permettere ad un utente di \textbf{ospitare} una partita assumendo il ruolo di \texttt{server} e ad altri utenti di \textbf{partecipare} ricoprendo il ruolo di \texttt{client}. 
 
+\subsubsection{Scelta del paradigma}
 Per gestire l'interazione tra Client e Server si è ritenuto adatto l'utilizzo del \textbf{paradigma ad attori} applicato mediante la modellazione di un attore \texttt{Server} e un attore \texttt{Client} che interagiscono tramite scambio di \textbf{messaggi}. 
 
-Si è preferito utilizzare un approccio centralizzato anziché distribuito perché, data la natura del sistema che da realizzare, si è ritenuto che una scelta diversa avrebbe portato, a fronte di un maggiore sforzo progettuale e implementativo, a dei risultati peggiori in termini di performance, reattività e consistenza.
+\subsubsection{Distribuito vs centralizzato}
+Si è preferito utilizzare un approccio centralizzato anziché distribuito perché,data la natura del sistema che da realizzare, si è ritenuto che una scelta diversa avrebbe portato, a fronte di un maggiore sforzo progettuale e implementativo,a dei risultati peggiori in termini di performance, reattività e consistenza.
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.70\columnwidth]{plantuml/rendered/componentDiagrams/clientServerComponentDiagram.pdf}
+	\caption{Diagramma raffigurante gli attori di tipo Client e Server e le loro interazioni.}
+	\label{fig:clientServerComponentDiagram}
+\end{figure}
 
 \section{Scelte Tecnologiche Cruciali}
     \subsection{Akka} 
