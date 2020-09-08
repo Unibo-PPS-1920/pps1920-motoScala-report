@@ -1,0 +1,42 @@
+@startuml clientServerComponentDiagram
+
+() Mailbox as ClientMailbox1
+() Mailbox as ClientMailbox2
+() Mailbox as ServerMailbox
+
+cloud "Client 1" as cloud1 {
+    [Client Actor] as ClientActor1
+    [Core Architecture] as core1
+    ClientActor1 *-up- core1
+    ClientMailbox1 -up- ClientActor1
+}
+
+cloud "Client 2" as cloud2 {
+    [Client Actor] as ClientActor2
+    [Core Architecture] as core2
+    ClientActor2 *-up- core2
+    ClientMailbox2 -up- ClientActor2
+}
+
+cloud "Server" as cloudS {
+    [ServerActor] as ServerActor
+    [Core Architecture] as core
+    ServerActor *-down- core
+    ServerMailbox -down- ServerActor
+}
+
+
+ClientActor2 ..> ServerMailbox
+ClientActor1 ..> ServerMailbox
+ServerActor .up.> ClientMailbox2
+ServerActor .up.> ClientMailbox1 
+
+
+
+
+
+
+skinparam {
+    CloudBackgroundColor lightblue
+    InterfaceFontSize 13
+}
