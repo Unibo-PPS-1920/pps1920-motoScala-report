@@ -18,7 +18,7 @@ cloud "Client 2" as cloud2 {
     ClientMailbox2 -up- ClientActor2
 }
 
-cloud "Server" as cloudS {
+rectangle "Server" as cloudS {
     [ServerActor] as ServerActor
     [Core Architecture] as core
     ServerActor *-down- core
