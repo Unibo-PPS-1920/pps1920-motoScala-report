@@ -65,7 +65,29 @@ Un'architettura di tipo client-server si è resa necessaria per poter gestire la
 Per gestire l'interazione tra Client e Server si è ritenuto adatto l'utilizzo del \textbf{paradigma ad attori} applicato mediante la modellazione di un attore \texttt{Server} e un attore \texttt{Client} che interagiscono tramite scambio di \textbf{messaggi}. 
 
 \subsubsection{Distribuito vs centralizzato}
-Si è preferito utilizzare un approccio centralizzato anziché distribuito perché,data la natura del sistema che da realizzare, si è ritenuto che una scelta diversa avrebbe portato, a fronte di un maggiore sforzo progettuale e implementativo,a dei risultati peggiori in termini di performance, reattività e consistenza.
+Quando ci si cimenta nella progettazione di un sistema che si interfaccerà in \textbf{rete} è necessario definire quale \textbf{approccio} utilizzare. Essenzialmente vi sono due strade percorribili: una basata su uno schema \textbf{centralizzato} mentre l'altra basata su uno schema \textbf{peer-to-peer}.
+\begin{itemize}
+    \item Approccio centralizzato
+        \begin{itemize}
+        \setlength\itemsep{0em}
+        \item Semplicità
+        \item Reattività
+        \item Consistenza
+        \item Single Point of Failure
+    \end{itemize}
+    
+    \item Approccio distribuito
+        \begin{itemize}
+        \setlength\itemsep{0em}
+        \item Fault-tolerance
+        \item Carico suddiviso
+        \item Modulare
+        \item Complesso
+        \item Incline all'inconsistenza
+        
+    \end{itemize}
+\end{itemize}
+Si è preferito utilizzare un approccio centralizzato anziché distribuito perché, data la natura del sistema che è da realizzare, si è ritenuto che una scelta diversa avrebbe portato, a fronte di un maggiore sforzo progettuale e implementativo, a dei risultati peggiori in termini di performance, reattività e consistenza.
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.70\columnwidth]{plantuml/rendered/componentDiagrams/clientServerComponentDiagram.pdf}
@@ -75,6 +97,6 @@ Si è preferito utilizzare un approccio centralizzato anziché distribuito perch
 
 \section{Scelte Tecnologiche Cruciali}
     \subsection{Akka} 
-        Per l'implementazione del paradigma ad attori sì e scelto di utilizzare \textbf{Akka} come layer di \textbf{comunicazione} nello lo sviluppo del multiplayer. Akka garantisce un'ottima \textbf{scalabilità} e un buon livello di \textbf{astrazione}, che permette di gestire la comunicazione in maniera più trasparente rispetto ai classici metodi basati sulle \textbf{socket}. Il modello \textbf{Client-Server} basato su Akka risulta così di facile \textbf{implementazione}.
+        Per l'implementazione del paradigma ad attori sì e scelto di utilizzare \textbf{Akka} come layer di \textbf{comunicazione} nello sviluppo del multiplayer. Akka garantisce un'ottima \textbf{scalabilità} e un buon livello di \textbf{astrazione}, che permette di gestire la comunicazione in maniera più trasparente rispetto ai classici metodi basati sulle \textbf{socket}. Il modello \textbf{Client-Server} basato su Akka risulta così di facile \textbf{implementazione}.
         
         Inoltre, il fatto che Akka sia implementato in \textbf{Scala} rende più semplice e naturale l'utilizzo del framework. 
