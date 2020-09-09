@@ -1,3 +1,4 @@
+
 % -*- root: ../../main.tex -*-
 \section{ECS}
 \label{sec:ecs_design}
@@ -33,8 +34,9 @@ Come visto in precedenza in \ref{subsec:ecs_pattern}, l'idea alla base di ECS è
 % section section_name (end)
  %giustificazione ecs
  %Ogni sistema si occupa di gestire solamente uno o più componenti, aggiornandoli in blocco contemporaneamente. Questo approccio, in contrasto con l'approccio più OOP che consisterebbe nel modellare ogni entità come un oggetto, che deve implementare una sotto-interfaccia diversa in base al tipo, ereditando i metodi per l'aggiornamento. Questo causa problemi di performance all'aumentare delle entità da gestire, infatti ad ogni aggiornamento sarà caricato in cache l'intero oggetto e andrà recuperato dalla virtual table(TODO CHECK THIS) il metodo relativo all'aggiornamento. Ciò comporta un degradamento importante delle performance dato che gli accessi in RAM sono molto più lenti di quelli direttamente in cache. Sfruttando l'approccio ECS invece è possibile sfruttare meglio la cache, in quanto per ogni aggiornamento i componenti vengono caricati cache in blocco e processati dallo stesso metodo. 
-	\subsubsection{Interazione tra Engine ECS e controller}
-	Come spiegato nel \ref{sec:ecs_design}, i vari gestori di componenti che compongono l'ECS sono coordinati tra di loro tramite un coordinator. Esso fa da punto di contatto con l'engine vero e proprio esponendo il metofo update
+	\subsubsection{Interazione tra Engine, ECS e controller}
+	 
+	Come spiegato nel \ref{sec:ecs_design}, i vari gestori di componenti che compongono l'ECS sono coordinati tra di loro tramite un coordinator. Esso fa da punto di contatto con l'engine vero e proprio esponendo il metodo \emph{updateAllSystems}, che corrisponde a un tick del gioco. Esso viene incapsulato nel metodo \emph{update} esposto da
 	\begin{figure}[H]
 		\centering
 		\includegraphics[width=\columnwidth]{drawio/ECS-engine-controller/ecs-engine-controller.pdf}
