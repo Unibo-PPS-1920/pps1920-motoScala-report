@@ -2,20 +2,20 @@
 \section{Mediator}
 \label{sec:mediator_design}
 
-Dopo un'attento studio delle \textbf{specifiche} sviluppate nella fase di analisi è emerso un importante \textbf{problema di interazione} fra alcuni \textbf{componenti cardine}. Come è stato ribadito in il design è stato sviluppato cercando di tenere conto dei printipali \textbf{requisiti di qualità} e \textbf{buona progettazione}. Questo grado di \textbf{estendibilità} e \textbf{modularizzazione} si è esplicitato nella definizione di una architettura (\texttt{Core}) \textbf{espandibile a richiesta} verso un modello \textbf{client-server} ad \textbf{attori} (\texttt{Core + Actor}).
+Dopo un attento studio delle \textbf{specifiche} sviluppate nella fase di analisi è emerso un importante \textbf{problema di interazione} fra alcuni \textbf{componenti cardine}. Come è stato ribadito in TODO il design è stato sviluppato cercando di tenere conto dei principali \textbf{requisiti di qualità} e \textbf{buona progettazione}. Questo grado di \textbf{estendibilità} e \textbf{modularizzazione} si è esplicitato nella definizione di una architettura (\texttt{Core}) \textbf{espandibile a richiesta} verso un modello \textbf{client-server} ad \textbf{attori} (\texttt{Core + Actor}).
 
 Mantenere un \textbf{core unico} e \textbf{polifunzionale} non è semplice ed è necessario ridefinire gli elementi mobili utilizzando il cosidetto \texttt{loose coupling}. 
 
 \subsection{Il Problema}
-Nell'architettura core definita in fase di progettazione il problema risiede essenzialmente nella gestione del passaggio di \textbf{singleplayer} game a \textbf{multiplayer}. 
+Nell'architettura core definita in fase di progettazione il problema risiede essenzialmente nella gestione del passaggio da \textbf{single-player} game a \textbf{multiplayer}. 
 
-\paragraph{Singleplayer:}
-Nella versione singleplayer il sistema di gioco si appoggia sul cosiddetto \texttt{GameEngine} il quale è in grado di \textbf{calcolare autonomamente gli aggiornamenti} da inviare alla/e schermata/e di gioco.
+\paragraph{Single-player:}
+Nella versione single-player il sistema di gioco si appoggia sul cosiddetto \texttt{GameEngine} il quale è in grado di \textbf{calcolare autonomamente gli aggiornamenti} da inviare alla/e schermata/e di gioco.
 
 \paragraph{Multiplayer:}
-Nel caso multiplayer esiste un \textbf{server unico} a cui sono collegati una serie di \textbf{client}. Il server agisce da leader poiché possedendo un \texttt{GameEngine} proprio è in grado di calcolare gli \textbf{aggiornamenti di gioco} a fronte di \textbf{input propri} e \textbf{dei client}. I client, al fine di promuovere \textbf{semplicità}, sono stati concepiti come \textbf{architetture core} private del motore di calcolo \texttt{GameEngine}. Essi in poche parole si presentano come \textbf{attori passivi} che \textbf{acquisiscono aggiornamenti} dal server e li mostrano all'utente attraverso una \textbf{interfaccia grafica}.
+Nel caso multiplayer esiste un \textbf{server unico} a cui sono collegati una serie di \textbf{client}. Il server agisce da leader poiché, possedendo un \texttt{GameEngine} proprio, è in grado di calcolare gli \textbf{aggiornamenti di gioco} a fronte di \textbf{input propri} e \textbf{dei client}. I client, al fine di promuovere \textbf{semplicità}, sono stati concepiti come \textbf{architetture core} private del motore di calcolo \texttt{GameEngine}. Essi in poche parole si presentano come \textbf{attori passivi} che \textbf{acquisiscono aggiornamenti} dal server e li mostrano all'utente attraverso una \textbf{interfaccia grafica}.
 
-Un approccio di questo tipo è molto utile poichè permette di poter utilizzare il server per giocare \textbf{hostando contemporaneamente la partita in corso}. Inoltre un approccio di questo tipo promuove \textbf{leggerezza} e \textbf{riusabilità} dato che i client devono mostrare le \textbf{stesse informazioni} che il server produrrebbe per se stesso in modalità singleplayer.
+Un approccio di questo tipo è molto utile poichè permette di poter utilizzare il server per giocare \textbf{ospitando contemporaneamente la partita in corso}. Inoltre un approccio di questo tipo promuove \textbf{leggerezza} e \textbf{riusabilità} dato che i client devono mostrare le \textbf{stesse informazioni} che il server produrrebbe per se stesso in modalità singleplayer.
 
 \paragraph{Da Singleplayer a Multiplayer}
 Il problema, come abbiamo detto, si presenta nel passaggio da \textbf{singleplayer a multiplayer} mode. Nel caso di un passaggio a \textbf{server-mode} il sistema dovrà mantenere il core intantto ma dovrà aver cura di \textbf{inviare gli aggiornamenti} non solo all'\textbf{interfaccia locale} ma anche all'\textbf{attore server} (il quale effettuerà un broadcast ai client). Il passaggio a \textbf{client-mode} è ancora più delicato, infatti in questo caso sarà necessario spegnere il modulo \texttt{GameEngine} \textbf{dirottando i flussi di informazione} verso il \textbf{client-actor}.

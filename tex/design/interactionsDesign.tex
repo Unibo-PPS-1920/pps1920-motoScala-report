@@ -3,22 +3,24 @@
 \label{sec:interactions_design}
 
 \subsubsection{Interazione tra Engine, ECS e controller}
-Come spiegato nel \ref{sec:ecs_design}, i vari gestori di componenti che compongono l'ECS sono coordinati tra di loro tramite un coordinator. Esso fa da punto di contatto con l'engine vero e proprio esponendo il metodo \textbf{updateAllSystems}, che corrisponde a un tick del gioco. Esso viene incapsulato nel metodo \textbf{update} esposto dall' interfaccia \textbf{UpdateableEngine}, implementata dal \textbf{GameEngine}. In questo modo è possibile per il \textbf{GameLoop} interagire con l'engine.
+Come spiegato nel \ref{sec:ecs_design}, i vari gestori di componenti che compongono l'ECS sono coordinati tra di loro tramite un coordinator. Esso fa da punto di contatto con l'engine vero e proprio esponendo il metodo \textbf{updateAllSystems}, che corrisponde a un tick del gioco. Esso viene incapsulato nel metodo \textbf{update} esposto dall' interfaccia \textbf{UpdateableEngine}, implementata dal \textbf{GameEngine}. In questo modo è possibile per il \textbf{GameLoop} interagire con l'engine, esponendo solo lo stretto necessario.
 Quando il gioco viene eseguito in modalità singleplayer il controller si occupa di creare l'engine e attacarci il resto dei componenti, mentre al join di una partita multiplayer esso verrà detachato e verrà creato l'attore client.
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=\columnwidth]{drawio/ECS-engine-controller/ecs-engine-controller.pdf}
 	\caption{Diagramma raffigurante ecs, engine e controller e le loro interazioni.}
-	\label{fig:ecsenginecontroller}
+	\label{fig:ecs-engine-controller}
 \end{figure}
 
 
 
 \subsubsection{Interazione tra Controller e View}
 
+
+
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=\columnwidth]{drawio/view-controller-observer/view-controller-observer.pdf}
 	\caption{Diagramma raffigurante view, controller e observer e le loro interazioni.}
-	\label{fig:ecsenginecontroller}
+	\label{fig:view-controller-observer}
 \end{figure}

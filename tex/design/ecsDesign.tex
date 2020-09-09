@@ -19,7 +19,7 @@ Il modello \textbf{ECS} è costituito da tre parti fondamentali: entità, compon
 Come visto in precedenza in \ref{subsec:ecs_pattern}, l'idea alla base di ECS è molto semplice, tuttavia durante il processo di \textbf{concretizzazione} alcuni aspetti concettuali vengono realizzati in modo leggermente diverso per \textit{esigenze di carattere implementativo} (performance, cache, ecc).  Dal punto di vista progettuale esistono diversi \textbf{approcci possibili}:
 \begin{itemize}
 	\item{\textbf{Approccio OOP:}} questa tipologia di approccio riprende l'idea che sta alla base della \textbf{programmazione ad oggetti}; in particolare viene promosso il concetto secondo il quale ogni oggetto possiede al proprio interno uno \textbf{stato} e un \textbf{comportamento}. Un ECS di tipo OOP sarà caratterizzato da entità che \textbf{contengono} i propri \textbf{componenti} e si occupano della loro \textbf{gestione}.
-	\item{\textbf{Approccio Data-Driven:}} in questo caso stato e comportamento vengono mantenuti in \textbf{moduli dedicati} promuovendo una maggiore \textbf{separazione dei concetti}. L'ECS in questo caso sarà caratterizzato da \textbf{moduli di gestione} ai quali sarà delegata il \textbf{controllo} e la \textbf{connessione} di entità e componenti.
+	\item{\textbf{Approccio Data-Driven:}} in questo caso stato e comportamento vengono mantenuti in \textbf{moduli dedicati} promuovendo una maggiore \textbf{separazione dei concetti}. L'ECS in questo caso sarà caratterizzato da \textbf{moduli di gestione} ai quali saranno delegati il \textbf{controllo} e la \textbf{connessione} di entità e componenti.
 \end{itemize}
 
 \paragraph{Alcune considerazioni di basso livello:}
@@ -50,7 +50,7 @@ Di seguito verranno presentati i principali moduli presenti all'interno del diag
 		\item{\textbf{System:}} costituisce un \textbf{modulo passivo} di gestione di entità che viene aggiornato 
 		dall'esterno (\texttt{update()}). Ogni sistema è inoltre caratterizzato da una \texttt{Signature} che corrisponde ad un \textbf{insieme di componenti} gestiti.
 	\end{itemize}
-	\item{\textbf{Managers:}}
+	\item{\textbf{Manager:}}
 	\begin{itemize}
 		\item{\textbf{Entity Manager:}} modulo dedicato alla gestione delle entità di gioco. Consiste in un \textbf{accentratore} per tutte le \textbf{istanze} di entità e si occupa del loro \textbf{inserimento} e \textbf{rimozione}. 
 		\item{\textbf{Component Manager:}} tiene traccia delle \textbf{associazioni} fra \textbf{entità} e \textbf{componenti} e gestisce l'\textbf{aggiunta} e \textbf{rimozione} di questi ultimi.
