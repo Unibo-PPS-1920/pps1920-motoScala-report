@@ -80,15 +80,3 @@ Il diagramma in figura \ref{fig:sequenceECS} mostra le interazioni principali fr
 	\item{\textbf{Creazione di entità:}} in qualsiasi momento è possibile creare un'entità la cui \textbf{istanza} verrà conservata all'interno dell'\texttt{EntityManager}. È importante sottolineare che in questo caso l'entità non è ancora gestita da \textbf{nessun sistema} poiché \textbf{non possiede} componenti associati.
 	\item{\textbf{Aggiunta di componenti ad entità:}} una volta che viene \textbf{associato} un componente ad una entità, l'entità potrà essere \textbf{assegnata} ai \textbf{sistemi compatibili} e quindi gestita.
 \end{enumerate}
-
-
-	\subsubsection{Interazione tra Engine, ECS e controller}
-	 
-	Come spiegato nel \ref{sec:ecs_design}, i vari gestori di componenti che compongono l'ECS sono coordinati tra di loro tramite un coordinator. Esso fa da punto di contatto con l'engine vero e proprio esponendo il metodo \emph{updateAllSystems}, che corrisponde a un tick del gioco. Esso viene incapsulato nel metodo \emph{update} esposto dall' interfaccia \textbf{UpdateableEngine}, implementata dal \emph{GameEngine}. In questo modo è possibile per il \emph{GameLoop} interagire con l'engine.
-	Quando il gioco è fatto eseguire in modalità singleplayer il controller si occupa di creare l'engine e al join di una partita multiplayer esso verrà deallocato e verrà creato l'attore client.
-	\begin{figure}[H]
-		\centering
-		\includegraphics[width=\columnwidth]{drawio/ECS-engine-controller/ecs-engine-controller.pdf}
-		\caption{Diagramma raffigurante ecs, engine e controller e le loro interazioni.}
-		\label{fig:ecsenginecontroller}
-	\end{figure}
