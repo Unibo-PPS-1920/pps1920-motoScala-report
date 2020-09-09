@@ -88,6 +88,9 @@ Quando ci si cimenta nella progettazione di un sistema che si interfaccerà in \
     \end{itemize}
 \end{itemize}
 Si è preferito utilizzare un approccio centralizzato anziché distribuito perché, data la natura del sistema che è da realizzare, si è ritenuto che una scelta diversa avrebbe portato, a fronte di un maggiore sforzo progettuale e implementativo, a dei risultati peggiori in termini di performance, reattività e consistenza.
+
+
+Come mostrato dalla figura \ref{fig:clientServerComponentDiagram} il sistema è stato progettato in modo da poter estendere l'architettura core per il multiplayer, "staccando" l'engine del client e sostituendolo con l'attore client che poi comunicherà con l'attore server, che si interfaccia direttamente con il server.
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.70\columnwidth]{plantuml/rendered/componentDiagrams/clientServerComponentDiagram.pdf}

@@ -14,11 +14,16 @@ Un flusso di controllo separato consente di disaccoppiare al massimo il carico d
 
 Tale carico non deve gravare nella logica principale del programma né tantomeno sulla \textbf{view}, il carico necessario per l'accodamento di un evento è molto minore, ripartendo così il grosso del lavoro sul \textbf{Thread} dell'SoundAgent.
 
-
-
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.90\columnwidth]{drawio/audioAgent/audioAgent.pdf}
-	\caption{Diagramma di classe rappresentante la struttura dei tre.}
+	\includegraphics[width=0.99\columnwidth]{drawio/audioAgent/audioAgent.pdf}
+	\caption{Diagramma di classe rappresentante la struttura del SoundAgent.}
 	\label{fig:AudioAgent}
 \end{figure}
+
+Un solo SoundAgent è in grado di riprodurre una grossa quantità di clip, ciò nonostante è possibile istanziarne più di uno, questo per non limitare il numero di suoni, è inoltre possibile creare SoundAgent specifici.
+
+Un eventuale utilizzatore tramite il pattern \textbf{Strategy} può schedulare un evento all'agent, questo grazie all'interfaccia \textbf{Sealed SoundAgentLogic}
+e alla coda di \textbf{Event}.
+
+Questo consente di evitare l'utilizzo di \textbf{if} all'interno dell'agente, rendendo l'esecuzione più performante e il codice più snello.
