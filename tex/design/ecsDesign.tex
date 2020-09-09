@@ -1,3 +1,4 @@
+
 % -*- root: ../../main.tex -*-
 \section{ECS}
 \label{sec:ecs_design}
@@ -59,11 +60,11 @@ Di seguito verranno presentati i principali moduli presenti all'interno del diag
 	\item{\textbf{Coordinator:}} contiene la logica core di tutto l'ECS e ha lo scopo fondamentale di \textbf{coordinare i manager} \textbf{accentrando} le operazioni da essi fornite.
 \end{itemize}
 
-	\subsubsection{Interazione tra Engine ECS e controller}
-	Come spiegato nel \ref{sec:ecs_design}, i vari gestori di componenti che compongono l'ECS sono coordinati tra di loro tramite un coordinator. Esso fa da punto di contatto con l'engine vero e proprio esponendo il metofo update
-	\begin{figure}[H]
-		\centering
-		\includegraphics[width=\columnwidth]{drawio/ECS-engine-controller/ecs-engine-controller.pdf}
-		\caption{Diagramma raffigurante ecs, engine e controller e le loro interazioni.}
-		\label{fig:ecsenginecontroller}
-	\end{figure}
+\subsubsection{Interazione tra Engine, ECS e controller}
+Come spiegato nel \ref{sec:ecs_design}, i vari gestori di componenti che compongono l'ECS sono coordinati tra di loro tramite un coordinator. Esso fa da punto di contatto con l'engine vero e proprio esponendo il metodo \emph{updateAllSystems}, che corrisponde a un tick del gioco. Esso viene incapsulato nel metodo \emph{update} esposto da
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\columnwidth]{drawio/ECS-engine-controller/ecs-engine-controller.pdf}
+	\caption{Diagramma raffigurante ecs, engine e controller e le loro interazioni.}
+	\label{fig:ecsenginecontroller}
+\end{figure}
