@@ -19,8 +19,19 @@ Il modello \textbf{ECS} è costituito da tre parti fondamentali: entità, compon
 Come visto in precedenza in \ref{subsec:ecs_pattern}, l'idea alla base di ECS è molto semplice, tuttavia durante il processo di \textbf{concretizzazione} alcuni aspetti concettuali vengono realizzati in modo leggermente diverso per \textit{esigenze di carattere implementativo} (performance, cache, ecc).  Dal punto di vista progettuale esistono diversi \textbf{approcci possibili}:
 \begin{itemize}
 	\item{\textbf{Approccio OOP:}} questa tipologia di approccio riprende l'idea che sta alla base della \textbf{programmazione ad oggetti}; in particolare viene promosso il concetto secondo il quale ogni oggetto possiede al proprio interno uno \textbf{stato} e un \textbf{comportamento}. Un ECS di tipo OOP sarà caratterizzato da entità che \textbf{contengono} i propri \textbf{componenti} e si occupano della loro \textbf{gestione}.
-	\item{\textbf{Approccio Funzionale:}} in questo caso stato e comportamento vengono mantenuti in \textbf{moduli dedicati} promuovendo una maggiore \textbf{separazione dei concetti}. L'ECS in questo caso sarà caratterizzato da \textbf{moduli di gestione} ai quali sarà delegata il \textbf{controllo} e la \textbf{connessione} di entità e componenti.
+	\item{\textbf{Approccio Data-Driven:}} in questo caso stato e comportamento vengono mantenuti in \textbf{moduli dedicati} promuovendo una maggiore \textbf{separazione dei concetti}. L'ECS in questo caso sarà caratterizzato da \textbf{moduli di gestione} ai quali sarà delegata il \textbf{controllo} e la \textbf{connessione} di entità e componenti.
 \end{itemize}
+
+\paragraph{Alcune considerazioni di basso livello:}
+Nella definizione del pattern ECS ogni sistema si occupa di gestire solamente uno o più componenti, \textbf{aggiornandoli} in blocco contemporaneamente. 
+
+Un approccio più OOP consisterebbe nel modellare \textit{ogni entità come un oggetto} che deve implementare una sotto-interfaccia diversa in base al tipo, ereditando, di conseguenza, i metodi per l'aggiornamento. Questo causa \textbf{problemi di performance} all'aumentare delle entità da gestire, poiché ad ogni aggiornamento verrebbe caricato in \textbf{cache} l'intero oggetto aumentando così la \textbf{latenza} relativa alla fase di loading. Ciò comporta un \textbf{degradamento} importante delle \textbf{performance}.
+
+
+\subsection{Design Proposto}
+L'analisi delle opzioni possibili e del loro sviluppo ha portato a scegliere un approccio data-driven dato che garantisce nel complesso una maggiore \textbf{estendibilità} e \textbf{performance} migliori. L'approccio scelto inoltre si \textbf{integra} molto bene con il \textbf{paradigma funzionale} poiché permette di sfruttare al meglio le caratteristiche di quest'ultimo.
+
+Il design finale ottenuto è quello raffigurato in \ref{fig:ECS}.
 
 \begin{figure}[H]
 	\centering
@@ -29,10 +40,25 @@ Come visto in precedenza in \ref{subsec:ecs_pattern}, l'idea alla base di ECS è
 	\label{fig:ECS}
 \end{figure}
 
+Come si evince dal diagramma si è scelto di utilizzare una \textbf{struttura basata su gestori} (\texttt{Manager}) ognuno responsabile di un particolare aspetto di ECS. Inoltre è stato introdotto un \textbf{punto di snodo} (\texttt{Coordinator}) con il compito di \textbf{coordinare} i vari gestori.
+Di seguito verranno presentati i principali moduli presenti all'interno del diagramma:
+\begin{itemize}
+	\item{\textbf{Core ECS:}}
+	\begin{itemize}
+		\item{\textbf{Entity:}} rappresenta il concetto di entità classico di ECS. Nel nostro caso un'entità è rappresentata dalla propria \textbf{istanza di tipo} (che ne descrive la natura) e un \textbf{identificatore}.
+		\item{\textbf{Component:}} rappresenta in toto il concetto di componente di ECS.
+		\item{\textbf{System:}} costituisce un \textbf{modulo passivo} di gestione di entità che viene aggiornato 
+		dall'esterno (\texttt{update()}). Ogni sistema è inoltre caratterizzato da una \texttt{Signature} che corrisponde ad un \textbf{insieme di componenti} gestiti.
+	\end{itemize}
+	\item{\textbf{Managers:}}
+	\begin{itemize}
+		\item{\textbf{Entity Manager:}} modulo dedicato alla gestione delle entità di gioco. Consiste in un \textbf{accentratore} per tutte le \textbf{istanze} di entità e si occupa del loro \textbf{inserimento} e \textbf{rimozione}. 
+		\item{\textbf{Component Manager:}} tiene traccia delle \textbf{associazioni} fra \textbf{entità} e \textbf{componenti} e gestisce l'\textbf{aggiunta} e \textbf{rimozione} di questi ultimi.
+		\item{\textbf{System Manager:}} costituisce un aggregatore di sistemi e ha lo scopo di \textbf{mantenere coerenti} i legami fra sistema, entità e componente in base alla \textbf{signature del sistema}. 
+	\end{itemize}
+	\item{\textbf{Coordinator:}} contiene la logica core di tutto l'ECS e ha lo scopo fondamentale di \textbf{coordinare i manager} \textbf{accentrando} le operazioni da essi fornite.
+\end{itemize}
 
-% section section_name (end)
- %giustificazione ecs
- %Ogni sistema si occupa di gestire solamente uno o più componenti, aggiornandoli in blocco contemporaneamente. Questo approccio, in contrasto con l'approccio più OOP che consisterebbe nel modellare ogni entità come un oggetto, che deve implementare una sotto-interfaccia diversa in base al tipo, ereditando i metodi per l'aggiornamento. Questo causa problemi di performance all'aumentare delle entità da gestire, infatti ad ogni aggiornamento sarà caricato in cache l'intero oggetto e andrà recuperato dalla virtual table(TODO CHECK THIS) il metodo relativo all'aggiornamento. Ciò comporta un degradamento importante delle performance dato che gli accessi in RAM sono molto più lenti di quelli direttamente in cache. Sfruttando l'approccio ECS invece è possibile sfruttare meglio la cache, in quanto per ogni aggiornamento i componenti vengono caricati cache in blocco e processati dallo stesso metodo. 
 	\subsubsection{Interazione tra Engine ECS e controller}
 	Come spiegato nel \ref{sec:ecs_design}, i vari gestori di componenti che compongono l'ECS sono coordinati tra di loro tramite un coordinator. Esso fa da punto di contatto con l'engine vero e proprio esponendo il metofo update
 	\begin{figure}[H]
