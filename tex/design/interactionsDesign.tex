@@ -17,7 +17,7 @@ Quando il gioco viene eseguito in modalità singleplayer il controller si occupa
 \subsubsection{Interazione tra Controller e View}
 Per renedere possibile l'aggiornamento della View da parte del controller è stato utilizzato il pattern observer, fornendo al controller un oggetto che implementa il trait \textbf{ObserverUI}. Esso fornisce al controller quattro metodi per poter comandare la view: 
 \begin{itemize}
-    \item updateSettings: ;
+    \item updateSettings: aggiorna la view con i valori correnti di impostazioni globali come il volume;
     \item updateLobbyStatus: mostra nella view il nuovo status della lobby, quando si unisce un nuovo giocatore alla partita, o al cambiamento dello stato di "ready" di un giocatore;
     \item updateClientLobbySettings: aggiorna i client sui cambiamenti delle impostazioni globali della partita effettuati lato server; 
     \item gameStartedByServer: causa il caricamento del GameScreen, chiamato nel client alla ricezione del messaggio di avvio dal server;
