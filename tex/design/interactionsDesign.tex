@@ -15,7 +15,24 @@ Quando il gioco viene eseguito in modalità singleplayer il controller si occupa
 
 
 \subsubsection{Interazione tra Controller e View}
-Per renedere possibile l'aggiornamento della View da parte del controller è stato utilizzato il pattern observer, fornendo al controller un oggetto che implementa il trait \textbf{ObserverUI}, mentre, per garantire la possibilità alla view di comunicare al controller 
+Per renedere possibile l'aggiornamento della View da parte del controller è stato utilizzato il pattern observer, fornendo al controller un oggetto che implementa il trait \textbf{ObserverUI}. Esso fornisce al controller quattro metodi per poter comandare la view: 
+\begin{itemize}
+    \item updateSettings: ;
+    \item updateLobbyStatus: mostra nella view il nuovo status della lobby, quando si unisce un nuovo giocatore alla partita, o al cambiamento dello stato di "ready" di un giocatore;
+    \item updateClientLobbySettings: aggiorna i client sui cambiamenti delle impostazioni globali della partita effettuati lato server; 
+    \item gameStartedByServer: causa il caricamento del GameScreen, chiamato nel client alla ricezione del messaggio di avvio dal server;
+\end{itemize}
+
+
+
+Invece, per garantire la possibilità alla view di comunicare al controller le operazioni necessarie al setup delle differenti modalità di gioco gli viene fornito il trait \textbf{UpdatableUI}, implementato dal controller, che espone i seguenti metodi:
+\begin{itemize}
+    \item attacheUI, detacheUI: servono per registrare e de-registrare (nel caso venga fatto eseguire il gioco in modalità server "headless") la view tra gli observer del controller;
+    \item modifySettings, loadStats: consentono di caricare e modificare le statistiche e le impostazioni salvate su file;
+    \item selectClientMode, selectServerMode, selectSinglePlayer: permettono lo switch tra le varie modalità di gioco, e causano il setup o la distruzione dei vari componenti;
+    \item joinServerLobby, modifyMatchSetup: metodi relativi all'interazione con la lobby in modalità multiplayer;
+    \item startGame: in modalità singleplayer e in modalità multiplayer quando si è host, notifica al controller l'intenzione dell'utente di iniziare una partita;
+\end{itemize}
 
 
 
