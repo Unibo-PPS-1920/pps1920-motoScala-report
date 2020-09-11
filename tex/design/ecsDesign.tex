@@ -1,10 +1,11 @@
 % -*- root: ../../main.tex -*-
 \section{ECS}
 \label{sec:ecs_design}
-Tradizionalmente nello sviluppo di applicazioni si tende ad utilizzare un approccio di design basato sull'\textbf{ereditarietà}. Questa scelta, attraverso la crea-zione di \textbf{gerarchie semantiche} precise (Persona -> Studente), permette generalmente di ottenere implementazioni più \textbf{robuste} e \textbf{strutturate}. Nell'ambito dei videogiochi, dove è necessario un elevato grado di \textbf{flessibilità}, queste gerarchie strutturate possono risultare \textbf{costrettive}.
+Tradizionalmente nello sviluppo di applicazioni si tende ad utilizzare un approccio di design basato sull'\textbf{ereditarietà}. Questa scelta, attraverso la crea-zione di \textbf{gerarchie semantiche} precise (Persona -> Studente), permette generalmente di ottenere implementazioni più \textbf{robuste} e \textbf{strutturate}. Nell'ambito dei videogiochi, dove è necessario un elevato grado di \textbf{flessibilità}, queste gerarchie strutturate possono risultare \textbf{costrittive}.
 Al fine di eliminare questa problematica nel tempo ci si è diretti verso approcci basati maggiormente sulla \textbf{composizione}. Il pattern architetturale \texttt{ECS} nasce proprio seguendo questa filosofia di pensiero.
 
 \subsection{Il Pattern}
+
 \label{subsec:ecs_pattern}
 Il modello \textbf{ECS} è costituito da tre parti fondamentali: entità, componenti e sistemi.
 \begin{itemize}

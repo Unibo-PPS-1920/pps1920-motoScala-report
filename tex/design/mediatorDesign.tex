@@ -21,7 +21,8 @@ Un approccio di questo tipo è molto utile poiché permette di poter utilizzare 
 Il problema, come abbiamo detto, si presenta nel passaggio da \textbf{single-player a multiplayer} mode. Nel caso di un passaggio a \textbf{server-mode} il sistema dovrà mantenere il core intatto ma dovrà aver cura di \textbf{inviare gli aggiornamenti} non solo all'\textbf{interfaccia locale} ma anche all'\textbf{attore server} (il quale effettuerà un broadcast ai client). Il passaggio a \textbf{client-mode} è ancora più delicato; in questo caso, infatti, sarà necessario spegnere il modulo \texttt{GameEngine} \textbf{dirottando i flussi di informazione} verso il \textbf{client-actor}.
 
 \subsection{La Soluzione}
-Al fine di definire una soluzione valida ci si è appoggiati su un pattern di design di tipo comportamentale, il \textbf{Pattern Mediator}. Il pattern consiste nella definizione di un \textbf{modulo} esterno a tutti gli altri il cui scopo consiste essenzialmente nella \textbf{mediazione e redirizionamento dei flussi} di dati.
+\label{subsec:mediator_solution}
+Al fine di definire una soluzione valida ci si è appoggiati su un pattern di design di tipo comportamentale, il \textbf{Pattern Mediator}. Il pattern consiste nella definizione di un \textbf{modulo} esterno a tutti gli altri il cui scopo consiste essenzialmente nella \textbf{mediazione e ridirezionamento dei flussi} di dati.
 
 Nel nostro caso il mediator ha lo scopo principe di \textbf{mediare le interazioni} fra quattro componenti fondamentali:
 \begin{itemize}
@@ -60,3 +61,31 @@ La versione basata su observer è stata poi rivista in un \textbf{approccio} mag
 \end{figure}
 
 Utilizzando questo approccio si ha una \textbf{maggiore flessibilità} correlata inoltre da \textbf{performance migliori} poiché ogni handler rappresenta del \textbf{codice associato ad un evento immediatamente eseguibile}.
+
+\subsection{Funzionamento}
+
+La presenza del \textbf{\texttt{Mediator}} gioca un ruolo fondamentale nel \textbf{riuso} del codice perché, come approfondito in \ref{subsec:mediator_solution} permette di \textbf{passare in maniera semplice} dalla modalità single-player a quella multi-player e viceversa.
+
+Il diagramma di \textbf{sequenza}, raffigurato in \ref{fig:sequenceMediator} mostra le dinamiche delle \textbf{interazioni} che coinvolgono il \texttt{Mediator} nel caso in cui ci si trovi nella modalità di gioco \textbf{multiplayer} e che, di conseguenza, siano coinvolti \textbf{Client} e \textbf{Server}.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.99\columnwidth]{plantuml/rendered/sequenceDiagrams/sequenceMediator.pdf}
+	\caption{Diagramma di sequenza di un ciclo di comunicazione Client-Server.}
+	\label{fig:sequenceMediator}
+\end{figure}
+
+Partendo dal messaggio immediatamente successivo allo start della partita si avranno, in maniera \textbf{iterativa}, le seguenti interazioni:
+    \begin{enumerate}
+        \item Il \textbf{Client} avrà appena ricevuto il \textbf{mondo di gioco} e sarà in \textbf{attesa dell'input} generato dalla reazione del giocatore. 
+        Il \texttt{GameScreen} rileva il comando e \textbf{pubblica} il relativo evento verso il proprio \textbf{Mediator}
+        \item Il \texttt{Mediator} del \textbf{Client} procede a \textbf{propagare} l'evento a tutti coloro che sono ad esso \textbf{sottoscritti}. Nel caso del Client, solo il \textbf{\texttt{ClientActor}}.
+        \item Il \texttt{ClientActor}, ricevuto l'evento, lo comunicherà al \texttt{ServerActor} che procederà con la \textbf{pubblicazione} sul proprio \texttt{\textbf{Mediator}}
+        \item Il \texttt{Mediator} del \textbf{Server} propaga l'evento ricevuto a tutti gli interessati. L'unico ad essere sottoscritto, nel caso del Server è l'\texttt{Engine}.
+        \item Il \texttt{GameScreen} del \textbf{Server} cattura il \textbf{comando} del giocatore che ospita alla partita. Questo comando, come accadeva per il Client, viene inoltrato al \texttt{\textbf{Mediator}} di riferimento.
+        \item Il \texttt{Mediator} invia a questo punto il comando all'\texttt{Engine} 
+        \item L'\texttt{Engine}, a questo punto, potrà calcolare il \textbf{nuovo mondo di gioco}, basandosi sulle azioni dell'\textbf{Intelligenza Artificiale} e dei \textbf{giocatori}, e inviarlo al proprio \texttt{Mediator} di riferimento.
+        \item In conclusione il \texttt{Mediator} invia il messaggio al \texttt{GameScreen} di tutti i giocatori: al Server in maniera diretta e ai Client tramite il layer di comunicazione.
+    \end{enumerate}
+\paragraph{Single-player} Nella modalità single-player si mantengono le dinamiche principali, ma senza tenere conto del layer di comunicazione dato da \texttt{ClientActor} e \texttt{ServerActor} poiché in tale modalità non sono presenti. Le interazioni principali avverranno quindi tra \texttt{GameScreen}, \texttt{Mediator} e \texttt{Engine}, nelle stesse modalità riportate precedentemente.
+
