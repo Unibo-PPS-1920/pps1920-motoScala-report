@@ -3,8 +3,21 @@
 \label{sec:interactions_design}
 
 \subsubsection{Interazione tra Engine, ECS e controller}
-Come spiegato nel \ref{sec:ecs_design}, i vari gestori di componenti che compongono l'ECS sono coordinati tra di loro tramite un coordinator. Esso fa da punto di contatto con l'engine vero e proprio esponendo il metodo \textbf{updateAllSystems}, che corrisponde a un tick del gioco. Esso viene incapsulato nel metodo \textbf{update} esposto dall' interfaccia \textbf{UpdateableEngine}, implementata dal \textbf{GameEngine}. In questo modo è possibile per il \textbf{GameLoop} interagire con l'engine, esponendo solo lo stretto necessario.
-Quando il gioco viene eseguito in modalità singleplayer il controller si occupa di creare l'engine e di attaccarci il mediator, mentre al join di una partita multiplayer esso verrà detachato e verrà creato l'attore client. Invece, durante l'hosting di una partita multiplayer il server si affianca al gamescreen e tramite il mediator riceve gli eventi dall'engine e li comunica ai client partecipanti alla partita.
+
+- Il GameEngine rappresenta il gestore di gioco contiene:
+coordinator che rappresenta l'entry point per le entità fondamentali di ECS
+
+- Il motore di gioco è in un modulo a parte (game loop- flusso di controllo a parte)
+
+- scopo: aggiornamento dei sistemi mantenendo costanti e modificabili gli fps
+- si interfaccia con il mediator
+- GL ha una visione limitata del gameEngine, attraverso updatable engine 
+
+
+
+
+Come spiegato in \ref{sec:ecs_design}, i vari gestori di componenti che formano l'ECS sono coordinati tra di loro tramite un \texttt{Coordinator}. Esso fa da punto di contatto con l'\texttt{Engine} vero e proprio esponendo il metodo \texttt{updateAllSystems}, che corrisponde a un \textbf{tick} del gioco. Esso viene incapsulato nel metodo \texttt{update} esposto dall' interfaccia \texttt{UpdateableEngine}, implementata dal \texttt{GameEngine}. In questo modo è possibile per il \texttt{GameLoop} interagire con l'\texttt{Engine}, esponendo solo lo stretto necessario.
+Quando il gioco viene eseguito in modalità singleplayer il \texttt{Controller} si occupa di creare l'\texttt{Engine} e di attaccarci il \texttt{Mediator}, mentre al \texttt{join} di una partita multiplayer esso verrà detachato e verrà creato l'attore client. Invece, durante l'hosting di una partita multiplayer il server si affianca al \texttt{GameScreen} e tramite il \texttt{Mediator} riceve gli eventi dall'\texttt{Engine} e li comunica ai client partecipanti alla partita.
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=\columnwidth]{drawio/ECS-engine-controller/ecs-engine-controller.pdf}

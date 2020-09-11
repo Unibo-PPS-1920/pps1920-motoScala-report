@@ -1,18 +1,18 @@
 % -*- root: ../../main.tex -*-
 \section{Audio Manager}
 \label{sec:audio_manager_design}
-I videogiochi richiedono in generale il lanciano di un elevato numero di suoni per partita, spesso questi effetti sonori sono legati a eventi o a interazioni con la GUI del gioco.
+I videogiochi richiedono in generale il lancio di un elevato numero di \textbf{suoni} per partita.
+Questi suoni rientrano generalmente in una delle seguenti categorie:
+\begin{itemize}
+    \item \textbf{Effetti sonori:} sono generalmente legati a \textbf{eventi} o a \textbf{interazioni} con la \textbf{GUI} del gioco.
+    \item \textbf{Musica:} ricoprono un ruolo di \textbf{sottofondo} e vengono riprodotto con \textbf{minor frequenza}.
+\end{itemize}
 
-Anche le canzoni ricoprono spesso un ruolo di sottofondo, anche se intervallate con minor frequenza.
+\paragraph{Un modello ad agenti:}
+L'elevata frequenza di eventi ha portato allo sviluppo di un \textbf{Agente} al quale è stato affidato il compito di \textbf{gestire} e \textbf{manipolare} internamente tutti gli aspetti sonori del gioco.
 
-L'elevata frequenza di eventi ha portato allo sviluppo di un \textbf{Agente}, inteso come un flusso di controllo separato che ha il compito di gestire e manipolare internamente tutte musiche e gli effetti sonori che gli vengono inviati.
-
-
-Il \textbf{SoundAgent} utilizza una coda di eventi per tracciare tutte le azioni che deve effettuare, gli utilizzatori possono infatti accodare eventi esternamente, senza inquinare l'operatività del proprio flusso di controllo.
-
-Un flusso di controllo separato consente di disaccoppiare al massimo il carico di lavoro, il continuo lanciare di musiche e suoni può essere deleterio per le prestazioni, è infatti oneroso lanciare un suono specie se ripetutamente ad intervalli irregolari.
-
-Tale carico non deve gravare nella logica principale del programma né tantomeno sulla \textbf{view}, il carico necessario per l'accodamento di un evento è molto minore, ripartendo così il grosso del lavoro sul \textbf{Thread} dell'SoundAgent.
+Il \texttt{SoundAgent} è caratterizzato da un  \textbf{flusso di controllo separato} e utilizza una \textbf{coda di eventi} per tracciare tutte le \textbf{azioni} che deve effettuare. Gli utilizzatori possono infatti \textbf{accodare eventi} esternamente \textbf{senza} così \textbf{inquinare} l'operatività del \textbf{proprio flusso} di controllo.
+Un flusso di controllo separato consente di \textbf{disaccoppiare} al massimo il carico di lavoro, permettendo così di non gravare sulla logica principale del programma né tantomeno sulla \textbf{View}.
 
 \begin{figure}[H]
 	\centering
@@ -21,9 +21,7 @@ Tale carico non deve gravare nella logica principale del programma né tantomeno
 	\label{fig:AudioAgent}
 \end{figure}
 
-Un solo SoundAgent è in grado di riprodurre una grossa quantità di clip, ciò nonostante è possibile istanziarne più di uno, questo per non limitare il numero di suoni, è inoltre possibile creare SoundAgent specifici.
+Un solo \texttt{SoundAgent} è in grado di riprodurre una grossa \textbf{quantità di clip}, ciò nonostante è possibile istanziarne più di uno, questo per non limitare il numero di suoni. È inoltre possibile creare \texttt{SoundAgent} specifici.
 
-Un eventuale utilizzatore tramite il pattern \textbf{Strategy} può schedulare un evento all'agent, questo grazie all'interfaccia \textbf{Sealed SoundAgentLogic}
-e alla coda di \textbf{Event}.
-
-Questo consente di evitare l'utilizzo di \textbf{if} all'interno dell'agente, rendendo l'esecuzione più performante e il codice più snello.
+Un eventuale utilizzatore potrà quindi schedulare un nuovo evento semplicemente sfruttando il pattern \textbf{Strategy} implementando l'interfaccia funzionale \texttt{SoundAgentLogic}.
+Questo consente di evitare l'utilizzo reiterato di \textbf{match case} all'interno dell'agente, rendendo l'esecuzione più \textbf{performante} e il \textbf{codice più snello}.
