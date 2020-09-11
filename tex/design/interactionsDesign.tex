@@ -4,25 +4,18 @@
 
 \subsubsection{Interazione tra Engine, ECS e controller}
 
-- Il GameEngine rappresenta il gestore di gioco contiene:
-coordinator che rappresenta l'entry point per le entità fondamentali di ECS
-
-- Il motore di gioco è in un modulo a parte (game loop- flusso di controllo a parte)
-
-- scopo: aggiornamento dei sistemi mantenendo costanti e modificabili gli fps
-
-- si interfaccia con il mediator
-
-- GL ha una visione limitata del gameEngine, attraverso updatable engine 
+%- Il GameEngine rappresenta il gestore di gioco contiene:coordinator che rappresenta l'entry point per le entità fondamentali di ECS - Il motore di gioco è in un modulo a parte (game loop- flusso di controllo a parte) - scopo: aggiornamento dei sistemi mantenendo costanti e modificabili gli fps - si interfaccia con il mediator - GL ha una visione limitata del gameEngine, attraverso updatable engine 
 
 
 
 
-Come spiegato in \ref{sec:ecs_design}, i vari gestori di componenti che formano l'ECS sono coordinati tra di loro tramite un \texttt{Coordinator}. Esso fa da punto di contatto con l'\texttt{Engine}, che rappresenta il gestore del gioco
+Come spiegato in \ref{sec:ecs_design}, i vari gestori di componenti che formano l'ECS sono coordinati tra di loro tramite un \texttt{Coordinator}. Esso fa da punto di contatto con l'\texttt{Engine}, che rappresenta il gestore della partita e contiene:
+\begin{itemize}
+    \item \textbf{Coordinator:} è l'entry point per interagire con le entità fondamentali di ECS, esponendo il metodo \texttt{updateAllSystems};
+    \item \textbf{GameLoop:} modellato come un flusso di controllo separato, è l'effettivo motore del gioco. Ha una visione limitata dell'engine, \texttt{UpdateableEngine}, su cui richiama ciclicamente update, causando l'aggiornamento dei sistemi, mantenendo costanti e modificabili gli fps mostrati all'utente;
+    \item \textbf{Mediator:} consente al gioco di far comunicare \textbf{Engine} e il GameScreen in modalità single-player, mentre al join di una partita multiplayer come client l'engine verrà staccato da parte del controller e il mediator comunicherà con l'attore client. Invece, durante l'hosting di una partita multiplayer il server si affianca al \texttt{GameScreen} e tramite il \texttt{Mediator} riceve gli eventi dall'\texttt{Engine} e li comunica ai client partecipanti alla partita.
+\end{itemize}
 
-
-esponendo il metodo \texttt{updateAllSystems}, che corrisponde a un \textbf{tick} del gioco. Esso viene incapsulato nel metodo \texttt{update} esposto dall' interfaccia \texttt{UpdateableEngine}, implementata dal \texttt{GameEngine}. In questo modo è possibile per il \texttt{GameLoop} interagire con l'\texttt{Engine}, esponendo solo lo stretto necessario.
-Quando il gioco viene eseguito in modalità singleplayer il \texttt{Controller} si occupa di creare l'\texttt{Engine} e di attaccarci il \texttt{Mediator}, mentre al \texttt{join} di una partita multiplayer esso verrà detachato e verrà creato l'attore client. Invece, durante l'hosting di una partita multiplayer il server si affianca al \texttt{GameScreen} e tramite il \texttt{Mediator} riceve gli eventi dall'\texttt{Engine} e li comunica ai client partecipanti alla partita.
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=\columnwidth]{drawio/ECS-engine-controller/ecs-engine-controller.pdf}
@@ -33,22 +26,24 @@ Quando il gioco viene eseguito in modalità singleplayer il \texttt{Controller} 
 
 
 \subsubsection{Interazione tra Controller e View}
-Per renedere possibile l'aggiornamento della View da parte del controller è stato utilizzato il pattern observer, fornendo al controller un oggetto che implementa il trait \textbf{ObserverUI}. Esso fornisce al controller quattro metodi per poter comandare la view: 
+Per rendere possibile l'aggiornamento della View da parte del controller è stato utilizzato il pattern observer, fornendo al controller un oggetto che implementa il trait \textbf{ObserverUI}. Esso fornisce al controller la possibilità di per poter comandare la view in tre scenari principali:
+
+
 \begin{itemize}
-    \item updateSettings: aggiorna la view con i valori correnti di impostazioni globali come il volume;
-    \item updateLobbyStatus: mostra nella view il nuovo status della lobby, quando si unisce un nuovo giocatore alla partita, o al cambiamento dello stato di "ready" di un giocatore;
-    \item updateClientLobbySettings: aggiorna i client sui cambiamenti delle impostazioni globali della partita effettuati lato server; 
-    \item gameStartedByServer: causa il caricamento del GameScreen, chiamato nel client alla ricezione del messaggio di avvio dal server;
+    \item \textbf{Aggiornamento impostazioni globali:} quando l'utente cambia impostazioni globali, o quando vengono caricati i valori di default permette alla view di essere aggiornata con i valori correnti;
+    
+    \item \textbf{Aggiornamento impostazioni multiplayer:} è necessario poter mostrare ogni nuovo status della lobby, sia quando si unisce un nuovo giocatore alla partita sia al cambiamento dello stato di "ready" di un giocatore. Inoltre aggiorna i client sui cambiamenti delle impostazioni globali della partita effettuati lato server, che vengono anche essi mostrati nella schermata della lobby;
+    
+    \item \textbf{Notifica di avvio partita multiplayer:} quando l'host della partita decide di avviarla è necessario far cambiare schermata ai client e fargli caricare il loro GameScreen;
+    
 \end{itemize}
 
-
-
-Invece, per garantire la possibilità alla view di comunicare al controller le operazioni necessarie al setup delle differenti modalità di gioco gli viene fornito il trait \textbf{UpdatableUI}, implementato dal controller, che espone i seguenti metodi:
+Invece, per garantire la possibilità alla view di comunicare al controller le operazioni necessarie al setup delle differenti modalità di gioco gli viene fornito il trait \textbf{UpdatableUI} che permette le seguenti operazioni:
 \begin{itemize}
-    \item attacheUI, detacheUI: servono per registrare e de-registrare (nel caso venga fatto eseguire il gioco in modalità server "headless") la view tra gli observer del controller;
-    \item modifySettings, loadStats: consentono di caricare e modificare le statistiche e le impostazioni salvate su file;
-    \item selectClientMode, selectServerMode, selectSinglePlayer: permettono lo switch tra le varie modalità di gioco, e causano il setup o la distruzione dei vari componenti;
-    \item joinServerLobby, modifyMatchSetup: metodi relativi all'interazione con la lobby in modalità multiplayer;
+    \item attacheUI, detacheUI: quando viene fatto eseguire il gioco in modalità server "headless" è necessario staccare la view, mentre al setup è necessario attaccarla al resto del sistema;
+    \item modifySettings, loadStats: durante la modifica e il caricamento delle impostazioni e delle statistiche, consentono alla view di caricarle da file e modificarle;
+    \item selectClientMode, selectServerMode, selectSinglePlayer: permettono lo switch tra le varie modalità di gioco, e causano il setup o la distruzione dei vari componenti associati;
+    \item joinServerLobby, modifyMatchSetup: permettono l'interazione con la lobby in modalità multiplayer;
     \item startGame: in modalità singleplayer e in modalità multiplayer quando si è host, notifica al controller l'intenzione dell'utente di iniziare una partita;
 \end{itemize}
 
