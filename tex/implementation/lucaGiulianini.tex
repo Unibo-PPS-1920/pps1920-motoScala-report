@@ -1,14 +1,14 @@
 % -*- root: ../../main.tex -*-
 \section{Luca Giulianini}
-Lo studente Luca Giulianini si è occupato delle seguenti macro-parti:
+Lo studente Luca Giulianini si è occupato della \textbf{progettazione} e \textbf{implementazione} delle seguenti macro-parti:
 \begin{itemize}
 	\item{\textbf{Architettura generale e mediazione MVC-ECS}}
 	\item{\textbf{Architettura ECS}}
-	\item{\textbf{Architettura View}}
+	\item{\textbf{Framework View}}
 	\item{\textbf{Continuous Integration e configurazione dei Build-Tools}}
 \end{itemize}
 
-inoltre ha contribuito al lavoro dei colleghi svolgendo una serie di \textbf{micro-task}.
+inoltre ha contribuito al lavoro dei colleghi svolgendo una serie di \textbf{task} implementativi.
 
 \subsubsection{Approfondimenti}
 
@@ -74,11 +74,11 @@ L'implementazione del \texttt{Mediator} è stata inizialmente incentrata su una 
 \paragraph{Approccio ad Observers}
 Questo approccio si basa essenzialemnte sul modello proposto dal \textbf{Pattern Observer}. Nel caso proposto però la parte\\ { }\texttt{Observable} è stata incapsulata all'interno di un unico elemento, il \texttt{Mediator}. Così facendo il \texttt{Mediator} si configura come \textbf{unico punto di snodo} capace di \textbf{osservare} e \textbf{ridirigere} gli eventi verso l'\texttt{Observer} \textbf{appropriato} (\textbf{Subscriber}). La ridirezione è svolta osservando il \textbf{tipo dell'evento} in \textbf{entrata} e il tipo dell'evento al quale un \texttt{Observer} \textbf{è interessato}. Ogni \texttt{Observer} è interessato a tutti gli eventi che sono \textbf{covarianti} rispetto al tipo di evento al quale si sono \textbf{sottoscritti} (vedi \ref{lst:listato1})
 
-\lstinputlisting[caption={Mediator}, label=lst:listato1]{code/mediator.scala}
+\lstinputlisting[caption={Mediator}, label=lst:listato1]{code/Mediator.scala}
 
 Per quanto riguarda la definizione degli eventi, si è deciso di utilizzare un approccio basato su \texttt{Algebraic Data Type} grazie al quale è possibile definire una gerarchia di eventi (vedi \ref{lst:listato2})
 
-\lstinputlisting[caption={Event}, label=lst:listato2]{code/event.scala}
+\lstinputlisting[caption={Event}, label=lst:listato2]{code/Event.scala}
 
 \subsubsection{Contributi e validazioni}
 \begin{itemize}
@@ -104,10 +104,59 @@ L'implementazione dell'architettura di \texttt{ECS} è risultata estramente \tex
 
 \subsubsection{Contributi e validazioni}
 \begin{itemize}
-	\item{\textbf{Ruben Ceroni:}} l'implementazione dell'architettura di \texttt{ECS} è stata \textbf{validata} da Ruben Ceroni il quale ha \textbf{contribuito a spingere} verso lo sviluppo di una \textbf{soluzione} basata su \textbf{managers}.
+	\item{\textbf{Ruben Ceroni:}} l'implementazione dell'architettura di \texttt{ECS} è stata \textbf{validata} da Ruben Ceroni il quale ha \textbf{incoraggiato} verso lo sviluppo di una \textbf{soluzione} basata su \textbf{managers}.
 \end{itemize}
 
-
 \subsection{Architettura View}
+Le interfacce grafiche sono generalmente formate da più schermate che rappresentano \textbf{moduli di interazione} utente-applicativo. Una delle sfide più grandi che si devono affrontare nel momento in cui si sviluppa un'interfaccia grafica è la definizione di un \textbf{framework} capace di gestire al meglio questi moduli. 
+
+\subsubsection{Progettazione}
+\paragraph{Problemi}
+Il framework proposto si pone come obiettivo la risoluzione di due problemi fondamentali:
+\begin{itemize}
+ 	\item{\textbf{Gestione e cambio di schermate:}} come introdotto precedentemente, dovrà essere possibile gestire in modo \textbf{dinamico} le schermate garantendo proprietà di \textbf{scalabilità} nel \textbf{numero} delle stesse. Inoltre si dovrà definire un modo per garantire un \textbf{controllo} nel \textbf{cambio di schermata}.
+ 	\item{\textbf{Interazione View-Controller:}} l'interazione fra \texttt{View} e \texttt{Controller} \\deve essere definita in modo \textbf{pulito} ed \textbf{efficace}. Lo scopo sarà quello di evitare la generazione di \textbf{God-Class} costituite da una moltitudine di \textbf{metodi} dedicati alle singole schermate.
+ \end{itemize}
+\paragraph{Soluzioni}
+La soluzione proposte sono le seguenti:
+\begin{itemize}
+ 	\item{\textbf{Gestione e cambio di schermata:}} in questo caso la soluzione si basa sull' uso di un pattern molto utilizzato nel contesto delle GUI, il \texttt{Pattern Façade}. Il façade garantisce una \textbf{facciata di interazione} a tutte le sotto-schermate espondendo ad esse alcuni \textbf{comandi fondamentali}. In questo modo ogni sotto-schermata può chiedere al façade di essere \textbf{sostituita} o può chiedere il \textbf{caricamento} di una ulteriore schermata. 
+ 	\item{\textbf{Interazione View-Controller:}} L'interazione fra \texttt{View} e \texttt{Controller} è spesso regolamentata all'interno di MVC tramite il \texttt{Pattern Observer} basato sul \textbf{Interface Segregation Principle}. Secondo questa forma di Observer, \texttt{View} e  \texttt{Controller} possiedono \textbf{reciprocamente una sotto-interfaccia} e tramite essa possono invocare metodi in modo sicuro.
+
+ 	Un problema che emerge dall'utilizzo di questo pattern risiede nel fatto che una \textbf{aggiunta} continua di \textbf{funzionalità} a queste sotto-interfacce potrebbe portare nel tempo a un'\textbf{esplosione} della dimensione due moduli (God-Class).
+
+ 	Al fine di evitare ciò si è deciso di utilizzare una versione più scalabile del Pattern Observer basata su \textbf{eventi}.
+ \end{itemize}
+
+\subsubsection{Implementazione}
+\paragraph{Gestione delle schermate}
+La gestione delle schermate è stata delegata ad un modulo a parte chiamato \texttt{ScreenLoader}. Questo modulo è molto semplice e consiste, come vediamo nello snippet \ref{lst:listato3}, nella definizione di una \textbf{cache} dedicata alla gestione delle schermate.
+
+\lstinputlisting[caption={ScreenLoader}, label=lst:listato3]{code/ScreenLoader.scala}
+
+\texttt{ScreenLoader} mette a disposizione una serie di funzionalità di \textbf{caricamento di schermate} e \textbf{gestione dei controller} relativi. Il modulo permette inoltre di poter \textbf{applicare una schermata ad un nodo} abilitando così il \textbf{cambio di schermata}.
+
+\paragraph{Logica di cambio di schermata}
+La \textbf{logica} del cambio di schermata deve essere \textbf{separata} dalle singole schermate in modo che esse \textbf{non debbano proccuparsi} di dove ridirigere l'utente.
+
+Seguento il principio di \textbf{Separation of Concept} si è deciso di delegare il cambio di schermata a una \textbf{Macchina a Stati Finiti} (\texttt{FSM}). Così facendo è possibile definire in modo dichiarativo una serie di coppie (\texttt{Event} \texttt{->} \texttt{State}) che costituiscono le \texttt{transizioni} della nostra \texttt{FSM}. Ovviamente, dato il contesto, definiremo uno \texttt{State} come \texttt{Screen}: ossia ogni stato sarà caratterizzato dalla schermata che sta mostrando (vedi \ref{lst:listato4}).
+
+\lstinputlisting[caption={View e StateMachine}, label=lst:listato4]{code/View.scala}
+
+\paragraph{Interazione View-Controller}
+L'interazione tra \texttt{View} e \texttt{Controller} è stata implementata, come abbiamo già anticipato, sfruttando i pattern Observer basato su Eventi. Al fine limitare una possibile esplosione di eventi si è deciso di sfruttare una struttura ad \texttt{Algebraic Data Type} \textbf{gerarchica}.
+
+Si è deciso di creare una \textbf{famiglia di eventi} per ogni schermata definendo un \textbf{trait dedicato}. Così facendo il façade si trova a gestire solamente \textbf{un tipo di evento per schermata} delegando la gestione dell'\textbf{evento concreto} (sotto-tipo) alla schermata corrispondente.Questo approccio basato su \textbf{deleghe}, permette di ottenere un'\textbf{implementazione pulita} ed \textbf{estendibile} (vedi \ref{lst:listato5}).
+\clearpage
+
+\lstinputlisting[caption={Observer[Event]}, label=lst:listato5]{code/ObserverEvent.scala}
+
+\subsubsection{Contributi e validazioni}
+\begin{itemize}
+	\item{\textbf{Gyordan Caminati:}} l'implementazione del framework proposto è stata \textbf{validata} da Gyordan Caminati. Gyordan ha contribuito inoltre a fornire un \textbf{input} per un'idea di \textbf{interazione ad eventi}, sopra alla quale poi è stata sviluppata l'implementazione finale.
+\end{itemize}
+
 \subsection{Continuous Integration e configurazione dei Build-Tools}
-\subsection{Micro-task}
+Data la buona esperienza accumulata nell'ambito della \texttt{CI} l'implementazione della stessa è stata svolta interamente dallo studente. In questo caso si è deciso di sperimentare un processo di \textbf{rilascio} basanto interamente su \texttt{GitHub}. Per fare ciò ci è affidati ai servizi \texttt{Releases} e \texttt{Pages} messi a disposizione dalla piattaforma. Un'altra sperimentazione ha portato a definire un processo di deploy dedicato ai file \texttt{.tex}, il quale permetteva di \textbf{compilare remotamente} la relazione per poi \textbf{inviarla} ai colleghi in modo automatico.
+
+\subsection{Altri Task}
