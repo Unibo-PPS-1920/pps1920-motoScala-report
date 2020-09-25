@@ -78,15 +78,38 @@ Per quanto riguarda la gestione di sviluppo ci si è affidati ai classici sistem
 	\item{\textbf{Relazione di Progetto:}}
 	Travis è stato associato al repository contenente i sorgenti \LaTeX~della relazione. La configurazione è stata scritta definendo due \textbf{stage condizionali} e uno \textbf{stage di deploy}:
 	\begin{enumerate}
-	 	\item{\textit{Telegram notification:}}
+	 	\item{\textit{\textbf{Telegram notification:}}}
 	 	dedicato all'invio di \textbf{notifiche} a fronte di azioni di tipo \textbf{push} (non taggate) da parte dei membri del team.
-	 	\item{\textit{Latex build:}}
+	 	\item{\textit{\textbf{Latex build:}}}
 	 	dedicato alla compilazione del codice \LaTeX~mediante un'opportuna immagine \textbf{Docker} di \texttt{TexLive}  
-	 	\item{\textit{Deploy:}}
+	 	\item{\textit{\textbf{Deploy:}}}
 	 	dedicato al \textbf{deploy su Github} del pdf compilato precedentemente da \texttt{Latex build}. È stato infine definito un piccolo script che si occupa dell'invio di una \textbf{notifica Telegram} al team contenente il \textbf{link al pdf} rilasciato.
 	 \end{enumerate}
-	 \item{\textbf{Progetto Principale:}}
-	 \huge TODO
+	 \item{\textbf{Progetto Principale:}} Travis è stato utilizzato anche nel progetto principale, definendo due stage: \textbf{Check} e \textbf{Deploy}. 
+	    \begin{enumerate}
+	        \item \textit{\textbf{Check:}} durante questa fase viene chiamato il \textit{Check} di \textbf{Gradle} e vengono generati \textbf{report} e \textbf{build}. Viene inoltre creata la \textbf{dashboard} che consiste in un file \textbf{html} che riunisce \textbf{tutti} i report. 
+	        \item \textit{\textbf{Deploy:}} il deploy viene eseguito solo nel caso in cui si faccia una push su un \textbf{branch} con \textbf{tag}. \textbf{Prima} di esso vengono eseguite le seguenti operazioni:
+	            \begin{enumerate}
+	                \item \textit{Assemble:} viene chiamata la \texttt{assemble} di \textbf{Gradle}, che si occupa di creare i file \texttt{.jar} che devono essere caricati sul \textbf{repository} 
+	                GitHub.
+	                \item \textit{Scaladoc:} viene generata la \textbf{Scaladoc}, che viene mantenuta in \textbf{locale}.
+	                \item \textit{Report:} \textbf{docs} e \textbf{report} vengono copiati all'interno di una cartella \texttt{report} che conterrà un file \texttt{index.html} che li riunirà. I \textbf{report} comprendono: i risultati dei \textbf{test}, le percentuali di \textbf{coverage} e l'albero delle \textbf{dipendenze}.
+	            \end{enumerate}
+	            \textbf{Successivamente} si passa al vero e proprio stage di Deploy che effettua la \textbf{release} di tutti i file \texttt{.jar} creati dal task \texttt{assemble} di Gradle su GitHub e procede a \textbf{linkare} la \textbf{Dashboard} creata nella cartella report con le \textbf{pages} di GitHub.
+	    \end{enumerate}
+	    Nella configurazione di \textbf{Travis} è stato sfruttato \textbf{Gradle}. La versione base (3.4.1) è stata arricchita con diversi \textbf{plugin}:
+	   \begin{itemize}
+	   		\item \textit{\textbf{Java:}} aggiunge la possibilità di \textbf{compilare} e \textbf{testare} sorgenti Java
+	   		\item \textit{\textbf{Java Library:}} espande il plugin Java fornendo delle \textbf{conoscenze specifiche} riguardanti le librerie. 
+	   		\item \textit{\textbf{Scala:}} un'estensione del plugin Java per la \textbf{compilazione} e il \textbf{testing} dei sorgenti \textbf{Scala}
+	   		\item \textit{\textbf{Jacoco:}} per la creazione del report sulla \textbf{coverage} dei sorgenti \textbf{Scala}; utilizzato in sostituzione del più adatto plugin \textbf{Scoverage} che non è però compatibile con Scala 2.13 su Gradle. 
+	   		\item \textit{\textbf{Application:}} facilita la creazione di un \textbf{eseguibile} JVM, rendendo più semplice l'esecuzione dell'applicazione in \textbf{locale} durante la fase di sviluppo. 
+	   		\item \textit{\textbf{Project Report:}} fornisce al progetto dei \textbf{task} per la generazione delle informazioni relative al progetto. Di questi è stato utilizzato il \textbf{dependency task}, per la generazione dell'albero delle dipendenze.
+	   		\item \textit{\textbf{Build Dashboard:}} viene utilizzato per la generazione di un singolo file \texttt{.html} che verrà poi utilizzato per linkare i \textbf{report} e  la \textbf{scaladoc}.
+	   		\item \textit{\textbf{Shadow:}} serve per collassare tutte le \textbf{dipendenze} del progetto in un singolo \texttt{.jar}
+	   		\item \textit{\textbf{Sensitive Semantic Versioning:}} viene utilizzato per fare \textbf{semantic versioning} in modo che ad ogni \texttt{jar} prodotto venga assegnato lo \textbf{stesso nome} del tag della relativa \textbf{release} fornito da Git.   
+		\end{itemize}
+
 \end{itemize}
 
 
