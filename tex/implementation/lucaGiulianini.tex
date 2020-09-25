@@ -58,6 +58,28 @@ Gli approfondimenti sono stati svolti grazie all'utilizzo delle seguenti risorse
 
 
 \subsection{Architettura generale e mediazione MVC-ECS}
+\subsubsection{Progettazione}
+La definizione di una architettura generale ha richiesto un grande sforzo dal punto di vista del \textbf{design}. I principali problemi da risolvere sono stati essenzialmente i seguenti:
+\begin{itemize}
+	\item{\textbf{Interazione MVC-ECS:}} il problema in questo caso risiede nella \textbf{natura architetturale} dei due \textbf{pattern}. Essi generalmente sono utilizzati \textbf{singolarmente} per plasmare una applicazione e una possibile \textbf{integrazione} con altri pattern avrebbe potuto portare a \textbf{seri conflitti}.
+	\item{\textbf{Estendibilità al modello client-server:}} l'idea architetturale fondante, per quanto riguarda l'intero applicativo, è sempre stata diretta verso la definizione di un \textbf{core funzionante} espandibile attraverso \textbf{moduli client-server} (attori). L'idea è stata sicuramente ambiziosa ma ha portato con se una serie di problemantiche non banali a livello interazionale. Infatti, sviluppare un \textbf{core} \textbf{modulare} e \textbf{dinamico} in base alla tipologia di interazione richiede un alto tasso di ingegnerizzazione e \textbf{anticipazione del cambiamento}.
+\end{itemize}
+\paragraph{La Soluzione}
+La soluzione come già anticipato in \ref{sec:mediator_design} è consistita nella defini-zione di un oggetto di tipo \texttt{publish/subscribe} (il \texttt{Mediator}) capace di \textbf{mediare i flussi di dati} fra un numero di oggetti indefinito.
+
+\subsubsection{Implementazione}
+\paragraph{Approccio ad Handlers}
+L'implementazione del \texttt{Mediator} è stata inizialmente incentrata su una architettura basata su \textbf{handlers} ad \textbf{eventi} (vedi \ref{fig:mediatorHandler}). L'architettura però ha da subito presentato alcune \textbf{lacune} molto gravi fra le quali spicca l'impossibilità di poter \textbf{rimuovere facilmente handlers relativi a un subscriber}. Per questo motivo si è deciso di sacrificare un briciolo di performance e puntare maggiormente su una architettura più \textbf{pulita} e \textbf{stabile} basata su \textbf{Observers}.
+
+\paragraph{Approccio ad Observers}
+Questo approccio si basa essenzialemnte sul modello proposto dal \textbf{Pattern Observer}. Nel caso proposto però la parte\\ { }\texttt{Observable} è stata incapsulata all'interno di un unico elemento, il \texttt{Mediator}. Così facendo il \texttt{Mediator} si configura come \textbf{unico punto di snodo} capace di \textbf{osservare} e \textbf{ridirigere} gli eventi verso l'\texttt{Observer} \textbf{appropriato} (\textbf{Subscriber}). La ridirezione è svolta osservando il \textbf{tipo dell'evento} in \textbf{entrata} e il tipo dell'evento al quale un \texttt{Observer} \textbf{è interessato}. Ogni \texttt{Observer} è interessato a tutti gli eventi che sono \textbf{covarianti} rispetto al tipo di evento al quale si sono \textbf{sottoscritti} (vedi \ref{lst:listato1})
+
+\lstinputlisting[caption={Mediator}, label=lst:listato1]{code/mediator.scala}
+
+Per quanto riguarda la definizione degli eventi, si è deciso di utilizzare un approccio basato su \texttt{Algebraic Data Type} grazie al quale è possibile definire una gerarchia di eventi (vedi \ref{lst:listato2})
+
+\lstinputlisting[caption={Event}, label=lst:listato2]{code/event.scala}
+
 \subsection{Architettura ECS}
 \subsection{Architettura View}
 \subsection{Continuous Integration e configurazione dei Build-Tools}

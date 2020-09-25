@@ -32,7 +32,7 @@ Per rendere possibile l'aggiornamento della View da parte del controller è stat
 \begin{itemize}
     \item \textbf{Aggiornamento impostazioni globali:} quando l'utente cambia impostazioni globali, o quando vengono caricati i valori di default permette alla view di essere aggiornata con i valori correnti;
     
-    \item \textbf{Aggiornamento impostazioni multiplayer:} è necessario poter mostrare ogni nuovo status della lobby, sia quando si unisce un nuovo giocatore alla partita sia al cambiamento dello stato di "ready" di un giocatore. Inoltre aggiorna i client sui cambiamenti delle impostazioni globali della partita effettuati lato server, che vengono anche essi mostrati nella schermata della lobby;
+    \item \textbf{Aggiornamento impostazioni multiplayer:} è necessario poter mos-trare ogni nuovo status della lobby, sia quando si unisce un nuovo giocatore alla partita sia al cambiamento dello stato di "ready" di un giocatore. Inoltre aggiorna i client sui cambiamenti delle impostazioni globali della partita effettuati lato server, che vengono anche essi mostrati nella schermata della lobby;
     
     \item \textbf{Notifica di avvio partita multiplayer:} quando l'host della partita decide di avviarla è necessario far cambiare schermata ai client e fargli caricare il loro GameScreen;
     
@@ -43,7 +43,7 @@ Invece, per garantire la possibilità alla view di comunicare al controller le o
     \item attacheUI, detacheUI: quando viene fatto eseguire il gioco in modalità server "headless" è necessario staccare la view, mentre al setup è necessario attaccarla al resto del sistema;
     \item modifySettings, loadStats: durante la modifica e il caricamento delle impostazioni e delle statistiche, consentono alla view di caricarle da file e modificarle;
     \item selectClientMode, selectServerMode, selectSinglePlayer: permettono lo switch tra le varie modalità di gioco, e causano il setup o la distruzione dei vari componenti associati;
-    \item joinServerLobby, modifyMatchSetup: permettono l'interazione con la lobby in modalità multiplayer;
+    \item joinServerLobby, modifyMatchSetup: permettono l'interazione con la lob-by in modalità multiplayer;
     \item startGame: in modalità singleplayer e in modalità multiplayer quando si è host, notifica al controller l'intenzione dell'utente di iniziare una partita;
 \end{itemize}
 
