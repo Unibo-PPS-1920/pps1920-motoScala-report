@@ -80,7 +80,34 @@ Per quanto riguarda la definizione degli eventi, si è deciso di utilizzare un a
 
 \lstinputlisting[caption={Event}, label=lst:listato2]{code/event.scala}
 
+\subsubsection{Contributi e validazioni}
+\begin{itemize}
+	\item{\textbf{Gyordan Caminati:}} l'implementazione del \texttt{Mediator} tramite l'utilizzo di \texttt{Observers} è stata \textbf{validata} da Gyordan Caminati. Inoltre Gyordan ha fornito un \textbf{contributo} molto importante nella \textbf{risoluzione di un problema} riscontrato durante l'utilizzo di \textbf{reflections} in Scala. 
+\end{itemize}
+
+
 \subsection{Architettura ECS}
+\subsubsection{Progettazione}
+La fase di progettazione relativa ad ECS è consistita in un \textbf{processo di continuo raffinamento}, iniziato prendendo spunto da alcuni \textbf{articoli proposti in rete} e concluso con una \textbf{soluzione} estremamente \textbf{pulita} e \textbf{concisa}. 
+
+\paragraph{Composition over Inheritance}
+Personalmente la sfida più grande in questo caso è consistita nel trovare un design che permettesse di ottenere una \textbf{buona estendibilità} mantenendo allo stesso tempo delle \textbf{buone performance}. Si è passati così alla definizione di un modello \textbf{data-driven}, molto vicino ad una \textbf{visione funzionale}. Come vediamo in \ref{fig:ECS} si è deciso di spostare l'intera architettura verso un approccio basato su \textbf{composizione}, molto \textbf{estendibile} e \textbf{manutenibile}. 
+
+\paragraph{Managers}
+L'intera \textbf{logica di gestione} è stata spostata \textbf{al di fuori} delle entità in gioco, all'interno di moduli dedicati chiamati \texttt{Manager}. Ogni manager è caratterizzato da un \textbf{insieme ridotto di operazioni} dedicate a \textbf{gestire} e \textbf{connettere} al più due \textbf{tipologie} di oggetti. Per esempio un \texttt{ComponentManager} è in grado di gestire solamente \texttt{Component} e per farlo mette in relazione ad essi anche delle \texttt{Entity}.
+
+\paragraph{Coordinator}
+Poichè la gestione di singoli \texttt{Manager} separatamente produrrebbe un \textbf{design frammentato} e difficilmente controllabile, è stato deciso di \textbf{coordinare} quest'ultimi grazie ad un unico modulo che prende il nome appunto di\\ \texttt{Coordinator}.
+
+\subsubsection{Implementazione}
+L'implementazione dell'architettura di \texttt{ECS} è risultata estramente \textbf{lineare} e \textbf{non si è discostata} di molto da ciò che era stato \textbf{progettato}.
+
+\subsubsection{Contributi e validazioni}
+\begin{itemize}
+	\item{\textbf{Ruben Ceroni:}} l'implementazione dell'architettura di \texttt{ECS} è stata \textbf{validata} da Ruben Ceroni il quale ha \textbf{contribuito a spingere} verso lo sviluppo di una \textbf{soluzione} basata su \textbf{managers}.
+\end{itemize}
+
+
 \subsection{Architettura View}
 \subsection{Continuous Integration e configurazione dei Build-Tools}
 \subsection{Micro-task}
