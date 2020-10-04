@@ -14,7 +14,7 @@ ha contribuito alla progettazione di:
 \end{itemize}
 inoltre ha contribuito al lavoro dei colleghi svolgendo una serie di \textbf{task} implementativi:
 \begin{itemize}
-	\item{\textbf{Input System - integrazione con View}}
+	\item{\textbf{Input System}}
 \end{itemize}
 
 \subsubsection{Approfondimenti}
@@ -173,7 +173,10 @@ Dato che la visualizzazione di entità è strettamente legata alla tipologia del
 Data la buona esperienza accumulata nell'ambito della \texttt{CI} l'implementazione della stessa è stata svolta interamente dallo studente. In questo caso si è deciso di sperimentare un processo di \textbf{rilascio} basanto interamente su \texttt{GitHub}. Per fare ciò ci è affidati ai servizi \texttt{Releases} e \texttt{Pages} messi a disposizione dalla piattaforma. Un'altra sperimentazione ha portato a definire un processo di deploy dedicato ai file \texttt{.tex}, il quale permetteva di \textbf{compilare remotamente} la relazione per poi \textbf{inviarla} ai colleghi in modo automatico.
 
 \subsection{Altri Task}
+\subsubsection{Input System}
+L'\texttt{InputSystem} è il sistema dedicato all'elaborazione dell'input dell'utente il cui scopo principe è quello di fornire una \textbf{direzione} alle entità di gioco. In questo caso la soluzione ottima è stata ottenuta andando a completare quella proposta dal lato \texttt{View}.
 
+I comandi precedentemente accodati vengono estratti dalla coda, \textbf{filtrati} in base all'\textbf{entità corrispondente} e infine convertiti in \textbf{direzioni}. Poiché le direzioni contenute nei comandi seguono un \textbf{ordine cronologico}, sarà necessario mantenere solamente l'\textbf{ultima direzione} disponibile scartando tutte le altre \footnote{Questo avviene solamente quando la frequenza di invio dei comandi supera la frequenza di aggiornamento di gioco.}. 
 
 \subsection{Risorse}
 \label{subsubsec:risorse}
