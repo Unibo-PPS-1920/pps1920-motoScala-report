@@ -127,24 +127,47 @@ Si è deciso di creare una \textbf{famiglia di eventi} per ogni schermata define
 \subsection{Schermata di Gioco}
 Come introdotto precedentemente in \ref{sec:mediator_design} lo scopo di \texttt{Mediator} consiste nel creare un collegamento \textbf{lasco} fra \texttt{GameScreen} e \texttt{Engine/ClientActor}. La schermata di gioco si configura quindi come punto di incontro fra pattern \texttt{ECS} e \texttt{MVC}; di conseguenza è molto importante saper suddividere le varie \textbf{responsabilità}. Come vediamo in \ref{lst:listato6} la separazione dei concetti è molto forte ed è dettata dall'implementazione di due interfacce separate:
 \begin{itemize}
-	\item{\texttt{Displayable:}} gestisce gli eventi provenienti da \texttt{Mediator}. Ovviamente questi sono inotrati solamente previa \textbf{sottoscrizione} al \texttt{Mediator} che è così in grado di associare View con evento.
-	\item{\texttt{ScreenController:}} abstract root class che fornisce un metodo \texttt{notify} che veicola tutti i messaggi che giungono al façade \texttt{View}. Ogni schermata implementa una gestione dedicata ai soli \textbf{propri messaggi}.
+	\item{\texttt{Displayable:}} gestisce gli eventi provenienti da \texttt{Mediator}. Ovviamente questi sono inoltrati solamente previa \textbf{sottoscrizione} al \texttt{Mediator} che è così in grado di associare alla schermata di gioco l'insieme di eventi compatibili (subtype di \texttt{Displayable}).
+	\item{\texttt{ScreenController:}} abstract root class che fornisce un metodo \texttt{notify} che veicola tutti i messaggi che giungono al \texttt{View-Façade}. Ogni schermata implementa una gestione dedicata ai soli \textbf{propri messaggi}.
 \end{itemize}
 \texttt{GameScreen} dovrebbe idealmente rappresentare una schermata utile solo in \textbf{fase di gioco}, di conseguenza ci si auspica che la gestione di eventi provenienti da \texttt{Controller} sia ridotta al minimo.
 
 \lstinputlisting[caption={ScreenControllerGame}, label=lst:listato6]{code/Giulianini/ScreenControllerGame.scala}
 
-\subsubsection{Gestione gameplay}
-La gestione del vero e proprio gameplay è stata nascosta in una classe astratta chiamata \texttt{AbstractScreenControllerGame}. La suddivisione è stata proposta per permettere di garantire una maggiore pulizia e definire una \textbf{separazione} fra interazione e operazioni. La gestione del gameplay si focalizza su due operazioni fondamentali:
+\subsubsection{Eventi di mediazione}
+La gestione del gamplay è modellata su tre eventi fondamentali:
+\begin{itemize}
+	\item{\textbf{Setup:}} inviato nel momento in fase di caricamento di un livello: esso è responsabile della creazione e inizializzazione delle logiche di \textbf{comando} e \textbf{visualizzazione}.
+	\item{\textbf{DrawEntities:}} evento di visualizzazione contenente le entità da \textbf{visualizzare}.
+	\item{\textbf{Teardown:}} evento utilizzato per \textbf{dismettere} le strutture dati create per gestire il gamplay.
+\end{itemize}
+
+\subsubsection{Implementazione gameplay}
+La gestione del vero e proprio gameplay è stata nascosta in una classe astratta chiamata \texttt{AbstractScreenControllerGame}. La suddivisione è stata proposta per garantire una maggiore pulizia e definire una \textbf{separazione} fra interazione e operazioni interne che verranno appunto gestite da questa classe. La gestione del gameplay si focalizza su due operazioni fondamentali:
 \begin{itemize}
 	\item{\textbf{Elaborazione e invio di comandi}}
-	\item{\textbf{Visualizzazione delle entità:}}
+	\item{\textbf{Visualizzazione delle entità}}
 \end{itemize}
 
 \paragraph{Elaborazione e invio di comandi}
+L'elaborazione di comandi è un'opera-zione molto delicata poiché si basa sull'\textbf{acquisizione} real-time dell'input dell'u-tente. In questo frangente la libreria \texttt{JavaFx} si è rivelata molto utile poiché permette di ottenere, tramite \texttt{handlers}, un \textbf{flusso continuo} di eventi da \textbf{qualsiasi nodo} della schermata.
+
+Dato che l'acquisizione non deve essere costante ma solo dedicata alla \textbf{fase di gioco}, si è deciso di \textbf{racchiudere} la logica di gestione ed elaborazione dell'input in un \textbf{modulo immutabile}, \texttt{GameEventHandler} (vedi \ref{lst:listato7}).
+
+\lstinputlisting[caption={GameEventHandler}, label=lst:listato7]{code/Giulianini/GameEventHandler.scala}
+
+Il funzionamento del modulo è molto semplice: esso infatti rispecchia le fasi di \textit{setup} e \textit{teardown} elencate precedentemente con una modalità operativa che questa volta è dedicata all'\textit{invio di comandi} piuttosto che alla visualizzazione di entità.
+\begin{itemize}
+	\item{\textbf{Setup:}} in fase di setup vengono \textbf{inizializzati} e \textbf{agganciati} gli handler utili per la generazione di eventi. Inoltre viene fornito l'\textbf{uuid} del player, utile per marcare i messaggi inviati.
+	\item{\textbf{Teardown:}} una volta completato il gameplay potranno essere \textbf{sganciati} gli \textbf{handler}.
+\end{itemize}
+
+\subparagraph{Invio di CommandEvent}
+La gestione dell'invio di comandi si svolge in questo modo:
+Quando l'utente preme un testo il sistema in tempo reale invoca l'handler dedicato il quale restituirà un evento contente il \textbf{codice} del pulsante premuto. Il codice, opportunamente convertito in \texttt{Direction} viene aggiunto a un set che mantiene le \textbf{direzioni attualmente attive} e dopo aver calcolato la \textbf{direzione risultate} essa viene inviata sotto forma di \texttt{CommandEvent} all'\texttt{Engine}.
+
 \paragraph{Visualizzazione delle entità}
-
-
+Dato che la visualizzazione di entità è strettamente legata alla tipologia delle stesse si è deciso di racchiudere la logica di disegno all'interno di particolari oggetti chiamati \texttt{EntityWrapper}. Ogni wrapper possiede un'immagine specifica per ogni entità e contiene inoltre un metodo \texttt{draw} che ne definisce la visualizzazione.
 
 \subsection{Continuous Integration e configurazione dei Build-Tools}
 Data la buona esperienza accumulata nell'ambito della \texttt{CI} l'implementazione della stessa è stata svolta interamente dallo studente. In questo caso si è deciso di sperimentare un processo di \textbf{rilascio} basanto interamente su \texttt{GitHub}. Per fare ciò ci è affidati ai servizi \texttt{Releases} e \texttt{Pages} messi a disposizione dalla piattaforma. Un'altra sperimentazione ha portato a definire un processo di deploy dedicato ai file \texttt{.tex}, il quale permetteva di \textbf{compilare remotamente} la relazione per poi \textbf{inviarla} ai colleghi in modo automatico.
