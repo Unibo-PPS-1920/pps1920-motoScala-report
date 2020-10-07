@@ -2,19 +2,19 @@
 \section{Luca Giulianini}
 Lo studente Luca Giulianini si è occupato della \textbf{progettazione} e \textbf{implementazione} delle seguenti macro-parti:
 \begin{itemize}
-	\item{\textbf{Architettura generale e mediazione MVC-ECS}}
-	\item{\textbf{Architettura ECS}}
-	\item{\textbf{Framework View}}
-	\item{\textbf{Schermata di Gioco}}
-	\item{\textbf{Continuous Integration e configurazione dei Build-Tools}}
+	\item \hyperref[subsec:arc_mediator]{\textbf{Architettura generale e mediazione MVC-ECS}}
+	\item \hyperref[subsec:arc_ecs]{\textbf{Architettura ECS}}
+	\item \hyperref[subsec:arc_view]{\textbf{Framework View}}
+	\item \hyperref[subsec:game_screen]{\textbf{Schermata di Gioco}}
+	\item \hyperref[subsec:ci]{\textbf{Continuous Integration e configurazione dei Build-Tools}}
 \end{itemize}
-ha contribuito alla progettazione di:
+ha contribuito alla \textbf{progettazione} di:
 \begin{itemize}
-	\item{\textbf{Sound Agent - design basato su handlers}}
+	\item \hyperref[subsec:media_event]{\textbf{Sound Agent - design basato su Handlers}}
 \end{itemize}
-inoltre ha contribuito al lavoro dei colleghi svolgendo una serie di \textbf{task} implementativi:
+inoltre ha contribuito al lavoro dei colleghi svolgendo una serie di \textbf{task implementativi}:
 \begin{itemize}
-	\item{\textbf{Input System}}
+	\item \hyperref[subsubsec:input_sys]{\textbf{Input System}}
 \end{itemize}
 
 \subsubsection{Approfondimenti}
@@ -27,6 +27,7 @@ Parallelamente all'esperienza di progetto sono stati approfonditi una serie di a
 \end{itemize}
 
 \subsection{Architettura generale e mediazione MVC-ECS}
+\label{subsec:arc_mediator}
 \subsubsection{Progettazione}
 La definizione di una architettura generale ha richiesto un grande sforzo dal punto di vista del \textbf{design}. I principali problemi da risolvere sono stati essenzialmente i seguenti:
 \begin{itemize}
@@ -56,6 +57,7 @@ Per quanto riguarda la definizione degli eventi, si è deciso di utilizzare un a
 
 
 \subsection{Architettura ECS}
+\label{subsec:arc_ecs}
 \subsubsection{Progettazione}
 La fase di progettazione relativa ad ECS è consistita in un \textbf{processo di continuo raffinamento}, iniziato prendendo spunto da alcuni \textbf{articoli proposti in rete} e concluso con una \textbf{soluzione} estremamente \textbf{pulita} e \textbf{concisa}. 
 
@@ -76,7 +78,8 @@ L'implementazione dell'architettura di \texttt{ECS} è risultata estramente \tex
 	\item{\textbf{Ruben Ceroni:}} l'implementazione dell'architettura di \texttt{ECS} è stata \textbf{validata} da Ruben Ceroni il quale ha \textbf{incoraggiato} verso lo sviluppo di una \textbf{soluzione} basata su \textbf{managers}.
 \end{itemize}
 
-\subsection{Architettura View}
+\subsection{Framework View}
+\label{subsec:arc_view}
 Le interfacce grafiche sono generalmente formate da più schermate che rappresentano \textbf{moduli di interazione} utente-applicativo. Una delle sfide più grandi che si devono affrontare nel momento in cui si sviluppa un'interfaccia grafica è la definizione di un \textbf{framework} capace di gestire al meglio questi moduli. 
 
 \subsubsection{Progettazione}
@@ -125,6 +128,7 @@ Si è deciso di creare una \textbf{famiglia di eventi} per ogni schermata define
 \end{itemize}
 
 \subsection{Schermata di Gioco}
+\label{subsec:game_screen}
 Come introdotto precedentemente in \ref{sec:mediator_design} lo scopo di \texttt{Mediator} consiste nel creare un collegamento \textbf{lasco} fra \texttt{GameScreen} e \texttt{Engine/ClientActor}. La schermata di gioco si configura quindi come punto di incontro fra pattern \texttt{ECS} e \texttt{MVC}; di conseguenza è molto importante saper suddividere le varie \textbf{responsabilità}. Come vediamo in \ref{lst:listato6} la separazione dei concetti è molto forte ed è dettata dall'implementazione di due interfacce separate:
 \begin{itemize}
 	\item{\texttt{Displayable:}} gestisce gli eventi provenienti da \texttt{Mediator}. Ovviamente questi sono inoltrati solamente previa \textbf{sottoscrizione} al \texttt{Mediator} che è così in grado di associare alla schermata di gioco l'insieme di eventi compatibili (subtype di \texttt{Displayable}).
@@ -170,10 +174,24 @@ Quando l'utente preme un testo il sistema in tempo reale invoca l'handler dedica
 Dato che la visualizzazione di entità è strettamente legata alla tipologia delle stesse si è deciso di racchiudere la logica di disegno all'interno di particolari oggetti chiamati \texttt{EntityWrapper}. Ogni wrapper possiede un'immagine specifica per ogni entità e contiene inoltre un metodo \texttt{draw} che ne definisce la visualizzazione.
 
 \subsection{Continuous Integration e configurazione dei Build-Tools}
+\label{subsubsec:ci}
 Data la buona esperienza accumulata nell'ambito della \texttt{CI} l'implementazione della stessa è stata svolta interamente dallo studente. In questo caso si è deciso di sperimentare un processo di \textbf{rilascio} basanto interamente su \texttt{GitHub}. Per fare ciò ci è affidati ai servizi \texttt{Releases} e \texttt{Pages} messi a disposizione dalla piattaforma. Un'altra sperimentazione ha portato a definire un processo di deploy dedicato ai file \texttt{.tex}, il quale permetteva di \textbf{compilare remotamente} la relazione per poi \textbf{inviarla} ai colleghi in modo automatico.
+
+\subsection{Sound Agent - design basato su Handlers}
+\label{subsec:media_event}
+\subsubsection{Progettazione}
+Rifacendosi alla grande intuizione di Gyordan nel dotare il \texttt{SoundAgent} di un \textbf{thread di elaborazione separato}, si è colta l'opportunità di migliorare ancora di più il design aggiungendo una \textbf{gestione ad eventi}. È stato poi definito un tipo di evento standard, \texttt{MediaEvent} il quale fornisce un unico metodo \texttt{handle} che opera su un \texttt{SoundEventLogic} (vedi \ref{lst:listato8}).
+
+\lstinputlisting[caption={MediaEvent e Integrazione in SoundAgent}, label=lst:listato8]{code/Giulianini/MediaEvent.scala}
+
+Un \texttt{MediaEvent} si configura quindi come un \textbf{handler}, ossia un contenitore di codice che potrà essere eseguito su un qualsiasi oggetto che implementi \texttt{SoundAgentLogic}. L'integrazione di \texttt{MediaEvent} e \texttt{SoundAgent} ha portato alla definizione di un \textbf{event loop} capace di eseguire eventi che hanno come target lo stesso \texttt{SoundAgent}:
+\begin{verbatim}
+case Success(ev) => ev.handle(this)
+\end{verbatim}
 
 \subsection{Altri Task}
 \subsubsection{Input System}
+\label{subsubsec:input_sys}
 L'\texttt{InputSystem} è il sistema dedicato all'elaborazione dell'input dell'utente il cui scopo principe è quello di fornire una \textbf{direzione} alle entità di gioco. In questo caso la soluzione ottima è stata ottenuta andando a completare quella proposta dal lato \texttt{View}.
 
 I comandi precedentemente accodati vengono estratti dalla coda, \textbf{filtrati} in base all'\textbf{entità corrispondente} e infine convertiti in \textbf{direzioni}. Poiché le direzioni contenute nei comandi seguono un \textbf{ordine cronologico}, sarà necessario mantenere solamente l'\textbf{ultima direzione} disponibile scartando tutte le altre \footnote{Questo avviene solamente quando la frequenza di invio dei comandi supera la frequenza di aggiornamento di gioco.}. 
