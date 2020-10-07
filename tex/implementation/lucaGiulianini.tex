@@ -174,7 +174,7 @@ Quando l'utente preme un testo il sistema in tempo reale invoca l'handler dedica
 Dato che la visualizzazione di entità è strettamente legata alla tipologia delle stesse si è deciso di racchiudere la logica di disegno all'interno di particolari oggetti chiamati \texttt{EntityWrapper}. Ogni wrapper possiede un'immagine specifica per ogni entità e contiene inoltre un metodo \texttt{draw} che ne definisce la visualizzazione.
 
 \subsection{Continuous Integration e configurazione dei Build-Tools}
-\label{subsubsec:ci}
+\label{subsec:ci}
 Data la buona esperienza accumulata nell'ambito della \texttt{CI} l'implementazione della stessa è stata svolta interamente dallo studente. In questo caso si è deciso di sperimentare un processo di \textbf{rilascio} basanto interamente su \texttt{GitHub}. Per fare ciò ci è affidati ai servizi \texttt{Releases} e \texttt{Pages} messi a disposizione dalla piattaforma. Un'altra sperimentazione ha portato a definire un processo di deploy dedicato ai file \texttt{.tex}, il quale permetteva di \textbf{compilare remotamente} la relazione per poi \textbf{inviarla} ai colleghi in modo automatico.
 
 \subsection{Sound Agent - design basato su Handlers}
