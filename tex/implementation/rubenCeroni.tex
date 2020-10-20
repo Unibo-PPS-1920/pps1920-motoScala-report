@@ -1,0 +1,29 @@
+\section{Ruben Ceroni}
+
+
+Lo studente Ruben Ceroni, conclusa la parte iniziale di progettazione comune si è concentrato sull'implementazione dei sistemi ..
+
+\subsection{AISystem}
+L'\texttt{AISystem} si occupa di generare gli spostamenti per le entità non controllate dal giocatore dotate di intelligenza artificiale e quindi di un AIComponent, nel quale è specificata la precisione dell'intelligenza artificiale e i possibili bersagli della stessa.
+
+Il core della logica di movimento è stato implementato in \textbf{Prolog}, attraverso il predicato \texttt{move\_avoiding(+Q,+(SX,SY),+(TX,TY),+O,-DX,-DY)} che, prendendo in input una tupla (X,Y) di partenza e una di destinazione, fornisce in output il vettore direzione da prendere per arrivare alla destinazione.
+La precisione è influenzabile tramite l'argomento Q, che esprime di quanto verrà falsata la posizione da raggiungere fornita in input.
+L'array di posizioni O è necessario ad evitare che più nemici con lo stesso bersaglio si scontrino eccessivamente tra di loro inseguendolo.
+La direzione risultante calcolata viene inserita nella stessa coda gestita dall'InputSystem che quindi gestisce lo spostamento delle entità nemiche allo stesso modo dei player.
+
+\subsection{EndGameSystem}
+L'EndgameSystem si occupa di monitorare lo stato della partita e di rimuovere le entità che escono dal bordo fornitogli in input o la cui vita abbia raggiunto lo 0 a causa delle collisioni subite.
+All'eliminazione di un'entità  viene inviato tramite il mediator un \textbf{LevelEndEvent} contenente lo status della partita, l'entità eliminata e il punteggio ottenuto eliminandola.
+Nel caso si tratti di un'entità nemica esso viene semplicemente rimosso dal gioco.
+Mentre se si tratta di un'entità player o il player stesso rimane da solo in gioco, la partita viene considerata conclusa e viene stoppato l'engine, mentre lato view è mostrata la schermata di vittoria o di sconfitta. 
+ 
+\subsection{PowerUpSystem}
+
+3 tipi di powerup 
+\subsection{Engine e GameLoop}
+L'Engine rappresenta la parte core del gioco, e si occupa di istanziare i componenti principali e di registrare le entità del livello presso il Coordinator.
+Il \textbf{GameLoop} è stato implementato come un thread separato che durante la sua esecuzione chiamerà il metodo tick dell'\textbf{UpdatableEngine} fornitogli in input, che porta all'aggiornamento di tutti i sistemi e la produzione di un frame di gioco. Per mantenere costante la frequenza di aggiornamento viene calcolato il tempo trascorso per produrre il frame e nel caso sia inferiore alla durata necessaria a mantenere gli fps costanti viene effettuata un'attesa.
+
+endgame
+powerup
+gameloop/engine

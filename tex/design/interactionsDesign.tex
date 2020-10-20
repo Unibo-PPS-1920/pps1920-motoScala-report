@@ -38,13 +38,13 @@ Per rendere possibile l'aggiornamento della View da parte del controller è stat
     
 \end{itemize}
 
-Invece, per garantire la possibilità alla view di comunicare al controller le operazioni necessarie al setup delle differenti modalità di gioco gli viene fornito il trait \textbf{UpdatableUI} che permette le seguenti operazioni:
+Invece, per garantire la possibilità alla view di comunicare al controller le operazioni necessarie al setup delle differenti modalità di gioco gli viene fornito il trait \textbf{ObservableUI} che permette le seguenti operazioni:
 \begin{itemize}
-    \item attacheUI, detacheUI: quando viene fatto eseguire il gioco in modalità server "headless" è necessario staccare la view, mentre al setup è necessario attaccarla al resto del sistema;
-    \item modifySettings, loadStats: durante la modifica e il caricamento delle impostazioni e delle statistiche, consentono alla view di caricarle da file e modificarle;
-    \item selectClientMode, selectServerMode, selectSinglePlayer: permettono lo switch tra le varie modalità di gioco, e causano il setup o la distruzione dei vari componenti associati;
-    \item joinServerLobby, modifyMatchSetup: permettono l'interazione con la lob-by in modalità multiplayer;
-    \item startGame: in modalità singleplayer e in modalità multiplayer quando si è host, notifica al controller l'intenzione dell'utente di iniziare una partita;
+    \item attachUI, detachUI: quando viene fatto eseguire il gioco in modalità server "headless" è necessario staccare la view, mentre al setup è necessario attaccarla al resto del sistema;
+    \item loadAllLevels, loadStats, saveStats: durante la modifica e il caricamento delle impostazioni e delle statistiche, consentono alla view di caricarle da file e modificarle;
+    \item becomeHost, startMultiplayer, shutDownMultiplayer: permettono lo switch tra le varie modalità di gioco, e causano il setup o la distruzione dei vari componenti associati;
+    \item tryJoinLobby, kickSomeone, leaveLobby: permettono l'interazione con la lob-by in modalità multiplayer;
+    \item start, startMultiplayer: in modalità singleplayer e in modalità multiplayer quando si è host, notificano al controller l'intenzione dell'utente di iniziare una partita;
 \end{itemize}
 
 
