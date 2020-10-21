@@ -1,7 +1,7 @@
 \section{Ruben Ceroni}
 
 
-Lo studente Ruben Ceroni, conclusa la parte iniziale di progettazione comune si è concentrato sull'implementazione dei sistemi ..
+Lo studente Ruben Ceroni, conclusa la parte iniziale di progettazione comune si è concentrato sull'implementazione dei sistemi core del gioco e della loro integrazione con il resto del sistema.
 
 \subsection{AISystem}
 L'\texttt{AISystem} si occupa di generare gli spostamenti per le entità non controllate dal giocatore dotate di intelligenza artificiale e quindi di un AIComponent, nel quale è specificata la precisione dell'intelligenza artificiale e i possibili bersagli della stessa.
@@ -18,12 +18,14 @@ Nel caso si tratti di un'entità nemica esso viene semplicemente rimosso dal gio
 Mentre se si tratta di un'entità player o il player stesso rimane da solo in gioco, la partita viene considerata conclusa e viene stoppato l'engine, mentre lato view è mostrata la schermata di vittoria o di sconfitta. 
  
 \subsection{PowerUpSystem}
+Sono stati implementati 3 differenti tipi di powerUp
 
-3 tipi di powerup 
+L'attivazione di un powerUp è controllata dal \textbf{CollisionSystem}, che alla collisione di una entità player con un powerUp ne inserirà il riferimento all'interno del \textbf{PowerUpComponent} del powerUp
+
+Il comportamento specifico del singolo powerUp è specificato invece all'interno del suo \textbf{PowerUpEffect}, tramite una funzione che specifica come modificare il valore del componente modificato.
+
+% \subsection{DrawSystem}
+
 \subsection{Engine e GameLoop}
 L'Engine rappresenta la parte core del gioco, e si occupa di istanziare i componenti principali e di registrare le entità del livello presso il Coordinator.
-Il \textbf{GameLoop} è stato implementato come un thread separato che durante la sua esecuzione chiamerà il metodo tick dell'\textbf{UpdatableEngine} fornitogli in input, che porta all'aggiornamento di tutti i sistemi e la produzione di un frame di gioco. Per mantenere costante la frequenza di aggiornamento viene calcolato il tempo trascorso per produrre il frame e nel caso sia inferiore alla durata necessaria a mantenere gli fps costanti viene effettuata un'attesa.
-
-endgame
-powerup
-gameloop/engine
+Il \textbf{GameLoop} è stato implementato come un thread separato che durante la sua esecuzione chiamerà il metodo tick dell'\textbf{UpdatableEngine} fornitogli in input, che porta all'aggiornamento di tutti i sistemi e la produzione di un frame di gioco. Per mantenere costante la frequenza di aggiornamento viene calcolato il tempo trascorso per produrre il frame e nel caso sia inferiore alla durata necessaria a mantenere gli fps costanti viene fatto attendere il thread.
