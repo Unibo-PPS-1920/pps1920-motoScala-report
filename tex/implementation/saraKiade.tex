@@ -1,0 +1,113 @@
+% -*- root: ../../main.tex -*-
+\section{Sara Kiade}
+La studentessa Sara Kiade ha contribuito alle parti comuni di \textbf{analisi}, \textbf{progettazione}, \textbf{realizzazione} e \textbf{documentazione} del progetto, concentrandosi prevalentemente sulla parte relativa alla gestione del \textbf{multiplayer} e delle \textbf{collisioni} 
+
+La studentessa ha inoltre svolto autonomamente le seguenti parti:
+
+\begin{itemize}
+    \item \textbf{Analisi:}
+        \begin{itemize}
+            \item Individuazione dei requisiti
+            \item Stesura della documentazione relativa
+            \item Realizzazione dei diagrammi
+        \end{itemize}
+    \item \textbf{Progettazione:}
+        \begin{itemize}
+            \item Progettazione di Client e Server
+            \item Interazione tra Client, Server e Controller
+            \item Rifinitura ECS
+        \end{itemize}
+    \item \textbf{Implementazione:}
+        \begin{itemize}
+            \item \textbf{Multiplayer}:
+                \begin{itemize}
+                    \item Configurazione del framework \texttt{Akka}
+                    \item Implementazione degli attori
+                    \item Serializzazione dei messaggi con l'utilizzo \texttt{Kryo}
+                    \item Implementazione della parte del \texttt{Controller} relativa agli attori
+                    \item Integrazione del Multiplayer con la View
+                \end{itemize}
+            \item \textbf{Sistema di collisione}: 
+                \begin{itemize}
+                    \item Studio delle meccaniche di collisione in due dimensioni
+                    \item Implementazione delle collisioni tra cerchi
+                    \item Implementazione delle collisioni cerchio/rettangolo
+                    \item Gestione del danno a fronte di una collisione
+                \end{itemize}
+            \item \textbf{Sistema di input}:
+                   \begin{itemize}
+                       \item Stesura della prima versione del sistema
+                   \end{itemize}
+                    
+        \end{itemize}
+
+\end{itemize}
+
+\subsection{Collision System}
+
+Il \texttt{collisionSystem} si colloca all'interno dell'architettura ECS da noi realizzata e si occupa di gestire il comportamento delle \textbf{entità} che entrano in contatto tra di loro mediante \textbf{intersezione}. 
+
+\subsubsection{Funzionamento}
+Il sistema svolge i seguenti compiti: 
+\begin{itemize}
+    \item \textbf{Collision detection:} il sistema rileva le \textbf{collisioni} in corso confrontando le \textbf{forme} e le \textbf{coordinate} sul piano cartesiano delle \textbf{entità} attive nel gioco. 
+    \item \textbf{Gestione comportamento:} una volta rilevato un \textbf{contatto} tra due entità, il sistema gestisce il comportamento delle stesse in base alla loro natura: 
+        \begin{itemize}
+
+            \item \textbf{Bumper Car:} sono delle entità circolari manovrate da un giocatore e possono collidere con altre entità circolari o rettangolari. 
+                \begin{itemize}
+                    \item \textbf{Collisione contro Power-Up:} se la Bumper Car collide con un power-up, questo viene assorbito da essa e non ha luogo alcun tipo di urto. 
+                    
+                    \item \textbf{Collisione cerchio/cerchio}: in caso di collisione tra l'entità del giocatore e un'altra entità \textbf{circolare}, entrambe subiscono un \textbf{urto elastico}. Il sistema calcola l'effetto dell'urto sui \textbf{vettori velocità} delle entità. Sarà successivamente il \texttt{MovementSystem} a spostarle, frame per frame, nella \textbf{direzione} indicata dal vettore risultante
+                    
+                    \item \textbf{Collisione cerchio/rettangolo}: nell'attuale implementazione le entità \textbf{rettangolari} sono oggetti \textbf{immobili}, pertanto, a fronte di una collisione, solo il vettore velocità dell'\textbf{entità mobile} viene modificato in funzione del risultato del calcolo dell'\textbf{urto elastico} generato dal contatto. 
+                    
+                \end{itemize}
+            
+            \item \textbf{Nemico:} le entità nemiche, a fronte di una collisione, si comportano allo stesso modo di quelle controllate dai giocatori, con l'unica differenza che queste non possono assorbire i power-up. 
+            
+            \item \textbf{Oggetto immobile:} a fronte della collisione con un oggetto immobile, il vettore velocità dell'entità mobile viene modificato in funzione del risultato del calcolo dell'urto elastico generato dal contatto. 
+        \end{itemize}
+    \item \textbf{Gestione del danno:} nel \texttt{CollisionComponent}, di cui sono provviste tutte le entità che possono essere coinvolte nelle collisioni, vengono mantenute una \textbf{durata vitale} e un \textbf{danno}, che caratterizzano ciascuna entità.
+    Ogni volta che una \texttt{BumperCar} viene coinvolta in uno \textbf{scontro}, sia la sua durata vitale che quella dell'altra entità coinvolta vengono \textbf{decrementate} di un \textbf{delta} pari al valore contenuto nel campo \texttt{damage} della \textbf{controparte}.
+     \item \textbf{Gestione del suono:} al verificarsi di una collisione viene innescata la riproduzione di un suono mediante la pubblicazione di un \texttt{SoundEvent} sul \texttt{mediator}
+\end{itemize}  
+
+\subsubsection{Ottimizzazioni}  
+La gestione delle collisioni, nella sua interezza, risulta essere molto onerosa; per questo motivo si è trovato necessario fare delle ottimizzazioni, anche piccole, dove questo fosse attuabile senza andare contro le pratiche della buona programmazione.
+\paragraph{Problema}
+ La parte core prevede la comparazione di ciascuna entità con ogni altra entità in gioco per verificare se queste stanno collidendo e, in caso affermativo, attuare la collisione. Questo porta ad avere una complessità computazionale di $O({n}^2)$.
+ \paragraph{Soluzioni}
+Per mitigare la complessità sono state attuate due ottimizzazioni:
+\begin{itemize}
+    \item \textbf{Riduzione delle entità da comparare}: questa è stata la prima ottimizzazione introdotta. Consiste semplicemente nell'effettuare la prima iterazione su tutte le entità e la seconda solo sulle entità mai comparate a quella corrente. In questo modo se \texttt{e1} è stata comparata con \texttt{e2}, \texttt{e2} non sarà mai comparata a \texttt{e1}. Questo diminuisce la complessità portandola a $O({n}*(n-k))$ 
+    \item \textbf{Parallelizzazione del calcolo}: il ciclo interno del core è stato parallelizzato utilizzando la libreria \texttt{Monix}. L'efficacia di questa ottimizzazione dipende, ovviamente, dal numero di entità coinvolte e, in caso queste siano troppo poche, porterebbe ad un \textbf{overhead}; tuttavia è stato ritenuto necessario mantenerla poiché, il core del ciclo parallelizzato risulta essere computazionalmente complesso.
+\end{itemize}
+
+\subsubsection{Problemi riscontrati}
+La realizzazione del sistema delle \textbf{collisioni} è risultata più \textbf{complessa} di quanto potesse sembrare in apparenza. Il motivo è che oltre alla necessità di gestire diversi \textbf{comportamenti} e \textbf{interazioni}, vi era la sfida relativa alla gestione della \textbf{fisica}, che doveva essere abbastanza \textbf{realistica} da rendere \textbf{intuitivo} il gioco, ma \textbf{non} tanto \textbf{precisa} da influenzarne negativamente la \textbf{giocabilità}.
+\paragraph{Gestione realistica della fisica} Per poter implementare la fisica delle collisioni, è stato necessario consultare diversi siti e libri al fine di comprendere il funzionamento degli urti elastici nella realtà e della loro applicazione al caso in cui si abbia uno scontro tra due cerchi bidimensionali non soggetti a rotazione. Al termine di questa fase si avevano le conoscenze necessarie per procedere con l'implementazione 
+
+\paragraph{Comportamenti inaspettati} Al termine dell'implementazione sono iniziati a sorgere i primi \textbf{problemi}, che apparivano come \texttt{bug} nel gioco, ma che \textbf{non derivavano} dall'incorrettezza del calcolo.
+Di seguito un elenco dei principali:
+\begin{itemize}
+    \item \textbf{Entità affiancate}: questo bug si presentava con due entità \textbf{incastrate lateralmente}, che si muovevano \textbf{insieme} verso la fine del campo e, quindi, l'\textbf{uscita} dal gioco. Questo comportamento si verificava spesso tra le entità nemiche comandate dall'AI. Il motivo era che avendo la \textbf{stessa massa}, andando alla \textbf{stessa velocità} e nella \textbf{stessa direzione}, il calcolo della collisione dava lo \textbf{stesso risultato} per entrambi, portandole a muoversi ancora alla stessa velocità e direzione. 
+    \item \textbf{Entità bloccate}: questo comportamento si verificava quando il giocatore si avvicinava lentamente ad un'altra entità ferma e smetteva di dare comandi nel momento esatto della collisione. In questo modo le entità risultavano collidere a \textbf{velocità (0,0)}, rimanendo ferme e \textbf{intrappolate} in una \textbf{collisione eterna}.
+    \item \textbf{Entità rotanti}: questo bug è stato il più difficile da gestire. Esso appariva in questo modo: dopo una collisione tra due entità circolari si aveva un fenomeno che faceva sembrare che le due entità "\textit{orbitassero}" una intorno all'altra, formando una specie di \textbf{8}. Un fenomeno apparentemente inspiegabile che ha trovato spiegazione nel problema dell'\textbf{overlapping}. In realtà ciò che accadeva era che, al calare degli \textbf{fps}, le entità tendevano sempre più spesso a \textbf{intersecarsi} per buona parte prima che la rilevazione della collisione venisse fatta. Se le entità collidevano lentamente o si sfioravano, la \textbf{collisione} era talmente \textbf{piccola} da portarle, al frame successivo, a trovarsi ancora \textbf{intersecate}. Questo portava le entità a \textbf{rimbalzare} una sulla superficie dell'altra, \textbf{staccandosi} pian piano, ma mai abbastanza velocemente da sopravvivere all'\textbf{espulsione} dal campo.  
+\end{itemize}
+
+\subsubsection{Soluzioni}
+Tutti i problemi sopra elencati avevano un filo conduttore: il verificarsi di una \textbf{collisione infinita}. Per mitigare questo problema sono state introdotte le seguenti modifiche:
+\begin{itemize}
+    \item \textbf{Modifica del Collision Component}: all'interno del \textbf{componente} che gestisce le collisioni è stato aggiunto un \textbf{campo} che mantiene un riferimento all'\textbf{entità} con cui è in corso la collisione.
+
+    \item \textbf{Controllo collisioni in corso}: al momento di effettuare una collision detection\textbf{} viene controllato se è già \textbf{in corso} una collisione tra quelle due \textbf{stesse} entità. In caso affermativo, fino al \textbf{termine} della collisione precedente, la collisione non viene fatta, dando il modo alle due entità di \textbf{allontanarsi}.
+    
+    \item \textbf{Normalizzazione velocità}: nel calcolo dell'\textbf{urto elastico} monodimensionale è stata introdotta una \textbf{variazione} allo scalare della \textbf{velocità} che viene applicata quando questa è prossima allo \textbf{0}. Al verificarsi di questa condizione, la \textbf{velocità} viene impostata a \textbf{1}, mantenendo il \textbf{segno} del risultato \textbf{originale} perché da esso dipende la \textbf{direzione}. Il motivo di questa scelta è quello di \textbf{evitare} collisioni estremamente \textbf{piccole}, che erano la causa principale del problema delle \textbf{entità rotanti}.
+\end{itemize}
+
+\subsection{Multiplayer}
+
+
+
+
