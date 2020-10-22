@@ -11,31 +11,29 @@
     activate EntityManager
 
 
-    Coordinator -> ComponentManager : registerComponent(c.class)
+    Coordinator -> ComponentManager : registerComponent(componentType)
 
     Coordinator -> SystemManager : registerSystem(system)
 
-    note right of Coordinator: signature = new List[Component.class]
+    note right of Coordinator: signature = Set[componentType]
 
-    Coordinator -> ComponentManager : checkComponent(c.Class)
+    ComponentManager -> ComponentManager : checkComponent(componentType)
     alt found
-      ComponentManager -->Coordinator : Some(c.class)
-      Coordinator -> Coordinator : signature.add(c.class)
-      Coordinator -> SystemManager : setSystemSignature(system, signature)
+      ComponentManager -->Coordinator : Some(component)
     else not Found
-      ComponentManager -->Coordinator : None
+      ComponentManager -->Coordinator : unregisteredComponent
     end
 
     Coordinator -> EntityManager : createEntity(id)
     EntityManager -->  Coordinator : entity
-    Coordinator -> ComponentManager : addComponent(id, new Component())
-    Coordinator -> ComponentManager : checkComponent(c.Class)
+    Coordinator -> ComponentManager : bindEntityComponent(entity, component)
+    ComponentManager -> ComponentManager : checkComponent(componentType)
 
     alt success 
       Coordinator -> SystemManager : entitySignatureChange(entity, signature)
-    
+      SystemManager -> SystemManager : RedistributeEntity
     else fail
-      ComponentManager --> Coordinator : SignatureException()
+      ComponentManager --> Coordinator : unregisteredComponent
     end
 
     Coordinator -> SystemManager : updateAllSystem()

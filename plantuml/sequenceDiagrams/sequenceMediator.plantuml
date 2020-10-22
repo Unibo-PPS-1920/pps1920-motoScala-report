@@ -18,7 +18,7 @@
     activate ServMediator
 
   CliScreen ->> CliMediator :publishEv(ev(cmdC))
-  CliMediator ->> CliActor :handle(ev(cmdC))
+  CliMediator ->> CliActor :notify(ev(cmdC))
   activate CliActor
   CliActor ->> ServActor :send(ev(cmdC))
   deactivate CliActor
@@ -26,17 +26,17 @@
   ServActor ->> ServMediator :publishEv(ev(cmdC))
   deactivate ServActor
   ServScreen ->> ServMediator :publishEv(ev(cmdS))
-  ServMediator ->> ServEngine :handle(ev(cmdS))
-   ServMediator ->> ServEngine :handle(ev(cmdC))
+  ServMediator ->> ServEngine :notify(ev(cmdS))
+   ServMediator ->> ServEngine :notify(ev(cmdC))
   ServEngine -->> ServMediator :publishEv(ev(world))
-  ServMediator -->> ServScreen :handle(ev(world))
-  ServMediator -->> ServActor :handle(ev(world))
+  ServMediator -->> ServScreen :notify(ev(world))
+  ServMediator -->> ServActor :notify(ev(world))
   activate ServActor 
   ServActor -->> CliActor :broad(ev(world))
   deactivate ServActor
   activate CliActor
   CliActor -->> CliMediator :publish(ev(world))
   deactivate CliActor
-  CliMediator -->> CliScreen :handle(ev(world))
+  CliMediator -->> CliScreen :notify(ev(world))
 
 @enduml

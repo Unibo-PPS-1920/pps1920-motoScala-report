@@ -37,22 +37,13 @@ Nel nostro caso il Mediator ha lo scopo principe di \textbf{mediare le interazio
 \end{itemize}
 Al fine di gestire al meglio le interazioni è stato scelto di implementare un \textbf{approccio basato su eventi} che è stato poi pensato in \textbf{due versioni molto simili}:
 \begin{itemize}
-	\item{\textbf{Mediator Observer:}}
-	Il \textbf{Mediator} è stato progettato sfruttando il \textbf{pattern observer ad eventi}.
 	\item{\textbf{Mediator Handler:}}
 	Il \textbf{Mediator} è stato progettato sfruttando il \textbf{pattern ad handler} basato su \textbf{eventi}.
+	\item{\textbf{Mediator Observer:}}
+	Il \textbf{Mediator} è stato progettato sfruttando il \textbf{pattern observer ad eventi}.
 \end{itemize}
 
-Come vediamo in figura \ref{fig:mediatorObserver} la prima scelta porta come vantaggio una \textbf{maggiore strutturazione} e \textbf{rigidità} del pattern.
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=0.99\columnwidth]{drawio/mediator/mediatorObserver.pdf}
-	\caption{Design del Mediator basato su observer.}
-	\label{fig:mediatorObserver}
-\end{figure}
-
-La versione basata su observer è stata poi rivista in un \textbf{approccio} maggiormente \textbf{funzionale} introducendo la struttura ad \textbf{handlers} (fig: \ref{fig:mediatorHandler}).
+Come vediamo in figura \ref{fig:mediatorHandler} la prima scelta porta come principale vantaggio l'ottenimento di \textbf{performance migliori} poiché ogni handler rappresenta del \textbf{codice associato ad un evento immediatamente eseguibile}. A questo però si aggiungono una \textbf{serie di problematiche} (vedi \ref{subsubsec:mediator_handler_problem}) che hanno portato a rivedere la soluzione proposta dirigendosi verso un'altra soluzione.
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.99\columnwidth]{drawio/mediator/mediatorHandler.pdf}
@@ -60,7 +51,13 @@ La versione basata su observer è stata poi rivista in un \textbf{approccio} mag
 	\label{fig:mediatorHandler}
 \end{figure}
 
-Utilizzando questo approccio si ha una \textbf{maggiore flessibilità} correlata inoltre da \textbf{performance migliori} poiché ogni handler rappresenta del \textbf{codice associato ad un evento immediatamente eseguibile}.
+La versione basata su handler è stata quindi rivista in un \textbf{approccio} maggiormente \textbf{strutturato} incentrato principalmente sul \textbf{Pattern Observer ad eventi}. (fig: \ref{fig:mediatorObserver}).
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.99\columnwidth]{drawio/mediator/mediatorObserver.pdf}
+	\caption{Design del Mediator basato su observer.}
+	\label{fig:mediatorObserver}
+\end{figure}
 
 \subsection{Funzionamento}
 
