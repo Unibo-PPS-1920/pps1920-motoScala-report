@@ -2,8 +2,10 @@ private final class ConcreteSoundAgent extends SoundAgendLogic {
 	override def run(): Unit = {
 		while (true) {
   		Try(this.blockingQueue.take()) match {
-    		case Success(ev) => ev.handle(this)
+    		case Success(ev) => processEvent(ev)
     		case Failure(exception) => logger warn (exception.getMessage)
+    	}
+def processEvent(ev: MediaEvent): Unit = ev.handle(this)
 ...
 
 sealed trait MediaEvent {
