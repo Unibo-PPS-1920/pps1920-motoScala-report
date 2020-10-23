@@ -93,7 +93,7 @@ Di seguito un elenco dei principali:
 \begin{itemize}
     \item \textbf{Entità affiancate}: questo bug si presentava con due entità \textbf{incastrate lateralmente}, che si muovevano \textbf{insieme} verso la fine del campo e, quindi, l'\textbf{uscita} dal gioco. Questo comportamento si verificava spesso tra le entità nemiche comandate dall'AI. Il motivo era che avendo la \textbf{stessa massa}, andando alla \textbf{stessa velocità} e nella \textbf{stessa direzione}, il calcolo della collisione dava lo \textbf{stesso risultato} per entrambi, portandole a muoversi ancora alla stessa velocità e direzione. 
     \item \textbf{Entità bloccate}: questo comportamento si verificava quando il giocatore si avvicinava lentamente ad un'altra entità ferma e smetteva di dare comandi nel momento esatto della collisione. In questo modo le entità risultavano collidere a \textbf{velocità (0,0)}, rimanendo ferme e \textbf{intrappolate} in una \textbf{collisione eterna}.
-    \item \textbf{Entità rotanti}: questo bug è stato il più difficile da gestire. Esso appariva in questo modo: dopo una collisione tra due entità circolari si aveva un fenomeno che faceva sembrare che le due entità "\textit{orbitassero}" una intorno all'altra, formando una specie di \textbf{8}. Un fenomeno apparentemente inspiegabile che ha trovato spiegazione nel problema dell'\textbf{overlapping}. In realtà ciò che accadeva era che, al calare degli \textbf{fps}, le entità tendevano sempre più spesso a \textbf{intersecarsi} per buona parte prima che la rilevazione della collisione venisse fatta. Se le entità collidevano lentamente o si sfioravano, la \textbf{collisione} era talmente \textbf{piccola} da portarle, al frame successivo, a trovarsi ancora \textbf{intersecate}. Questo portava le entità a \textbf{rimbalzare} una sulla superficie dell'altra, \textbf{staccandosi} pian piano, ma mai abbastanza velocemente da sopravvivere all'\textbf{espulsione} dal campo.  
+    \item \textbf{Entità rotanti}: questo bug è stato il più difficile da gestire. Esso appariva in questo modo: dopo una collisione tra due entità circolari si aveva un fenomeno che faceva sembrare che le due entità "\textit{orbitassero}" una intorno all'altra, formando una specie di \textbf{8}. Un fenomeno apparentemente inspiegabile che ha trovato risposta nel problema dell'\textbf{overlapping}. In realtà ciò che accadeva era che, al calare degli \textbf{fps}, le entità tendevano sempre più spesso a \textbf{intersecarsi} per buona parte prima che la rilevazione della collisione venisse fatta. Se le entità collidevano lentamente o si sfioravano, la \textbf{collisione} era talmente \textbf{piccola} da portarle, al frame successivo, a trovarsi ancora \textbf{intersecate}. Questo portava le entità a \textbf{rimbalzare} una sulla superficie dell'altra, \textbf{staccandosi} pian piano, ma mai abbastanza velocemente da sopravvivere all'\textbf{espulsione} dal campo.  
 \end{itemize}
 
 \subsubsection{Soluzioni}
@@ -120,12 +120,19 @@ I \textbf{messaggi} che vengono scambiati tra Client e Server necessitano di ess
 \subsubsection{Client Actor}
 L'implementazione del Client Actor è stata effettuata suddividendone il comportamento in tre \texttt{behaviour}:
 \begin{itemize}
-    \item \textbf{Idle behaviour}: si occupa della gestione dei messaggi che vengono ricevuti all'attore Client dal momento della sua \textbf{creazione} al momento della sua \textbf{entrata} in una \textbf{Lobby}. Gestisce la fase di \textbf{connessione} con il server, la richiesta di \textbf{Join} e i \textbf{Timeout} necessari a determinare il \textbf{tempo massimo} di attesa di una risposta da parte del Server.
-    \item \textbf{Init behaviour}:
-    \item \textbf{In game behaviour}:
+    \item \textbf{Idle behaviour}: si occupa della gestione dei messaggi che vengono ricevuti dall'attore Client dal momento della sua \textbf{creazione} al momento della sua \textbf{entrata} in una \textbf{Lobby}. Gestisce la fase di \textbf{connessione} con il server, la richiesta di \textbf{Join} e i \textbf{Timeout} necessari a determinare il \textbf{tempo massimo} di attesa di una risposta da parte del Server.
+    \item \textbf{Init match behaviour}: gestisce l'interazione che intercorre durante la permanenza del Client nella lobby, fino all'azionamento della partita da parte del Server.
+    \item \textbf{In-game behaviour}: nel periodo in cui l'attore \textbf{Client} si trova in questo behaviour, esso riceve dal Server messaggi contenenti i \texttt{DisplayableEvent} da pubblicare sul \textbf{Mediator}.
 \end{itemize}
 \subsubsection{Server Actor}
-
+Anche l'attore Server, come la sua controparte, è gestito mediante la suddivisione della logica di comportamento in più behaviour:
+    \begin{itemize}
+        \item \textbf{Idle behaviour}: è attivo nella fase di \textbf{inizializzazione} del gioco. Si occupa della gestione dei messaggi che riguardano la \textbf{creazione} della \textbf{lobby}, l'aggiunta dei client, la \textbf{configurazione} dei parametri di gioco, l'impostazione allo stato \texttt{Ready} dei partecipanti e l'\textbf{inizio} della \textbf{partita}.  
+        \item \textbf{In-game behaviour}: gestisce la ricezione dei messaggi dei Client che contengono i \texttt{CommandableEvent} da pubblicare sul \textbf{Mediator}
+    \end{itemize}
+    
+\subsubsection{Controller}
+L'integrazione tra gli attori passa attraverso il Controller che, mediante l'implementazione dei metodi di Actor Controller permette di gestire la logica innescata dalla ricezione dei messaggi.
 \subsubsection{Contributi}
 La progettazione e l'implementazione della logica multiplayer sono state svolte in collaborazione con Gyordan Caminati. La sottoscritta si è principalmente occupata dell'implementazione della parte core, della definizione dei messaggi principali e dell'integrazione con il Controller mentre il collega si è concentrato maggiormente sulla parte relativa all'integrazione con la View, definendo a sua volta alcuni messaggi e metodi necessari.
 
