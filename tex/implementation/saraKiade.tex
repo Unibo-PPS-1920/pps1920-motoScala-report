@@ -117,6 +117,15 @@ Per la gestione degli attori è stato scelto di utilizzare il framework \textbf{
 \subsubsection{Serializzazione}
 I \textbf{messaggi} che vengono scambiati tra Client e Server necessitano di essere \textbf{serializzati}. La serializzazione è stata ottenuta mediante l'impiego del serializzatore \textbf{Kryo} configurato in maniera da essere \textbf{performante}, considerata la \textbf{mole} di messaggi che vengono scambiati durante una partita.  
 
+\subsubsection{Client Actor}
+L'implementazione del Client Actor è stata effettuata suddividendone il comportamento in tre \texttt{behaviour}:
+\begin{itemize}
+    \item \textbf{Idle behaviour}: si occupa della gestione dei messaggi che vengono ricevuti all'attore Client dal momento della sua \textbf{creazione} al momento della sua \textbf{entrata} in una \textbf{Lobby}. Gestisce la fase di \textbf{connessione} con il server, la richiesta di \textbf{Join} e i \textbf{Timeout} necessari a determinare il \textbf{tempo massimo} di attesa di una risposta da parte del Server.
+    \item \textbf{Init behaviour}:
+    \item \textbf{In game behaviour}:
+\end{itemize}
+\subsubsection{Server Actor}
+
 \subsubsection{Contributi}
 La progettazione e l'implementazione della logica multiplayer sono state svolte in collaborazione con Gyordan Caminati. La sottoscritta si è principalmente occupata dell'implementazione della parte core, della definizione dei messaggi principali e dell'integrazione con il Controller mentre il collega si è concentrato maggiormente sulla parte relativa all'integrazione con la View, definendo a sua volta alcuni messaggi e metodi necessari.
 

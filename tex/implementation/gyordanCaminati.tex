@@ -6,17 +6,20 @@ Lo studente Gyordan Caminati si è occupato prevalentemente nelle seguenti macro
     \item \textbf{Managers}
     \item \textbf{Multiplayer}
     \item \textbf{View}
+    \item \textbf{Controller}
 \end{enumerate}
 
 \subsection{Managers}
     Lo studio e l'implementazione di tutti i \textbf{Managers} è stata svolta individualmente.
     
-    In particolare, lo stesso si è occupato di:
+    In particolare, lo stesso si è occupato:
     
     \begin{itemize}
-        \item Data Manager
+        \item File Manager
+        \item Package Object
 	    \item Audio Agent
-	    \item File Manager
+	    \item Data Manager
+	    \item Yaml Manager
     \end{itemize}
     
     \subsubsection{File Manager}
@@ -24,28 +27,135 @@ Lo studente Gyordan Caminati si è occupato prevalentemente nelle seguenti macro
     e suoni) si è reso necessario introdurre un \textbf{File Manager}.
     Un \textit{Singleton} che fornisce i metodi base (caricamento da Jar, cancellazione cartella, creazione albero cartelle, ecc) ovunque.
         
-    \subsubsection{Package object}
+    \subsubsection{Package Object}
     In tutto il package file, dove risiedono i vari manager dedicati alla manipolazione dei file, si è fatto largamente uso di
     \texttt{Path}, \texttt{File} e \texttt{Stringhe}, dove queste ultime identificavano un percorso puramente testuale.
     A causa di questi utilizzi così pervasivo all'interno del \textbf{Package} sono stati introdotti alcuni metodi \textbf{impliciti} per agevolare la scrittura.
     Questo ha migliorato notevolmente il flusso di programmazione dato che il passaggio da \texttt{String} a \texttt{Path} è molto intuiva e naturale; lo stesso vale per \texttt{Path} e \texttt{File}.
     L'aggiunta di questi due metodi impliciti ci fornisce gratuitamente il passaggio da \texttt{String} a \texttt{File}.
     
-    Nel \textbf{Package object} sono presenti anche tutte le costanti 
+    Nel \textbf{Package Object} sono presenti anche tutte le costanti
     di percorso dei file testuali, infine data la forte probabilità di incappare in una \texttt{Exception} durante una qualunque operazione I/O, ha portato allo sviluppo di un ultimo metodo che incapsulando una \texttt{Try} trasforma l'eventuale  \texttt{Exception} in un \texttt{Boolean}, e riporta su \textbf{Log} l'accaduto.
     
     \subsubsection{Audio Agent}
-    A differenza dell'\textbf{File Manager} non è stato progettato il l'Audio Agent come un \textbf{Singleton}, nonostante si utilizzi effettivamente un solo Audio Agent.
+    L'\texttt{Audio Agent} è il modulo preposto alla gestione dei suoni. Nonostante se ne utilizzi effettivamente uno solo si è scelto di non renderlo un \textbf{Singleton}, come è stato invece fatto con il \texttt{File Manager}. 
+    Alla base di questa scelta vi è la volontà di non precludere estensioni future.
     
-    Dopo un'attenta analisi, sì è scelto un approccio più conservativo, l'Agent mantiene al suo un \texttt{Thread} che 
+    Per la realizzazione dell'Agente, si è scelto di mantenere un approccio più conservativo. 
+    
+    L'Agent mantiene al suo un \texttt{Thread} che 
     manipola e riproduce effetti e musica.
     La riproduzione di musica e effetti con un alta frequenza, richiede notevoli risorse, l'unione del Thread a una coda di messaggi(poi divenuta coda di eventi grazie all'apporto fornito da Giulianini) consente un ottima separazione dei flussi di controllo, e coesione con altri Thread.
     
-    Nonostante l'implementazione attuale volga lo sguardo verso un approccio generico, l'intefaccia lascia la strada aperta se pur sealed a successive implementazioni, come Agent specifici per suioni ad alta qualità, mantenendo sempre un approccio molto pulito e neutrale.
+    Nonostante l'implementazione attuale volga lo sguardo verso un approccio generico, l'intefaccia lascia la strada aperta se pur sealed a successive implementazioni, come Agent specifici per suoni ad alta qualità, mantenendo sempre un approccio molto pulito e neutrale.
     
+    Il contributo di design apportato dal collega \textbf{Giulianini} ha consentito di trasformare il modello a messaggi, in un modello ad eventi, rendendo il tutto più
+    pulito e permettendo di evitare un match case
+    che avrebbe sporcato l'implementazione.
     
+    \subsubsection{Yaml Manager}
+    La serializzazione e deserializzazione di tutti i dati \textbf{}{Locali} è gestita unicamente dallo \textbf{Yaml Manager}, il quale fornisce solo poche funzioni generiche 
+    per lo scopo, astraendo e delegando ad un livello superiore 
+    la concatenazione e l'utilizzo di quest'ultime.
+    
+    La \textbf{Serializzazione} è effettuata principalmente utilizzando il formato 
+    \texttt{Yaml}, è stato valutato anche \texttt{Json}.
+    Ma quest'ultimo però risulta più prolisso e meno leggibile, volendo rendere i dati il più leggibili possibile sì è scelto \texttt{Yaml}.
+    Questa decisione è stata guidata anche dal fatto che il \textbf{livello} (la principale fonte di serializzazione) è composto principalmente da una lista di \texttt{Entity} e alcuni parametri, le liste in  \texttt{Yaml} sono particolarmente leggibi.
+    
+    Per la serializzazione si è scelto di utilizzare un serializzatore basato su \texttt{Jackson}, questo perche
+    è molto veloce.
+    \texttt{Jackson} inoltre ha consentito una scrittura pulita dei dati da serializzare.
+    Normalmente per la serializzazione di una classe, sarebbe necessario l'utilizzo pervasivo di annotazioni come: \texttt{@JsonProperty},\texttt{@JsonFormat}, ecc.
+    
+    Ma la definizione di dati snelli e l'utilizzo di un \texttt{PolymorphicTypeValidator} hanno consentito una corretta serializzazione e deserializzare senza la necessità di annotazioni.
     
     \subsubsection{Data Manager}
+    La gestione di tutti i dati è demandata al \textbf{Data Manager}
+    il quale fornisce metodi diretti per il salvataggio e il caricamento di tutti i file testuali del progetto come: livelli, punteggi e impostazioni.
+    Il caricamento e il salvataggio dei livelli può avvenire sia nel \textbf{File System} sia nel \textbf{Jar}.
+    
+    
+    \subsection{View}
+    Lo studente si è occupato in particolare dello sviluppo di tutte le schermate al difuori di \textbf{Level} e \textbf{Game}.
+    
+    Ogni schermata si appoggia sopra l'architettura base sviluppata dal collega \textbf{Giulianini}; tutte le view utilizzano il pattern \texttt{Observer}.
+    
+    Tutte le schermate di cui l'utente si è occupato:
+        \begin{itemize}
+	        \item Stats
+	        \item Settings
+	        \item ModeSelection
+            \item Home
+            \item Lobby
+        \end{itemize}
+
+    \subsubsection{Stats}
+        Una semplice schermata che fornisce all'utente una visuale su tutti i record degli utenti registrati al sistema.
+        Chiede al \textbf{Controller} la tabella dei record e la mostra.
+        \subsubsection{Stats}
+        Una semplice schermata che fornisce all'utente una visuale su tutti i record degli utenti registrati al sistema.
+        Chiede al \textbf{Controller} la tabella dei record e la mostra.
+
+    \subsubsection{Settings}
+        La schermata per le impostazioni, consente al giocatore di cambiare: Nome, Difficoltà e volume di suoni e musica.
+        
+        Quando un giocatore cambia nome, può inserire anche un nome già utilizzato in precedenza; in questo caso ulteriori nuovi 
+        record con quel nome sovrascriveranno il precedente.
+        
+        Sì appoggia sul Controller per le operazioni di IO.
+    
+    \subsubsection{ModeSelection}
+        La schermata di ModeSelection separa la Home da \textbf{Game}.
+        Permette di scegliere se diventare un \textbf{Client} o un \textbf{Server}, nel primo caso è necessario fornire un IP e una porta per potersi connettere al server.
+        Mentre nel secondo caso verrà scelta una porta libera e un interfaccia di rete disponibile su cui far connettere i client.
+        Il controllo dell'input consente di evitare inserimenti erronei e le notifiche avvisano il giocatore nel caso in cui il suo nome sia già presente in partita oppure il server sia pieno.
+        
+        Nel caso in cui si cerchi di contattare un server su un indirizzo sbagliato, verrà notificato un messaggio di timeout.
+        
+    \subsubsection{Home}
+        La schermata iniziale consente di districarsi attraverso tutte le impostazioni, presenta sullo sfondo un tema a griglia.
+    
+    \subsubsection{Lobby}
+        La schermata di lobby mostra un notevole numero di informazioni; l'IP del server e la sua porta, la lista di giocatori pronti e non pronti.
+        Il server ha inoltre il potere di espellere giocatori a piacimento, un eventuale giocatore espulso riceverà una notifica di allontanamento.
+        
+        Quando tutti i giocatori presenti nella lobby sono pronti, il server può far partire la partita, è possibile partire anche con un numero inferiore di giocatori, a patto che siano tutti pronti.
+        
+        
+    \paragraph{Ogni bottone presente nelle view quando premuto accoda un evento al \texttt{SoundAgent} che lo applica.
+    Le varie view sviluppate dallo studente non possono comunicare tra loro, e l'unico punto di contatto rimane sempre il controller, tramite l'interfaccia dell'observer ObservableUI.}
+
+    \subsection{Controller}
+        Il Controller al contiene la struttura dati della lobby, usata per il mantenimento di una lobby durante la fase
+        preliminare di una partita.
+        Contiene tutta la configurazione di akka e anche un attore,
+        non vi sono mai due attori aperti in contemporanea.
+        Mentre è possibile che non siano presenti attori(Single Player).
+        Mantiene anche il \texttt{Mediator} che però non utilizza direttamente.
+        Internamente utilizza anche il \textbf{Data Manager} che viene utilizzato per il caricamento e la serializzazione di tutti i dati.
+        Contiene anche l'\textbf{Engine} e il \textbf{Sound Agent}, i quali sono comandati direttamente dal controller stesso.
+        
+        Il controller è suddiviso in quattro Intefacce:
+        \begin{itemize}
+	        \item \texttt{ActorController}
+	        \item \texttt{EngineController}
+	        \item \texttt{ObservableUI}
+        	\item \texttt{SoundController}
+        \end{itemize}
+        
+        L'interfaccia SoundController viene estesa da EngineController, ActorController e ObservableUI; così facendo il controller fornisce un punto di ingresso al metodo \texttt{redirectSoundEvent} che consente di accodare un evento che successivamente verrà eseguito.
+        
+        L'EngineController estende il SoundController, quindi oltre a fornire la possibilità di accodare \texttt{MediaEvent}, fornisce anche un getter per il \texttt{Mediator}, così l'\texttt{Engine} che lo contiene può sottoscriversi, ma può anche passare l'EngineController ad alcuni dei suoi come:
+        \texttt{CollisionSystem} e \texttt{PowerUpSystem}, i quali lo useranno per pubblicare eventi sul \texttt{Mediator} e inviare eventi all'\texttt{AudioAgent}.
+
+        
+        
+        Il controller funge da punto di ingresso per \textbf{View} \textbf{Engine} e \textbf{Actors} al Sound Agent, gli attori 
+        
+    \subsection{Multiplayer}
+        
+
 
 
 \begin{enumerate}
