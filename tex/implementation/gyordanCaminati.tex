@@ -1,1 +1,107 @@
 \section{Gyordan Caminati}
+
+Lo studente Gyordan Caminati si è occupato prevalentemente nelle seguenti macro-aree:
+
+\begin{enumerate}
+    \item \textbf{Managers}
+    \item \textbf{Multiplayer}
+    \item \textbf{View}
+\end{enumerate}
+
+\subsection{Managers}
+    Lo studio e l'implementazione di tutti i \textbf{Managers} è stata svolta individualmente.
+    
+    In particolare, lo stesso si è occupato di:
+    
+    \begin{itemize}
+        \item Data Manager
+	    \item Audio Agent
+	    \item File Manager
+    \end{itemize}
+    
+    \subsubsection{File Manager}
+    Data la necessità di amministrare vari file per le diverse informazioni (statistiche, livelli, impostazioni, musiche 
+    e suoni) si è reso necessario introdurre un \textbf{File Manager}.
+    Un \textit{Singleton} che fornisce i metodi base (caricamento da Jar, cancellazione cartella, creazione albero cartelle, ecc) ovunque.
+        
+    \subsubsection{Package object}
+    In tutto il package file, dove risiedono i vari manager dedicati alla manipolazione dei file, si è fatto largamente uso di
+    \texttt{Path}, \texttt{File} e \texttt{Stringhe}, dove queste ultime identificavano un percorso puramente testuale.
+    A causa di questi utilizzi così pervasivo all'interno del \textbf{Package} sono stati introdotti alcuni metodi \textbf{impliciti} per agevolare la scrittura.
+    Questo ha migliorato notevolmente il flusso di programmazione dato che il passaggio da \texttt{String} a \texttt{Path} è molto intuiva e naturale; lo stesso vale per \texttt{Path} e \texttt{File}.
+    L'aggiunta di questi due metodi impliciti ci fornisce gratuitamente il passaggio da \texttt{String} a \texttt{File}.
+    
+    Nel \textbf{Package object} sono presenti anche tutte le costanti 
+    di percorso dei file testuali, infine data la forte probabilità di incappare in una \texttt{Exception} durante una qualunque operazione I/O, ha portato allo sviluppo di un ultimo metodo che incapsulando una \texttt{Try} trasforma l'eventuale  \texttt{Exception} in un \texttt{Boolean}, e riporta su \textbf{Log} l'accaduto.
+    
+    \subsubsection{Audio Agent}
+    A differenza dell'\textbf{File Manager} non è stato progettato il l'Audio Agent come un \textbf{Singleton}, nonostante si utilizzi effettivamente un solo Audio Agent.
+    
+    Dopo un'attenta analisi, sì è scelto un approccio più conservativo, l'Agent mantiene al suo un \texttt{Thread} che 
+    manipola e riproduce effetti e musica.
+    La riproduzione di musica e effetti con un alta frequenza, richiede notevoli risorse, l'unione del Thread a una coda di messaggi(poi divenuta coda di eventi grazie all'apporto fornito da Giulianini) consente un ottima separazione dei flussi di controllo, e coesione con altri Thread.
+    
+    Nonostante l'implementazione attuale volga lo sguardo verso un approccio generico, l'intefaccia lascia la strada aperta se pur sealed a successive implementazioni, come Agent specifici per suioni ad alta qualità, mantenendo sempre un approccio molto pulito e neutrale.
+    
+    \subsubsection{Data Manager}
+
+
+\begin{enumerate}
+    \item \textbf{progettazione}
+        \begin{itemize}
+	        \item Data Manager
+	        \item Audio Agent
+	        \item File Manager
+        	\item Lobby
+        \end{itemize}
+    \item \textbf{Implementazione}
+        \begin{itemize}
+            \item Controller
+	        \item Client Actor
+	        \item Server Actor
+            \item Tutte le schermate di View eccetto Home e Levels
+        \end{itemize}
+    \item \textbf{Analisi}
+\end{enumerate}
+
+\subsection{Data Manager}
+
+\subsection{Audio Agent}
+\subsection{Audio Agent}
+\subsection{File Manager}
+\subsection{Lobby}
+
+
+
+
+
+
+
+e della impementazione di:
+
+\begin{itemize}
+	\item Controller
+	\item Client Actor
+	\item Server Actor
+    \item Tutte le schermate di View eccetto Home e Levels
+\end{itemize}
+
+e della configurazione di :
+
+\begin{itemize}
+	\item Jackson per Yaml
+	\item Akka??
+\end{itemize}
+
+Lo studente ha contribuito alla \textbf{progettazione} di:
+\begin{itemize}
+	\item Client Actor 
+	\item Server Actor
+\end{itemize}
+
+inoltre ha contribuito al lavoro dei colleghi svolgendo una serie di \textbf{task implementativi}:
+\begin{itemize}
+	\item \hyperref[subsubsec:input_sys]{\textbf{Input System}}
+	\item \hyperref[subsubsec:damage]{\textbf{Life points e collision damage}}
+	\item \hyperref[subsubsec:monix_sys]{\textbf{Monix - Parallelizzazione update dei sistemi}}
+\end{itemize}

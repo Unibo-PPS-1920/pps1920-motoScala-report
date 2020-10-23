@@ -2,7 +2,7 @@
 \section{Sara Kiade}
 La studentessa Sara Kiade ha contribuito alle parti comuni di \textbf{analisi}, \textbf{progettazione}, \textbf{realizzazione} e \textbf{documentazione} del progetto, concentrandosi prevalentemente sulla parte relativa alla gestione del \textbf{multiplayer} e delle \textbf{collisioni} 
 
-La studentessa ha inoltre svolto autonomamente le seguenti parti:
+La studentessa ha inoltre svolto le seguenti parti:
 
 \begin{itemize}
     \item \textbf{Analisi:}
@@ -15,7 +15,7 @@ La studentessa ha inoltre svolto autonomamente le seguenti parti:
         \begin{itemize}
             \item Progettazione di Client e Server
             \item Interazione tra Client, Server e Controller
-            \item Rifinitura ECS
+            \item Revisione ECS
         \end{itemize}
     \item \textbf{Implementazione:}
         \begin{itemize}
@@ -24,7 +24,7 @@ La studentessa ha inoltre svolto autonomamente le seguenti parti:
                     \item Configurazione del framework \texttt{Akka}
                     \item Implementazione degli attori
                     \item Serializzazione dei messaggi con l'utilizzo \texttt{Kryo}
-                    \item Implementazione della parte del \texttt{Controller} relativa agli attori
+                    \item Parziale implementazione \texttt{Controller} (parte attori)
                     \item Integrazione del Multiplayer con la View
                 \end{itemize}
             \item \textbf{Sistema di collisione}: 
@@ -107,7 +107,16 @@ Tutti i problemi sopra elencati avevano un filo conduttore: il verificarsi di un
 \end{itemize}
 
 \subsection{Multiplayer}
+Per gestire il gioco in modalità \textbf{multiplayer} era necessario modellare \textbf{Client} e \textbf{Server} affinché esponessero un canale di \textbf{comunicazione} tramite il quale potersi scambiare informazioni.
+Per raggiungere questo obiettivo si è deciso di ricorrere al paradigma ad \textbf{
+attori}. 
+Sono stati implementati due attori: \texttt{ClientActor} e \texttt{ServerActor}, con la sola funzione di fare da \textbf{interfaccia} di comunicazione tra i due sistemi. 
+\subsubsection{Framework e Configurazione}
+Per la gestione degli attori è stato scelto di utilizzare il framework \textbf{Akka}. In sede di \textbf{configurazione} del framework è stato deciso di utilizzare \textbf{Akka Remote} anziché \textbf{Akka Cluster}, nonostante quest'ultimo fosse fortemente incoraggiato. Il motivo per cui è stata fatta questa scelta è che il sistema che si voleva realizzare non era prevalentemente basato sul paradigma ad attori, ma lo usava solo come \textbf{interfaccia} di comunicazione. Per questo motivo, l'utilizzo di Akka Cluster è stato ritenuto \textbf{esagerato}, rispetto all'obiettivo che si voleva raggiungere e si è optato per una soluziona più \textbf{snella}.
 
+\subsubsection{Serializzazione}
+I \textbf{messaggi} che vengono scambiati tra Client e Server necessitano di essere \textbf{serializzati}. La serializzazione è stata ottenuta mediante l'impiego del serializzatore \textbf{Kryo} configurato in maniera da essere \textbf{performante}, considerata la \textbf{mole} di messaggi che vengono scambiati durante una partita.  
 
-
+\subsubsection{Contributi}
+La progettazione e l'implementazione della logica multiplayer sono state svolte in collaborazione con Gyordan Caminati. La sottoscritta si è principalmente occupata dell'implementazione della parte core, della definizione dei messaggi principali e dell'integrazione con il Controller mentre il collega si è concentrato maggiormente sulla parte relativa all'integrazione con la View, definendo a sua volta alcuni messaggi e metodi necessari.
 
