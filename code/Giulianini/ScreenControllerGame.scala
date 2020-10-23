@@ -3,11 +3,10 @@ class ScreenControllerGame(viewFacade, controller) extends AbstractScreenControl
   mediator.subscribe(this)
   //Events from mediator to Displayable (GameScreen)
   override def notifyDrawEntities(player: EntityData, entities: Seq[EntityData]): Unit = handleDrawEntities(players, entities))
-  override def notifyEntityLife(data: LifeData): Unit = Platform.runLater(() => handleEntityLife(data))
-  override def notifyRedirectSound(event: SoundEvent): Unit = controller.redirectSoundEvent(event)
+  override def notifyEntityLife(data: LifeData): Unit = handleEntityLife(data)
   override def notifyLevelEnd(data: LevelEndData): Unit = handleLevelEnd(data)
-  //######################## From Controller
+  //Mvc events from Controller
   override def notify(ev: ViewEvent): Unit = ev match {
-    case LevelSetupEvent(data) => Platform.runLater(() => handleLevelSetup(data))
+    case LevelSetupEvent(data) => handleLevelSetup(data)
   }
   def sendCommandEvent(event: Event.CommandEvent): Unit = mediator.publishEvent(event)

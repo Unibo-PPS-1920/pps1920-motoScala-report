@@ -13,9 +13,5 @@ sealed trait MediaEvent {
 }
 object MediaEvent {
 final case class PlayMusicEvent(media: Music) extends MediaEvent {
-  override def handle(sl: SoundAgentLogic): Unit = sl.playMusic(media)
-}
-final case class StopMusic() extends MediaEvent {
-  override def handle(sl: SoundAgentLogic): Unit = sl.stopMusic()
-}
-...
+  def handle(sl: SoundAgentLogic): Unit = sl.playMusic(media)
+} ...
