@@ -31,7 +31,9 @@ Lo studente Gyordan Caminati si è occupato prevalentemente nelle seguenti macro
     L'aggiunta di questi due metodi impliciti fornisce gratuitamente il passaggio da \texttt{String} a \texttt{File}.
         
      Data la \textbf{forte probabilità} di incappare in una \texttt{Exception} durante una qualunque operazione I/O,si è deciso di sviluppare un ultimo metodo che incapsulasse una \texttt{Try} e trasformasse l'eventuale  \texttt{Exception} in un \texttt{Boolean}, riportando successivamente su un \textbf{Log} l'accaduto.
-    
+     
+     \lstinputlisting[caption={Package Object}, label=lst:listato22]{code/Caminati/PackageObject.scala}
+    \paragraph{Frammento di codice dall'Package Object in nel package file.}
     \subsubsection{Audio Agent}
     L'\texttt{Audio Agent} è il modulo preposto alla gestione dei suoni. Nonostante se ne utilizzi effettivamente uno solo si è scelto di non renderlo un \textbf{Singleton}, come è stato invece fatto con il \texttt{File Manager}. 
     Alla base di questa scelta vi è la volontà di non precludere estensioni future.
@@ -118,7 +120,7 @@ Lo studente Gyordan Caminati si è occupato prevalentemente nelle seguenti macro
         Internamente utilizza anche il \textbf{Data Manager} che viene impiegato per il caricamento e la serializzazione di tutti i dati.
         Contiene anche l'\textbf{Engine} e il \textbf{Sound Agent}, i quali sono comandati direttamente dal controller stesso.
         
-        Il controller è suddiviso in quattro Intefacce:
+        Il controller è suddiviso in quattro Interfacce:
         \begin{itemize}
 	        \item \texttt{ActorController}
 	        \item \texttt{EngineController}
@@ -126,14 +128,16 @@ Lo studente Gyordan Caminati si è occupato prevalentemente nelle seguenti macro
         	\item \texttt{SoundController}
         \end{itemize}
         
-        L'interfaccia SoundController viene estesa da EngineController, ActorController e ObservableUI; così facendo il controller fornisce un punto di ingresso al metodo \texttt{redirectSoundEvent} che consente di accodare un evento che successivamente verrà eseguito.
+        L'interfaccia \texttt{SoundController} viene estesa da \texttt{EngineController}, ActorController e ObservableUI; così facendo il controller fornisce un punto di ingresso al metodo \texttt{redirectSoundEvent} che consente di accodare un evento che successivamente verrà eseguito.
         
-        L'interfaccia EngineController estende il SoundController; di conseguenza, oltre a fornire la possibilità di accodare \texttt{MediaEvent}, fornisce anche un getter per il \texttt{Mediator}, così l'\texttt{Engine} che lo contiene può sottoscriversi, ma può anche passare l'EngineController ad alcuni dei suoi come:
+        L'interfaccia \texttt{EngineController} estende il \texttt{SoundController}; di conseguenza, oltre a fornire la possibilità di accodare \texttt{MediaEvent}, fornisce anche un getter per il \texttt{Mediator}, così l'\texttt{Engine} che lo contiene può sottoscriversi, ma può anche passare l'EngineController ad alcuni dei suoi come:
         \texttt{CollisionSystem} e \texttt{PowerUpSystem}, i quali ne faranno uso per pubblicare eventi sul \texttt{Mediator} e inviare eventi all'\texttt{AudioAgent}.
         
-        L'interfaccia ActorController mette a disposizione degli attori i metodi necessari per instaurare una partita, gestirla e terminarla.
+        L'interfaccia \texttt{ActorController} mette a disposizione degli attori i metodi necessari per instaurare una partita, gestirla e terminarla.
         Inoltre fornisce anche la possibilità agli attori di inviare alla lobby tramite un metodo generico una \textbf{strategia} per interrogarne e manipolarne direttamente il contenuto.
         
+        \lstinputlisting[caption={Actor Controller}, label=lst:listato22]{code/Caminati/ActorController.scala}
+
         Allo stesso modo ma senza ritorno alcuno, fornisce la possibilità di inviare una strategia verso la View, nella quale incapsula un evento che viene gestito poi dalla view stessa tramite \texttt{notify}.  
         
         
@@ -152,26 +156,13 @@ Lo studente Gyordan Caminati si è occupato prevalentemente nelle seguenti macro
     Nel caso del server il \texttt{Behaviour} di default introdotto ridireziona tutti i \texttt{PlayMediaMessage} verso i suoi client.
     Nel caso del Client il \texttt{PlayMedia-Message} viene inviato al \texttt{SoundAgentSoundAgent} il quale lo consumerà lanciando il media.
 
+   \lstinputlisting[caption={Actor Controller}, label=lst:listato22]{code/Caminati/ActorController.scala}
+
+
     \paragraph{Contributi esterni}
-        Lo studente ha contribuito all'implemetazione delle strutture dati principali del model come : \texttt{MatchSetup}(lobby), \texttt{Difficulties} e \texttt{Settings}.
+        Lo studente ha contribuito all'implementazione delle strutture dati principali del model come : \texttt{MatchSetup}(lobby), \texttt{Difficulties} e \texttt{Settings}.
         Inoltre ha prodotto la prima implementazione di difficoltà, poi rifinita da \textbf{Giulianini}.
         
-\paragraph{Contributi dello studente}
-\begin{enumerate}
-    \item \textbf{progettazione}
-        \begin{itemize}
-	        \item Data Manager
-	        \item Audio Agent
-	        \item File Manager
-        	\item Lobby
-        \end{itemize}
-    \item \textbf{Implementazione}
-        \begin{itemize}
-            \item Controller
-	        \item Client Actor
-	        \item Server Actor
-            \item Tutte le schermate di View eccetto Home e Levels
-        \end{itemize}
-\end{enumerate}
+
 
 
