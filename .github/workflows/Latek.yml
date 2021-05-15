@@ -26,10 +26,11 @@ jobs:
         
       - name: Compile LaTeX document
         uses: xu-cheng/latex-action@v2
+        
         with:
           #pre_compile: "tlmgr update --all"
           root_file: main.tex
-          #post_compile: "latexmk -c"
+          post_compile: "latexmk -c"
           
       
       - uses: actions/upload-artifact@v2
