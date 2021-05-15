@@ -31,18 +31,19 @@ jobs:
           root_file: main.tex
           post_compile: "latexmk -c"
           args: "-pdf -file-line-error -halt-on-error -interaction=nonstopmode -logfilewarninglist -Werror"
-   
-      - name: Upload artifacts1
-        run: ls -al
-        if: always()
-      
+
+      - name: Split log
+        run: cat main.log | grep -n -E 'LaTeX Error|LaTeX Warning' > small.log
+        if: failure()
+
       - name: Upload Logs
         uses: actions/upload-artifact@v2
         with:
           name: Logs
-          path: main.log
-        if: always()
-        
+          path: |
+            main.log
+            small.log
+        if: failure()
         
       - name: Upload Artifacts
         uses: actions/upload-artifact@v2
@@ -50,4 +51,3 @@ jobs:
           name: Artifacts
           path: main.pdf
         if: always()
-
