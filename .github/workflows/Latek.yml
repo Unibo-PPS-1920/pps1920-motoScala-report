@@ -24,15 +24,15 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
         uses: actions/checkout@v2
         
-      - name: Chcek log
-        run: echo "Ciaooooo" | ls -al
+      - name: Update latexmk
+       #pre_compile: "tlmgr update --self --all"
         
       - name: Compile LaTeX document
         uses: xu-cheng/latex-action@v2
         
         with:
          
-          #pre_compile: "tlmgr update --self --all"
+       
           root_file: main.tex
           post_compile: "latexmk -c"
           args: "-pdf -file-line-error -halt-on-error -interaction=nonstopmode -logfilewarninglist -Werror"
