@@ -31,7 +31,7 @@ jobs:
           pre_compile: "tlmgr update --self --all"
           root_file: main.tex
           post_compile: "latexmk -c"
-          args: "-pdf -file-line-error -halt-on-error -interaction=nonstopmode -logfilewarninglist"
+          args: "-pdf -file-line-error -halt-on-error -interaction=nonstopmode -logfilewarninglist -Werror"
           
       
       - uses: actions/upload-artifact@v2
