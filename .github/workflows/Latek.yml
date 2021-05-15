@@ -33,7 +33,7 @@ jobs:
           args: "-pdf -file-line-error -halt-on-error -interaction=nonstopmode -logfilewarninglist -Werror"
 
       - name: Split log
-        run: cat main.log | grep -n -E 'LaTeX Error|LaTeX Warning' > small.log
+        run: cat main.log | grep -n -E 'LaTeX Error|LaTeX Warning' --group-separator======================== > small.log
         if: failure()
 
       - name: Upload Logs
