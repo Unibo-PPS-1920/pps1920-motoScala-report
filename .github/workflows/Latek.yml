@@ -24,6 +24,9 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
         uses: actions/checkout@v2
         
+      - name: Chcek log
+        run: echo "Ciaooooo" | ls -al
+        
       - name: Compile LaTeX document
         uses: xu-cheng/latex-action@v2
         
@@ -34,8 +37,7 @@ jobs:
           post_compile: "latexmk -c"
           args: "-pdf -file-line-error -halt-on-error -interaction=nonstopmode -logfilewarninglist -Werror"
           
-      - name: Chcek log
-        run: echo "Ciaooooo"
+
         
       - uses: actions/upload-artifact@v2
         with:
