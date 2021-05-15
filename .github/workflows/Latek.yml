@@ -31,4 +31,11 @@ jobs:
           root_file: main.tex
           post_compile: "latexmk -c"
           args: "-pdf -file-line-error -halt-on-error -interaction=nonstopmode -logfilewarninglist -Werror"
-          
+          run: ls -al     
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: PDF
+          #path: main.pdf
+          path: main.log
+
