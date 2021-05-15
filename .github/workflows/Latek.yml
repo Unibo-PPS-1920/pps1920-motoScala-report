@@ -28,10 +28,10 @@ jobs:
         uses: xu-cheng/latex-action@v2
         
         with:
-          #pre_compile: "tlmgr update --all"
+          pre_compile: "tlmgr update --all"
           root_file: main.tex
           post_compile: "latexmk -c"
-          args: "-pdf -file-line-error -halt-on-error -interaction=nonstopmode -logfilewarninglist -Werror"
+          args: "-pdf -file-line-error -halt-on-error -interaction=nonstopmode -logfilewarninglist"
           
       
       - uses: actions/upload-artifact@v2
