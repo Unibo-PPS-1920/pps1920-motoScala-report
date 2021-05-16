@@ -18,6 +18,13 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
+    
+      - name: Set selected color
+        run: echo '::set-output name=SELECTED_COLOR::green'
+        id: random-color-generator
+      - name: Get color
+        run: echo "The selected color is ${{ steps.random-color-generator.outputs.SELECTED_COLOR }}"
+    
       - name: Setup Git repo
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
         uses: actions/checkout@v2
@@ -43,6 +50,10 @@ jobs:
           path: |
             main.log
             small.log
+        if: failure()
+        
+      - name: Print small log
+        run: cat small.log > &2
         if: failure()
         
       - name: Upload Artifacts
