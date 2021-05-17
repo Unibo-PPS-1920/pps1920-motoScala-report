@@ -1,5 +1,5 @@
 # This is a basic workflow to help you get started with Actions
-name: Latek Check
+name: Latek Build
 on:
   push:
     branches: [ master ]
@@ -20,25 +20,20 @@ jobs:
     steps:
     
       - name: Set selected color
-        run: echo '::set-output name=SELECTED_COLOR::red'
-        id: random-color-generator
-      - name: Get color
-        run: echo "The selected color is ${{ steps.random-color-generator.outputs.SELECTED_COLOR }}"
-    
+        run: |
+          alias echo='echo -e'
+
       - name: Setup Git repo
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
         uses: actions/checkout@v2
-        
-      #- name: Update latexmk
-       #pre_compile: "tlmgr update --self --all"
         
       - name: Compile LaTeX document
         uses: xu-cheng/latex-action@v2
         with:
           root_file: main.tex
-          post_compile: "latexmk -c"
+          pre_compile: "tlmgr update --self --all"
           args: "-pdf -file-line-error -halt-on-error -interaction=nonstopmode -logfilewarninglist -Werror"
-
+          post_compile: "latexmk -c"
       - name: Split log
         run: cat main.log | grep -n -E 'LaTeX Error|LaTeX Warning' --group-separator======================== > small.log
         if: failure()
