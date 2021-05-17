@@ -2,8 +2,6 @@
 name: Latek Build
 on:
   push:
-    branches: [ master ]
-  pull_request:
     branches: [ master,relese ]
 
   # Allows you to run this workflow manually from the Actions tab
