@@ -4,6 +4,7 @@ on:
   push:
     branches: [ master ]
   pull_request:
+    types: [closed]
     branches: [ relese ]
 
   # Allows you to run this workflow manually from the Actions tab
