@@ -65,7 +65,7 @@ jobs:
         run: git fetch --tags -f
 
       - name: Deploy
-        if: ${{github.ref == 'refs/heads/Relese'}}
+        if: ${{github.ref == 'refs/heads/relese'}}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
