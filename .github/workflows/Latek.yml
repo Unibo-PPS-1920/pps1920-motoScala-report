@@ -4,7 +4,7 @@ on:
   push:
     branches: [ master ]
   pull_request:
-    branches: [ master ]
+    branches: [ relese ]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -20,6 +20,7 @@ jobs:
     steps:
     
       - name: Set selected color
+        shell: bash
         run: |
           alias echo='echo -e'
 
@@ -31,29 +32,49 @@ jobs:
         uses: xu-cheng/latex-action@v2
         with:
           root_file: main.tex
-          pre_compile: "tlmgr update --self --all"
+          #pre_compile: "tlmgr update --self --all"
           args: "-pdf -file-line-error -halt-on-error -interaction=nonstopmode -logfilewarninglist -Werror"
           post_compile: "latexmk -c"
       - name: Split log
-        run: cat main.log | grep -n -E 'LaTeX Error|LaTeX Warning' --group-separator======================== > small.log
         if: failure()
-
+        shell: bash
+        run: cat main.log | grep -n -E 'LaTeX Error|LaTeX Warning' --group-separator======================== > small.log
       - name: Upload Logs
+        if: failure()
         uses: actions/upload-artifact@v2
         with:
           name: Logs
           path: |
             main.log
             small.log
-        if: failure()
-        
+            
       - name: Print small log
-        run: cat small.log > &2
         if: failure()
+        shell: bash
+        run: cat small.log > &2
         
       - name: Upload Artifacts
+        if: always()
         uses: actions/upload-artifact@v2
         with:
           name: Artifacts
           path: main.pdf
-        if: always()
+          
+      - name: Fetch tags
+        shell: bash
+        run: git fetch --tags -f
+
+      - name: Deploy
+        if: ${{github.ref == 'refs/heads/Relese'}}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          TAG=$(git describe --tags --exact-match HEAD)
+          hub release create -m "$(git tag -l --format='%(contents)' "$TAG")" "$TAG" || true
+          while IFS= read -r file; do
+            pdf="${file%.*}.pdf"
+            echo "Delivering file $pdf"
+            hub release edit -m '' -a "$pdf" "$TAG"
+          done <"success-list"
+        
+
