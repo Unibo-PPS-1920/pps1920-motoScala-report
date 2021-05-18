@@ -76,11 +76,11 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           TAG=$(git describe --tags --exact-match HEAD)
-          hub release create -m "$(git tag -l --format='%(contents)' "$TAG")" "$TAG" || true
-          while IFS= read -r file; do
-            pdf="${file%.*}.pdf"
-            echo "Delivering file $pdf"
+          hub release create -m "$(git tag -l --format='%(contents)' "$TAG")" "$TAG" || true   
+          for pdfs in *.pdf; do 
+            echo "\n\nDelivering file $pdfs \n\n"
             hub release edit -m '' -a "$pdf" "$TAG"
-          done <"success-list"
+          done
+         
         
 
