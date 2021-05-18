@@ -61,6 +61,20 @@ jobs:
       - name: Fetch tags
         shell: bash
         run: git fetch --tags -f
+        
+      - name: tes1
+        run: |
+          while IFS= read -r file; do
+            echo "Delivering file $file"
+          done
+          
+      - name: tes2
+        run: |
+          while IFS= read -r file; do
+            pdf="${file%.*}.pdf"
+            echo "Delivering file $pdf"
+          done
+        
 
       - name: Deploy
         if: ${{github.ref == 'refs/heads/relese'}}
