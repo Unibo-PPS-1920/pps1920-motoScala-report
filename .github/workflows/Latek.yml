@@ -64,16 +64,10 @@ jobs:
         
       - name: tes1
         run: |
-          while IFS= read -r file; do
-            echo "Delivering file $file"
+          for file in *.tex; do 
+            echo "\n\nDelivering file $pdf \n\n"
           done
-          
-      - name: tes2
-        run: |
-          while IFS= read -r file; do
-            pdf="${file%.*}.pdf"
-            echo "Delivering file $pdf"
-          done
+        
         
 
       - name: Deploy
