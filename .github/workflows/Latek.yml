@@ -64,8 +64,8 @@ jobs:
         
       - name: tes1
         run: |
-          for file in *.tex; do 
-            echo "\n\nDelivering file $pdf \n\n"
+          for pdfs in *.tex; do 
+            echo "\n\nDelivering file $pdfs \n\n"
           done
         
         
