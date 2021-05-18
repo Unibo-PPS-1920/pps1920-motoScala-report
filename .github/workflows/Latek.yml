@@ -79,7 +79,7 @@ jobs:
           hub release create -m "$(git tag -l --format='%(contents)' "$TAG")" "$TAG" || true   
           for pdfs in *.pdf; do 
             echo "\n\nDelivering file $pdfs \n\n"
-            hub release edit -m '' -a "$pdf" "$TAG"
+            hub release edit -m '' -a "$pdfs" "$TAG"
           done
          
         
